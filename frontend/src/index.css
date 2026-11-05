@@ -1,0 +1,111 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --bg-primary: #050707;
+    --accent-primary: #A0C0D0;
+    --surface-dark: #0A1012;
+    --surface-card: #10191D;
+    --text-primary: #EDF4F6;
+    --text-muted: #A6B4BA;
+    --text-tertiary: #72838A;
+    --status-critical: #E36F70;
+    --status-warning: #D9AE68;
+    --status-success: #82B9A0;
+  }
+
+  html {
+    color-scheme: dark;
+    background-color: #050707;
+  }
+
+  /* Custom scrollbar for glassmorphic dark theme */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #050707;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #18242A;
+    border-radius: 9999px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #72838A;
+  }
+
+  /* Accessible focus indicators */
+  *:focus-visible {
+    outline: none;
+    ring-offset-width: 2px;
+    box-shadow: 0 0 0 2px #050707, 0 0 0 4px #A0C0D0;
+  }
+}
+
+@layer components {
+  /* Premium Dark Glassmorphism */
+  .glass-panel {
+    background: rgba(10, 16, 18, 0.75);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(160, 192, 208, 0.12);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  }
+
+  .glass-card {
+    background: rgba(16, 25, 29, 0.65);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(160, 192, 208, 0.08);
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .glass-card:hover {
+    border-color: rgba(160, 192, 208, 0.22);
+    box-shadow: 0 0 25px -5px rgba(160, 192, 208, 0.1);
+  }
+
+  .glass-input {
+    background: rgba(10, 16, 18, 0.85);
+    border: 1px solid rgba(114, 131, 138, 0.35);
+    color: #EDF4F6;
+    transition: all 0.2s ease;
+  }
+
+  .glass-input:focus {
+    border-color: #A0C0D0;
+    box-shadow: 0 0 0 1px #A0C0D0, 0 0 15px -3px rgba(160, 192, 208, 0.25);
+  }
+
+  /* Restrained Glow accents */
+  .glow-glacial {
+    box-shadow: 0 0 25px -5px rgba(160, 192, 208, 0.2);
+  }
+
+  .glow-critical {
+    box-shadow: 0 0 25px -5px rgba(227, 111, 112, 0.25);
+  }
+
+  .glow-warning {
+    box-shadow: 0 0 25px -5px rgba(217, 174, 104, 0.25);
+  }
+
+  .glow-success {
+    box-shadow: 0 0 25px -5px rgba(130, 185, 160, 0.25);
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
