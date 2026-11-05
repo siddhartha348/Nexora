@@ -33,6 +33,7 @@ import { ForgotPassword } from './pages/auth/ForgotPassword';
 import { ResetPassword } from './pages/auth/ResetPassword';
 import { VerifyEmail } from './pages/auth/VerifyEmail';
 import { OrganizationSettings } from './pages/app/OrganizationSettings';
+import { KnowledgeHub } from './pages/app/KnowledgeHub';
 
 function MainApp() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -82,6 +83,14 @@ function MainApp() {
           <Route path="/verify-email" element={<VerifyEmail />} />
 
           {/* Protected Application Routes */}
+          <Route
+            path="/app/knowledge"
+            element={
+              <ProtectedRoute>
+                <KnowledgeHub />
+              </ProtectedRoute>
+            }
+          />
           <Route
             path="/app/settings/organization"
             element={

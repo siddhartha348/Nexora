@@ -8,7 +8,8 @@ import {
   Moon, 
   Sun, 
   ArrowRight,
-  LogOut
+  LogOut,
+  Database
 } from 'lucide-react';
 import { Button } from '../ui/Button';
 import { useAuth } from '../../context/AuthContext';
@@ -50,10 +51,10 @@ export function Header({ onOpenSearch }: HeaderProps) {
     { label: 'How It Works', path: '/how-it-works' },
     { label: 'AI Agents', path: '/agents', badge: '6 Guardians' },
     { label: 'Ad Recall', path: '/recall', badge: 'Active' },
+    ...(isAuthenticated ? [{ label: 'Knowledge Hub', path: '/app/knowledge', badge: 'RAG' }] : []),
     { label: 'Security', path: '/security' },
     { label: 'About', path: '/about' },
     { label: 'FAQ', path: '/faq' },
-    { label: 'Contact', path: '/contact' },
   ];
 
   return (
@@ -150,6 +151,13 @@ export function Header({ onOpenSearch }: HeaderProps) {
           <div className="hidden sm:flex items-center gap-2">
             {isAuthenticated && user ? (
               <div className="flex items-center gap-2.5 pl-2 border-l border-slate-border/60">
+                <Link
+                  to="/app/knowledge"
+                  className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-glacial/10 border border-glacial/30 text-glacial hover:bg-glacial/20 text-xs font-medium transition-all"
+                >
+                  <Database className="w-3.5 h-3.5" />
+                  <span className="hidden md:inline">Knowledge Hub</span>
+                </Link>
                 <Link to="/app/settings/organization" className="flex items-center gap-2 group">
                   <div className="w-8 h-8 rounded-lg bg-obsidian-700 border border-slate-border flex items-center justify-center text-glacial text-xs font-semibold group-hover:border-glacial/40 transition-colors">
                     {user.full_name.substring(0, 2).toUpperCase()}
@@ -251,6 +259,12 @@ export function Header({ onOpenSearch }: HeaderProps) {
                     </div>
                     <Badge variant="mono" size="sm">{user.role}</Badge>
                   </div>
+                  <Link to="/app/knowledge" className="block w-full">
+                    <Button variant="secondary" size="md" className="w-full flex items-center justify-center gap-2">
+                      <Database className="w-4 h-4 text-glacial" />
+                      <span>Brand Knowledge Hub</span>
+                    </Button>
+                  </Link>
                   <Link to="/app/settings/organization" className="block w-full">
                     <Button variant="primary" size="md" className="w-full">
                       Governance Controls
