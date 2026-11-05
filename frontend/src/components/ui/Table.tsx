@@ -62,3 +62,4 @@ export const TableCell: React.FC<React.TdHTMLAttributes<HTMLTableCellElement>> =
 }) => (
   <td className={cn("px-4 py-3 align-middle text-slate-text/90", className)} {...props} />
 );
+

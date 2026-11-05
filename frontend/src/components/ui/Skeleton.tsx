@@ -56,3 +56,4 @@ export const CardSkeleton: React.FC<{ className?: string }> = ({ className }) =>
     </div>
   </div>
 );
+
