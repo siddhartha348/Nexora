@@ -7,15 +7,19 @@ import {
   Search, 
   Moon, 
   Sun, 
-  ArrowRight
+  ArrowRight,
+  LogOut
 } from 'lucide-react';
 import { Button } from '../ui/Button';
+import { useAuth } from '../../context/AuthContext';
+import { Badge } from '../ui/Badge';
 
 interface HeaderProps {
   onOpenSearch: () => void;
 }
 
 export function Header({ onOpenSearch }: HeaderProps) {
+  const { user, isAuthenticated, logout } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [themeMode, setThemeMode] = useState<'pure-obsidian' | 'deep-slate'>('pure-obsidian');
@@ -142,13 +146,44 @@ export function Header({ onOpenSearch }: HeaderProps) {
             )}
           </button>
 
-          {/* Contact / CTA Button */}
-          <div className="hidden sm:block">
-            <Link to="/contact">
-              <Button variant="primary" size="sm" rightIcon={<ArrowRight className="w-3.5 h-3.5" />}>
-                Request Access
-              </Button>
-            </Link>
+          {/* Auth State Actions */}
+          <div className="hidden sm:flex items-center gap-2">
+            {isAuthenticated && user ? (
+              <div className="flex items-center gap-2.5 pl-2 border-l border-slate-border/60">
+                <Link to="/app/settings/organization" className="flex items-center gap-2 group">
+                  <div className="w-8 h-8 rounded-lg bg-obsidian-700 border border-slate-border flex items-center justify-center text-glacial text-xs font-semibold group-hover:border-glacial/40 transition-colors">
+                    {user.full_name.substring(0, 2).toUpperCase()}
+                  </div>
+                  <div className="text-left select-none hidden md:block">
+                    <p className="text-xs font-semibold text-slate-text leading-tight group-hover:text-glacial transition-colors">
+                      {user.full_name.split(' ')[0]}
+                    </p>
+                    <p className="text-[10px] text-slate-muted font-mono">{user.role}</p>
+                  </div>
+                </Link>
+                <button
+                  onClick={() => logout()}
+                  title="Sign Out"
+                  aria-label="Sign Out"
+                  className="p-2 rounded-lg text-slate-muted hover:text-status-critical hover:bg-obsidian-700/60 transition-colors"
+                >
+                  <LogOut className="w-4 h-4" />
+                </button>
+              </div>
+            ) : (
+              <div className="flex items-center gap-2">
+                <Link to="/login">
+                  <Button variant="ghost" size="sm">
+                    Sign In
+                  </Button>
+                </Link>
+                <Link to="/register">
+                  <Button variant="primary" size="sm" rightIcon={<ArrowRight className="w-3.5 h-3.5" />}>
+                    Get Started
+                  </Button>
+                </Link>
+              </div>
+            )}
           </div>
 
           {/* Mobile Hamburger Toggle */}
@@ -207,12 +242,39 @@ export function Header({ onOpenSearch }: HeaderProps) {
             </div>
 
             <div className="pt-4 border-t border-slate-border space-y-3">
-              <Link to="/contact" className="block w-full">
-                <Button variant="primary" size="md" className="w-full">
-                  Request Platform Access
-                </Button>
-              </Link>
-              <div className="text-center text-[11px] text-slate-tertiary font-mono">
+              {isAuthenticated && user ? (
+                <div className="space-y-3">
+                  <div className="p-3 rounded-xl bg-obsidian-800 border border-slate-border flex items-center justify-between">
+                    <div>
+                      <p className="text-xs font-semibold text-slate-text">{user.full_name}</p>
+                      <p className="text-[10px] text-slate-muted font-mono">{user.email} • {user.role}</p>
+                    </div>
+                    <Badge variant="mono" size="sm">{user.role}</Badge>
+                  </div>
+                  <Link to="/app/settings/organization" className="block w-full">
+                    <Button variant="primary" size="md" className="w-full">
+                      Governance Controls
+                    </Button>
+                  </Link>
+                  <Button variant="outline" size="sm" onClick={() => logout()} className="w-full text-status-critical">
+                    Sign Out
+                  </Button>
+                </div>
+              ) : (
+                <div className="space-y-2">
+                  <Link to="/login" className="block w-full">
+                    <Button variant="secondary" size="md" className="w-full">
+                      Sign In
+                    </Button>
+                  </Link>
+                  <Link to="/register" className="block w-full">
+                    <Button variant="primary" size="md" className="w-full">
+                      Register Organisation
+                    </Button>
+                  </Link>
+                </div>
+              )}
+              <div className="text-center text-[11px] text-slate-tertiary font-mono pt-1">
                 Team PINNACLE • Code Nexus Hackathon
               </div>
             </div>

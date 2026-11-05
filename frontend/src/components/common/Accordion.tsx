@@ -70,3 +70,4 @@ export function Accordion({ items, allowMultiple = false }: AccordionProps) {
     </div>
   );
 }
+

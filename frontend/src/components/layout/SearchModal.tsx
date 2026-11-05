@@ -145,3 +145,4 @@ export function SearchModal({ isOpen, onClose }: { isOpen: boolean; onClose: () 
     </div>
   );
 }
+

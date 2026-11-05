@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { ToastProvider } from './components/ui/Toast';
+import { AuthProvider } from './context/AuthContext';
+import { ProtectedRoute } from './components/auth/ProtectedRoute';
 import { Header } from './components/layout/Header';
 import { Footer } from './components/layout/Footer';
 import { ScrollProgress } from './components/layout/ScrollProgress';
@@ -8,7 +10,7 @@ import { BackToTop, FloatingAction } from './components/layout/FloatingWidgets';
 import { CookieBanner } from './components/layout/CookieBanner';
 import { SearchModal } from './components/layout/SearchModal';
 
-// Pages
+// Public Pages
 import { Home } from './pages/Home';
 import { About } from './pages/About';
 import { Features } from './pages/Features';
@@ -23,6 +25,14 @@ import { Terms } from './pages/Terms';
 import { CookiePolicy } from './pages/CookiePolicy';
 import { RefundPolicy } from './pages/RefundPolicy';
 import { NotFound } from './pages/NotFound';
+
+// Auth & Org Pages
+import { Login } from './pages/auth/Login';
+import { Register } from './pages/auth/Register';
+import { ForgotPassword } from './pages/auth/ForgotPassword';
+import { ResetPassword } from './pages/auth/ResetPassword';
+import { VerifyEmail } from './pages/auth/VerifyEmail';
+import { OrganizationSettings } from './pages/app/OrganizationSettings';
 
 function MainApp() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -63,6 +73,24 @@ function MainApp() {
           <Route path="/terms" element={<Terms />} />
           <Route path="/cookie-policy" element={<CookiePolicy />} />
           <Route path="/refund-policy" element={<RefundPolicy />} />
+
+          {/* Authentication Routes */}
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
+          <Route path="/verify-email" element={<VerifyEmail />} />
+
+          {/* Protected Application Routes */}
+          <Route
+            path="/app/settings/organization"
+            element={
+              <ProtectedRoute>
+                <OrganizationSettings />
+              </ProtectedRoute>
+            }
+          />
+
           <Route path="*" element={<NotFound onOpenSearch={() => setIsSearchOpen(true)} />} />
         </Routes>
       </main>
@@ -83,7 +111,9 @@ export default function App() {
   return (
     <BrowserRouter>
       <ToastProvider>
-        <MainApp />
+        <AuthProvider>
+          <MainApp />
+        </AuthProvider>
       </ToastProvider>
     </BrowserRouter>
   );

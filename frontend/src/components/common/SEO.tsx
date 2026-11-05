@@ -24,3 +24,4 @@ export function SEO({ title, description }: SEOProps) {
 
   return null;
 }
+
