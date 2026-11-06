@@ -7,6 +7,7 @@ from app.db.mongo import db_manager
 from app.api.v1.auth import router as auth_router
 from app.api.v1.organizations import router as org_router
 from app.api.v1.knowledge import router as knowledge_router
+from app.api.v1.advertisements import router as ads_router
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -58,6 +59,7 @@ async def generic_exception_handler(request: Request, exc: Exception):
 app.include_router(auth_router, prefix=settings.API_V1_PREFIX)
 app.include_router(org_router, prefix=settings.API_V1_PREFIX)
 app.include_router(knowledge_router, prefix=settings.API_V1_PREFIX)
+app.include_router(ads_router, prefix=settings.API_V1_PREFIX)
 
 @app.get("/health")
 @app.get(f"{settings.API_V1_PREFIX}/health")

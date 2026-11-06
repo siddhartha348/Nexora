@@ -70,20 +70,17 @@ export function Home() {
 
       {/* Hero Section */}
       <section className="relative pt-12 sm:pt-20 pb-8 overflow-hidden">
-        {/* Glow ambient background elements */}
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[650px] h-[350px] bg-cyber-cyan/10 blur-[140px] rounded-full pointer-events-none" />
-        
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center space-y-6">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full glass-panel border border-cyber-cyan/40 text-xs text-cyber-cyan font-mono animate-in fade-in-0 slide-in-from-top-3 duration-500 shadow-cyber-cyan">
-            <span className="w-2 h-2 rounded-full bg-cyber-cyan animate-pulse shadow-cyber-cyan" />
-            <span>[ CYBERCORE DEFENSE ] • Team PINNACLE</span>
-            <span className="text-slate-tertiary">|</span>
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded bg-obsidian-850 border-2 border-slate-border text-xs text-glacial font-bold shadow-neo font-mono">
+            <span className="w-2 h-2 rounded-full bg-status-success border border-black" />
+            <span>[ NEO-BRUTALIST GOVERNANCE ] • Team PINNACLE</span>
+            <span className="text-slate-border">•</span>
             <span className="text-slate-muted">Problem by Inkloom AI</span>
           </div>
 
           <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold text-slate-text tracking-tight max-w-5xl mx-auto leading-[1.1]">
             Evidence-Based <br className="hidden sm:inline" />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyber-cyan via-glacial-200 to-white">
+            <span className="text-glacial">
               Brand Governance
             </span>
           </h1>
@@ -183,9 +180,7 @@ export function Home() {
 
       {/* The NEXORA Solution & Central Principle */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="rounded-3xl glass-panel border border-glacial/30 p-8 sm:p-12 relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-96 h-96 bg-glacial/10 blur-3xl rounded-full pointer-events-none" />
-          
+        <div className="rounded bg-obsidian-850 border-2 border-slate-border p-8 sm:p-12 relative shadow-neo-lg">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center relative z-10">
             <div className="lg:col-span-7 space-y-4">
               <Badge variant="primary" dot size="sm">Central Architectural Principle</Badge>
@@ -275,7 +270,7 @@ export function Home() {
 
       {/* Advertisement Recall Highlight Section */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="rounded-3xl glass-panel border border-status-warning/30 p-8 sm:p-12 relative overflow-hidden bg-gradient-to-br from-obsidian-800/90 via-obsidian to-obsidian-900">
+        <div className="rounded-none border-2 border-status-warning p-8 sm:p-12 relative overflow-hidden bg-obsidian-850 shadow-neo-warning">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
             
             <div className="lg:col-span-7 space-y-4">

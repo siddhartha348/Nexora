@@ -115,11 +115,9 @@ const ToastCard: React.FC<{ item: ToastItem; onDismiss: () => void }> = ({ item,
     <div
       role="alert"
       className={cn(
-        "pointer-events-auto flex items-start gap-3 p-4 rounded-xl border backdrop-blur-md shadow-glass transition-all",
+        "pointer-events-auto flex items-start gap-3 p-4 border-2 shadow-neo transition-all bg-obsidian-850",
         "animate-in slide-in-from-right-5 fade-in-0 duration-200",
-        config.bg,
-        config.border,
-        config.glow
+        config.border
       )}
     >
       <Icon className={cn("w-5 h-5 shrink-0 mt-0.5", config.iconColor)} />

@@ -152,7 +152,7 @@ export const Navigation: React.FC<NavigationProps> = ({
 
       {/* Mobile Navigation Drawer */}
       {mobileMenuOpen && (
-        <div className="lg:hidden fixed inset-0 z-50 bg-obsidian-950/90 backdrop-blur-xl animate-in fade-in-0 duration-200">
+        <div className="lg:hidden fixed inset-0 z-50 bg-obsidian-950 animate-in fade-in-0 duration-200">
           <div className="p-5 flex flex-col h-full">
             <div className="flex items-center justify-between pb-4 border-b border-slate-border">
               <div className="flex items-center gap-2.5">

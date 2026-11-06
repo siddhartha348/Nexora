@@ -5,24 +5,24 @@ export function Footer() {
   const currentYear = 2026;
 
   return (
-    <footer className="border-t border-slate-border/70 bg-obsidian-950/90 backdrop-blur-xl pt-16 pb-12 text-slate-muted">
+    <footer className="border-t-2 border-slate-border bg-obsidian-950 pt-14 pb-12 text-slate-muted">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Main Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 pb-12 border-b border-slate-border/50">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 pb-12 border-b-2 border-slate-border">
           
           {/* Brand Identity & Mission */}
           <div className="lg:col-span-2 space-y-4">
             <Link to="/" className="flex items-center gap-3 select-none group">
-              <div className="w-9 h-9 rounded-lg bg-cyber-panel border border-cyber-cyan/40 flex items-center justify-center text-cyber-cyan shadow-cyber-cyan group-hover:border-cyber-cyan transition-all">
-                <ShieldCheck className="w-5 h-5 text-cyber-cyan stroke-[2.2]" />
+              <div className="w-9 h-9 rounded bg-glacial border-2 border-black flex items-center justify-center text-obsidian-950 shadow-neo-sm">
+                <ShieldCheck className="w-5 h-5 stroke-[2.5]" />
               </div>
               <div className="flex items-center gap-2">
                 <span className="font-extrabold tracking-widest text-lg text-slate-text uppercase">
                   NEXORA
                 </span>
-                <span className="text-[9px] font-mono uppercase px-1.5 py-0.5 rounded bg-cyber-cyan/15 text-cyber-cyan border border-cyber-cyan/30">
-                  CYBERCORE
+                <span className="text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-obsidian-800 text-glacial border-2 border-slate-border font-bold shadow-neo-sm">
+                  NEO-BRUTALISM
                 </span>
               </div>
             </Link>
@@ -31,13 +31,13 @@ export function Footer() {
               An evidence-driven, multimodal brand governance platform. Auditing advertisements against approved guidelines, specification facts, terminology, and visual assets before publication with active Advertisement Recall.
             </p>
 
-            <div className="p-3 rounded-xl bg-cyber-panel/90 border border-cyber-border/70 text-[11px] space-y-1 font-mono shadow-cyber-panel">
-              <div className="text-cyber-cyan font-semibold flex items-center gap-1.5">
-                <span className="w-1.5 h-1.5 rounded-full bg-cyber-cyan animate-pulse shadow-cyber-cyan" />
+            <div className="p-3.5 rounded bg-obsidian-850 border-2 border-slate-border text-[11px] space-y-1.5 font-mono shadow-neo-sm">
+              <div className="text-glacial font-bold flex items-center gap-1.5">
+                <span className="w-2 h-2 rounded-full bg-status-success border border-black" />
                 Code Nexus Hackathon // Team PINNACLE
               </div>
-              <div className="text-slate-tertiary">Problem Provider: <span className="text-slate-text">Inkloom AI</span></div>
-              <div className="text-slate-tertiary">Architecture: <span className="text-cyber-green">Six-Agent Multi-Model Autonomous Defense</span></div>
+              <div className="text-slate-muted">Problem Provider: <span className="text-slate-text font-bold">Inkloom AI</span></div>
+              <div className="text-slate-muted">Architecture: <span className="text-glacial font-bold">Six Specialist Guardians + Risk Arbiter</span></div>
             </div>
           </div>
 
@@ -104,7 +104,7 @@ export function Footer() {
             <span>•</span>
             <Link to="/security" className="hover:text-slate-text transition-colors">Security</Link>
             <span>•</span>
-            <span className="font-mono text-[10px] text-cyber-cyan font-semibold">[ v2.4 // CYBERCORE ]</span>
+            <span className="font-mono text-[10px] text-glacial font-bold">[ v2.5 // NEO-BRUTALISM ]</span>
           </div>
         </div>
 

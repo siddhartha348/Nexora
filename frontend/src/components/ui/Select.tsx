@@ -68,12 +68,12 @@ export const Select: React.FC<SelectProps> = ({
         aria-haspopup="listbox"
         aria-expanded={isOpen}
         className={cn(
-          "w-full flex items-center justify-between rounded-lg bg-obsidian-800/90 text-sm px-3.5 py-2",
-          "border border-slate-tertiary/30 text-left transition-all duration-200",
-          "hover:border-glacial/30 focus:border-glacial focus:ring-1 focus:ring-glacial/40 focus:outline-none",
+          "w-full flex items-center justify-between rounded bg-obsidian-900 text-sm px-3.5 py-2",
+          "border-2 border-slate-border text-left transition-all duration-150 shadow-neo-sm",
+          "hover:border-glacial focus:border-glacial focus:shadow-neo-accent-sm focus:outline-none",
           disabled && "opacity-50 cursor-not-allowed",
-          error && "border-status-critical focus:border-status-critical",
-          isOpen && "border-glacial ring-1 ring-glacial/40"
+          error && "border-status-critical focus:border-status-critical focus:shadow-neo-critical",
+          isOpen && "border-glacial shadow-neo-accent-sm"
         )}
       >
         <span className={cn("truncate", !selectedOption && "text-slate-tertiary")}>
@@ -81,7 +81,7 @@ export const Select: React.FC<SelectProps> = ({
         </span>
         <ChevronDown 
           className={cn(
-            "w-4 h-4 text-slate-tertiary transition-transform duration-200 shrink-0 ml-2",
+            "w-4 h-4 text-slate-tertiary transition-transform duration-150 shrink-0 ml-2",
             isOpen && "rotate-180 text-glacial"
           )} 
         />
@@ -90,7 +90,7 @@ export const Select: React.FC<SelectProps> = ({
       {isOpen && (
         <div 
           role="listbox"
-          className="absolute z-50 w-full mt-1.5 py-1 rounded-xl glass-panel shadow-glass border border-slate-border max-h-60 overflow-y-auto animate-in fade-in-50 zoom-in-95 duration-100"
+          className="absolute z-50 w-full mt-1.5 py-1 rounded bg-obsidian-850 shadow-neo-lg border-2 border-slate-border max-h-60 overflow-y-auto"
         >
           {options.map((option) => {
             const isSelected = option.value === value;

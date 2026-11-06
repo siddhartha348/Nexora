@@ -47,11 +47,11 @@ export const ErrorState: React.FC<ErrorStateProps> = ({
     <div
       role="alert"
       className={cn(
-        "flex flex-col items-center justify-center text-center p-8 rounded-2xl border border-status-critical/30 bg-status-critical-bg backdrop-blur-md shadow-status-critical",
+        "flex flex-col items-center justify-center text-center p-8 border-2 border-status-critical bg-obsidian-850 shadow-neo-critical",
         className
       )}
     >
-      <div className="w-12 h-12 rounded-xl bg-status-critical/20 border border-status-critical/40 flex items-center justify-center text-status-critical mb-3">
+      <div className="w-12 h-12 bg-obsidian-800 border-2 border-status-critical flex items-center justify-center text-status-critical mb-3">
         <AlertTriangle className="w-6 h-6" />
       </div>
       <h3 className="text-sm font-semibold text-status-critical mb-1">

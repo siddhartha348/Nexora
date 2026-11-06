@@ -92,6 +92,15 @@ class MockCollection:
             inserted_id = doc_copy["_id"]
         return InsertResult()
 
+    async def insert_many(self, docs: List[Dict[str, Any]]):
+        ids = []
+        for d in docs:
+            res = await self.insert_one(d)
+            ids.append(res.inserted_id)
+        class ManyResult:
+            inserted_ids = ids
+        return ManyResult()
+
     async def update_one(self, filter_dict: Dict[str, Any], update_dict: Dict[str, Any]):
         matched = 0
         modified = 0
@@ -122,6 +131,14 @@ class MockCollection:
                 break
         class DeleteResult:
             deleted_count = deleted
+        return DeleteResult()
+
+    async def delete_many(self, filter_dict: Dict[str, Any]):
+        to_del = [doc_id for doc_id, doc in self._docs.items() if self._matches(doc, filter_dict)]
+        for doc_id in to_del:
+            del self._docs[doc_id]
+        class DeleteResult:
+            deleted_count = len(to_del)
         return DeleteResult()
 
     async def count_documents(self, filter_dict: Dict[str, Any]) -> int:
@@ -181,6 +198,9 @@ class DatabaseManager:
         return cls.db
 
 db_manager = DatabaseManager()
+
+def get_database():
+    return db_manager.get_db()
 
 async def get_db():
     return db_manager.get_db()

@@ -23,11 +23,11 @@ export const EmptyState: React.FC<EmptyStateProps> = ({
   return (
     <div
       className={cn(
-        "flex flex-col items-center justify-center text-center p-8 sm:p-12 rounded-2xl border border-dashed border-slate-border/80 bg-obsidian-800/20 backdrop-blur-xs",
+        "flex flex-col items-center justify-center text-center p-8 sm:p-12 border-2 border-dashed border-obsidian-700 bg-obsidian-850",
         className
       )}
     >
-      <div className="w-14 h-14 rounded-2xl bg-obsidian-700/80 border border-slate-border flex items-center justify-center text-glacial mb-4 shadow-glass-glow">
+      <div className="w-14 h-14 bg-obsidian-800 border-2 border-obsidian-700 flex items-center justify-center text-glacial mb-4 shadow-neo-sm">
         {icon || <FolderSearch className="w-7 h-7 stroke-[1.5]" />}
       </div>
       <h3 className="text-base font-semibold text-slate-text tracking-tight mb-1">

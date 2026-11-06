@@ -273,7 +273,7 @@ export function KnowledgeHub() {
             <Badge variant="cyber-terminal" size="sm">CHROMADB + MONGODB RAG // ACTIVE</Badge>
           </div>
           <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-text">
-            Authoritative <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyber-cyan via-glacial to-white">Brand Knowledge Repository</span>
+            Authoritative <span className="text-glacial">Brand Knowledge Repository</span>
           </h1>
           <p className="text-xs text-slate-muted">
             The single source of truth for product specifications, brand guidelines, and approved terminology

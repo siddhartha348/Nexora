@@ -25,8 +25,7 @@ export const Skeleton: React.FC<SkeletonProps> = ({
     <div
       aria-hidden="true"
       className={cn(
-        "relative overflow-hidden bg-obsidian-700/60 border border-slate-border/30",
-        "before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-white/5 before:to-transparent",
+        "relative overflow-hidden bg-obsidian-700/80 border-2 border-obsidian-800 animate-pulse",
         variantStyles,
         className
       )}

@@ -57,7 +57,7 @@ export const Modal: React.FC<ModalProps> = ({
     >
       {/* Backdrop */}
       <div
-        className="fixed inset-0 bg-obsidian-950/80 backdrop-blur-md transition-opacity animate-in fade-in-0 duration-200"
+        className="fixed inset-0 bg-black/85 transition-opacity duration-150"
         onClick={onClose}
         aria-hidden="true"
       />
@@ -66,12 +66,12 @@ export const Modal: React.FC<ModalProps> = ({
       <div
         ref={modalRef}
         className={cn(
-          "relative w-full rounded-2xl glass-panel shadow-glass border border-slate-border p-6 sm:p-7 z-10",
-          "animate-in fade-in-0 zoom-in-95 duration-200",
+          "relative w-full rounded bg-obsidian-850 shadow-neo-xl border-2 border-slate-border p-6 sm:p-7 z-10",
+          "animate-in fade-in-0 duration-150",
           sizeClasses
         )}
       >
-        <div className="flex items-start justify-between gap-4 pb-4 border-b border-slate-border/50">
+        <div className="flex items-start justify-between gap-4 pb-4 border-b-2 border-slate-border">
           <div>
             {title && (
               <h2 className="text-lg font-semibold text-slate-text tracking-tight">

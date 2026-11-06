@@ -34,6 +34,7 @@ import { ResetPassword } from './pages/auth/ResetPassword';
 import { VerifyEmail } from './pages/auth/VerifyEmail';
 import { OrganizationSettings } from './pages/app/OrganizationSettings';
 import { KnowledgeHub } from './pages/app/KnowledgeHub';
+import { AdAudit } from './pages/app/AdAudit';
 
 function MainApp() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -51,11 +52,7 @@ function MainApp() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-obsidian text-slate-text flex flex-col selection:bg-cyber-cyan/25 selection:text-cyber-cyan relative cyber-grid">
-      {/* Ambient Cybercore Lighting Orbs */}
-      <div className="fixed top-0 left-1/4 w-[600px] h-[600px] bg-cyber-cyan/5 rounded-full blur-[140px] pointer-events-none -z-10" />
-      <div className="fixed bottom-1/3 right-10 w-[500px] h-[500px] bg-glacial/5 rounded-full blur-[140px] pointer-events-none -z-10" />
-
+    <div className="min-h-screen bg-obsidian text-slate-text flex flex-col selection:bg-glacial selection:text-obsidian-950 relative">
       {/* Top Reading Progress Bar */}
       <ScrollProgress />
 
@@ -87,6 +84,14 @@ function MainApp() {
           <Route path="/verify-email" element={<VerifyEmail />} />
 
           {/* Protected Application Routes */}
+          <Route
+            path="/app/audits"
+            element={
+              <ProtectedRoute>
+                <AdAudit />
+              </ProtectedRoute>
+            }
+          />
           <Route
             path="/app/knowledge"
             element={

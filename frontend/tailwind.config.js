@@ -10,13 +10,13 @@ export default {
       colors: {
         obsidian: {
           DEFAULT: '#050707',
-          950: '#030505',
+          950: '#000000',
           900: '#050707',
-          850: '#070C0E',
-          800: '#0A1012',
-          750: '#0D1518',
-          700: '#10191D',
-          600: '#18242A',
+          850: '#0B1113',
+          800: '#10191D',
+          750: '#162329',
+          700: '#1C2C34',
+          600: '#253A45',
         },
         glacial: {
           DEFAULT: '#A0C0D0',
@@ -31,37 +31,25 @@ export default {
           800: '#314E5B',
           900: '#1F343E',
         },
-        cyber: {
-          cyan: '#56D4E8',
-          neon: '#38BDF8',
-          ice: '#A0C0D0',
-          green: '#00F0A8',
-          amber: '#F59E0B',
-          crimson: '#FF4D4D',
-          dark: '#030708',
-          panel: '#070D0F',
-          border: 'rgba(86, 212, 232, 0.2)',
-          'border-bright': 'rgba(86, 212, 232, 0.5)',
-        },
         slate: {
-          surface: '#0A1012',
-          card: '#10191D',
-          border: 'rgba(160, 192, 208, 0.12)',
-          'border-subtle': '#72838A',
+          surface: '#10191D',
+          card: '#162329',
+          border: '#2C414B',
+          'border-bold': '#A0C0D0',
           muted: '#A6B4BA',
           text: '#EDF4F6',
           tertiary: '#72838A',
         },
         status: {
           critical: '#E36F70',
-          'critical-bg': 'rgba(227, 111, 112, 0.12)',
-          'critical-border': 'rgba(227, 111, 112, 0.25)',
+          'critical-bg': '#2E1516',
+          'critical-border': '#E36F70',
           warning: '#D9AE68',
-          'warning-bg': 'rgba(217, 174, 104, 0.12)',
-          'warning-border': 'rgba(217, 174, 104, 0.25)',
+          'warning-bg': '#2E2211',
+          'warning-border': '#D9AE68',
           success: '#82B9A0',
-          'success-bg': 'rgba(130, 185, 160, 0.12)',
-          'success-border': 'rgba(130, 185, 160, 0.25)',
+          'success-bg': '#14271F',
+          'success-border': '#82B9A0',
         }
       },
       fontFamily: {
@@ -69,43 +57,26 @@ export default {
         mono: ['"JetBrains Mono"', 'monospace'],
       },
       boxShadow: {
-        'glass': '0 8px 32px 0 rgba(0, 0, 0, 0.37)',
-        'glass-glow': '0 0 25px -5px rgba(160, 192, 208, 0.15)',
-        'cyber-cyan': '0 0 20px -3px rgba(86, 212, 232, 0.35)',
-        'cyber-neon': '0 0 25px -4px rgba(56, 189, 248, 0.4)',
-        'cyber-panel': '0 0 35px -5px rgba(5, 7, 7, 0.9), inset 0 1px 0 rgba(160, 192, 208, 0.15)',
-        'ambient': '0 20px 40px -15px rgba(0, 0, 0, 0.5)',
-        'status-critical': '0 0 20px -5px rgba(227, 111, 112, 0.3)',
-        'status-warning': '0 0 20px -5px rgba(217, 174, 104, 0.3)',
-        'status-success': '0 0 20px -5px rgba(130, 185, 160, 0.3)',
+        // Neo-Brutalist Hard Offset Shadows (NO BLUR)
+        'neo': '4px 4px 0px 0px #000000',
+        'neo-sm': '2px 2px 0px 0px #000000',
+        'neo-lg': '6px 6px 0px 0px #000000',
+        'neo-xl': '8px 8px 0px 0px #000000',
+        'neo-accent': '4px 4px 0px 0px #A0C0D0',
+        'neo-accent-sm': '2px 2px 0px 0px #A0C0D0',
+        'neo-critical': '4px 4px 0px 0px #E36F70',
+        'neo-warning': '4px 4px 0px 0px #D9AE68',
+        'neo-success': '4px 4px 0px 0px #82B9A0',
+        'neo-white': '4px 4px 0px 0px #EDF4F6',
+        'glass': '4px 4px 0px 0px #000000',
+        'glass-glow': '4px 4px 0px 0px #A0C0D0',
+        'ambient': '6px 6px 0px 0px #000000',
+        'status-critical': '4px 4px 0px 0px #E36F70',
+        'status-warning': '4px 4px 0px 0px #D9AE68',
+        'status-success': '4px 4px 0px 0px #82B9A0',
       },
-      backdropBlur: {
-        'xs': '2px',
-        'glass': '16px',
-        'cyber': '20px',
-      },
-      keyframes: {
-        shimmer: {
-          '100%': { transform: 'translateX(100%)' }
-        },
-        pulseGlow: {
-          '0%, 100%': { opacity: 0.6, transform: 'scale(1)' },
-          '50%': { opacity: 1, transform: 'scale(1.05)' }
-        },
-        scanline: {
-          '0%': { transform: 'translateY(-100%)' },
-          '100%': { transform: 'translateY(1000%)' }
-        },
-        cyberRadar: {
-          '0%': { transform: 'rotate(0deg)' },
-          '100%': { transform: 'rotate(360deg)' }
-        }
-      },
-      animation: {
-        shimmer: 'shimmer 2s infinite',
-        'pulse-glow': 'pulseGlow 3s ease-in-out infinite',
-        scanline: 'scanline 8s linear infinite',
-        'radar-sweep': 'cyberRadar 10s linear infinite',
+      borderWidth: {
+        '3': '3px',
       }
     },
   },

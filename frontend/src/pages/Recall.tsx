@@ -87,7 +87,7 @@ export function Recall() {
       />
 
       {/* Hero Explainer Card */}
-      <div className="rounded-xl glass-panel border border-status-warning/40 p-8 sm:p-10 relative overflow-hidden bg-gradient-to-br from-obsidian-850/90 to-obsidian-950 cyber-frame">
+      <div className="rounded-none border-2 border-status-warning p-8 sm:p-10 relative overflow-hidden bg-obsidian-850 shadow-neo-warning">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
           <div className="lg:col-span-7 space-y-4">
             <div className="flex items-center gap-2">

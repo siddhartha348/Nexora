@@ -17,6 +17,8 @@ export function SearchModal({ isOpen, onClose }: { isOpen: boolean; onClose: () 
   const navigate = useNavigate();
 
   const searchIndex: SearchItem[] = [
+    { title: 'Advertisement Audit Engine', category: 'Application', path: '/app/audits', description: 'Run multimodal 6-Guardian audits on ads, view consolidated governance report', icon: <Shield className="w-4 h-4 text-glacial" /> },
+    { title: 'Brand Knowledge Hub', category: 'Application', path: '/app/knowledge', description: 'Upload and approve official brand specs, guidelines, and view version diffs', icon: <FileText className="w-4 h-4 text-glacial" /> },
     { title: 'Platform Overview', category: 'Core', path: '/', description: 'AI-powered brand governance overview and system architecture', icon: <Shield className="w-4 h-4 text-glacial" /> },
     { title: 'Six Specialist Agents', category: 'Architecture', path: '/agents', description: 'Fact, Voice, Terminology, Claims, Visual, and Accessibility Guardians', icon: <Compass className="w-4 h-4 text-glacial" /> },
     { title: 'Advertisement Recall Engine', category: 'Differentiator', path: '/recall', description: 'Continuous re-checking of published ads against updated specs', icon: <RotateCcw className="w-4 h-4 text-status-warning" /> },
@@ -72,11 +74,11 @@ export function SearchModal({ isOpen, onClose }: { isOpen: boolean; onClose: () 
   return (
     <div className="fixed inset-0 z-50 flex items-start justify-center pt-20 px-4">
       <div 
-        className="fixed inset-0 bg-obsidian-950/80 backdrop-blur-md transition-opacity animate-in fade-in-0 duration-150"
+        className="fixed inset-0 bg-obsidian-950/80 transition-opacity animate-in fade-in-0 duration-150"
         onClick={onClose}
       />
       <div 
-        className="relative w-full max-w-xl glass-panel shadow-glass border border-slate-border rounded-2xl p-4 z-10 animate-in fade-in-0 zoom-in-95 duration-150"
+        className="relative w-full max-w-xl bg-obsidian-850 shadow-neo-lg border-2 border-obsidian-700 rounded-none p-4 z-10 animate-in fade-in-0 zoom-in-95 duration-150"
         onKeyDown={handleKeyDown}
       >
         <div className="flex items-center gap-3 pb-3 border-b border-slate-border/50">

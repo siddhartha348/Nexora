@@ -11,37 +11,29 @@ export const Card: React.FC<CardProps> = ({
   className,
   variant = 'default',
   glow = false,
-  cyberHeaderLine = true,
+  cyberHeaderLine = false,
   children,
   ...props
 }) => {
   const variantStyles = {
-    default: "bg-obsidian-750/70 border-slate-border text-slate-text",
-    elevated: "bg-obsidian-750/90 border-slate-border shadow-cyber-panel text-slate-text",
-    interactive: "bg-obsidian-750/70 border-slate-border hover:border-cyber-cyan/40 hover:bg-obsidian-700/80 hover:shadow-cyber-cyan cursor-pointer transition-all duration-200",
-    critical: "bg-status-critical-bg border-status-critical-border text-slate-text",
-    warning: "bg-status-warning-bg border-status-warning-border text-slate-text",
-    success: "bg-status-success-bg border-status-success-border text-slate-text",
-    cyber: "bg-cyber-panel/90 border-cyber-border text-slate-text shadow-cyber-panel",
+    default: "bg-obsidian-800 border-2 border-slate-border text-slate-text shadow-neo",
+    elevated: "bg-obsidian-750 border-2 border-slate-border shadow-neo-lg text-slate-text",
+    interactive: "bg-obsidian-800 border-2 border-slate-border hover:border-glacial hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-neo-lg cursor-pointer transition-all duration-150 text-slate-text",
+    critical: "bg-status-critical-bg border-2 border-status-critical text-slate-text shadow-neo-critical",
+    warning: "bg-status-warning-bg border-2 border-status-warning text-slate-text shadow-neo-warning",
+    success: "bg-status-success-bg border-2 border-status-success text-slate-text shadow-neo-success",
+    cyber: "bg-obsidian-850 border-2 border-glacial text-slate-text shadow-neo-accent",
   };
 
   return (
     <div
       className={cn(
-        "rounded-xl border backdrop-blur-md p-5 relative overflow-hidden transition-all duration-200 group",
+        "rounded-md p-5 relative transition-all duration-150",
         variantStyles[variant],
-        glow && "shadow-cyber-cyan border-cyber-cyan/40",
         className
       )}
       {...props}
     >
-      {/* Cybercore Top Hairline Laser Accent */}
-      {cyberHeaderLine && (
-        <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-cyber-cyan/35 to-transparent pointer-events-none group-hover:via-cyber-cyan/70 transition-all duration-300" />
-      )}
-      {/* Corner crosshair ticks for cyber aesthetic */}
-      <span className="absolute top-1.5 left-2 text-[8px] font-mono text-cyber-cyan/20 pointer-events-none select-none">+</span>
-      <span className="absolute top-1.5 right-2 text-[8px] font-mono text-cyber-cyan/20 pointer-events-none select-none">+</span>
       {children}
     </div>
   );
@@ -63,14 +55,14 @@ export const CardHeader: React.FC<CardHeaderProps> = ({
   children,
   ...props
 }) => (
-  <div className={cn("flex items-start justify-between gap-4 mb-4", className)} {...props}>
+  <div className={cn("flex items-start justify-between gap-4 mb-4 pb-3 border-b-2 border-slate-border/40", className)} {...props}>
     <div>
       {telemetry && (
-        <span className="text-[9px] font-mono tracking-widest text-cyber-cyan/80 uppercase block mb-1">
+        <span className="text-[10px] font-mono tracking-widest text-glacial font-bold uppercase block mb-1">
           // {telemetry}
         </span>
       )}
-      {title && <h3 className="text-base font-semibold text-slate-text tracking-tight flex items-center gap-2">{title}</h3>}
+      {title && <h3 className="text-base font-bold text-slate-text tracking-tight flex items-center gap-2">{title}</h3>}
       {description && <p className="text-xs text-slate-muted mt-0.5">{description}</p>}
       {children}
     </div>
@@ -89,10 +81,9 @@ export const CardFooter: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
 }) => (
   <div
     className={cn(
-      "mt-5 pt-4 border-t border-slate-border/50 flex items-center justify-between text-xs text-slate-muted",
+      "mt-5 pt-3 border-t-2 border-slate-border flex items-center justify-between text-xs text-slate-muted font-mono",
       className
     )}
     {...props}
   />
 );
-

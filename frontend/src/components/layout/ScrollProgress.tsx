@@ -20,7 +20,7 @@ export function ScrollProgress() {
       aria-hidden="true"
     >
       <div 
-        className="h-full bg-gradient-to-r from-glacial-500 via-glacial to-glacial-300 shadow-glass-glow transition-all duration-75"
+        className="h-full bg-glacial transition-all duration-75"
         style={{ width: `${scrollProgress}%` }}
       />
     </div>

@@ -109,12 +109,12 @@ export function HowItWorks() {
       {/* Stepper Timeline */}
       <div className="space-y-6 relative max-w-4xl mx-auto">
         {/* Vertical connector line */}
-        <div className="absolute top-8 bottom-8 left-6 sm:left-8 w-0.5 bg-gradient-to-b from-glacial/40 via-glacial/20 to-transparent pointer-events-none hidden sm:block" />
+        <div className="absolute top-8 bottom-8 left-6 sm:left-8 w-0.5 bg-obsidian-700 pointer-events-none hidden sm:block" />
 
         {steps.map((step) => (
           <div key={step.num} className="relative sm:pl-16">
             {/* Step Icon Badge */}
-            <div className="hidden sm:flex absolute left-0 top-5 w-12 h-12 rounded-2xl glass-panel border border-glacial/30 items-center justify-center text-glacial shadow-glass-glow z-10 bg-obsidian-900">
+            <div className="hidden sm:flex absolute left-0 top-5 w-12 h-12 rounded-none border-2 border-obsidian-700 items-center justify-center text-glacial shadow-neo-sm z-10 bg-obsidian-850">
               <span className="font-mono text-xs font-bold">{step.num}</span>
             </div>
 

@@ -9,7 +9,8 @@ import {
   Sun, 
   ArrowRight,
   LogOut,
-  Database
+  Database,
+  FileCheck
 } from 'lucide-react';
 import { Button } from '../ui/Button';
 import { useAuth } from '../../context/AuthContext';
@@ -51,46 +52,44 @@ export function Header({ onOpenSearch }: HeaderProps) {
     { label: 'How It Works', path: '/how-it-works' },
     { label: 'AI Agents', path: '/agents', badge: '6 Guardians' },
     { label: 'Ad Recall', path: '/recall', badge: 'Active' },
-    ...(isAuthenticated ? [{ label: 'Knowledge Hub', path: '/app/knowledge', badge: 'RAG' }] : []),
+    ...(isAuthenticated ? [
+      { label: 'Ad Audit', path: '/app/audits', badge: '6-Agents' },
+      { label: 'Knowledge Hub', path: '/app/knowledge', badge: 'RAG' }
+    ] : []),
     { label: 'Security', path: '/security' },
     { label: 'About', path: '/about' },
     { label: 'FAQ', path: '/faq' },
   ];
 
   return (
-    <header className="sticky top-0 z-40 w-full transition-all duration-200">
-      {/* Cybercore HUD Telemetry Status Ticker */}
-      <div className="w-full bg-cyber-dark/95 border-b border-cyber-border/70 py-1 px-4 sm:px-6 lg:px-8 text-[10px] font-mono text-slate-muted flex items-center justify-between overflow-x-auto select-none backdrop-blur-md">
+    <header className="sticky top-0 z-40 w-full transition-all duration-150">
+      {/* Neo-Brutalist Top Telemetry Bar */}
+      <div className="w-full bg-obsidian-950 border-b-2 border-slate-border py-1 px-4 sm:px-6 lg:px-8 text-[11px] font-mono text-slate-text flex items-center justify-between overflow-x-auto select-none">
         <div className="flex items-center gap-3">
-          <span className="flex items-center gap-1.5 text-cyber-cyan font-semibold">
-            <span className="w-1.5 h-1.5 rounded-full bg-cyber-cyan animate-pulse shadow-cyber-cyan" />
-            SYS_CORE // ARMORED
+          <span className="flex items-center gap-1.5 text-glacial font-bold">
+            <span className="w-2 h-2 rounded-full bg-glacial border border-black" />
+            NEXORA // NEO-BRUTALIST GOVERNANCE
           </span>
-          <span className="hidden sm:inline text-slate-tertiary/60">•</span>
-          <span className="hidden sm:inline text-slate-muted">DEFENSE_PROTOCOL: EVIDENCE_FIRST</span>
-          <span className="hidden md:inline text-slate-tertiary/60">•</span>
-          <span className="hidden md:inline text-slate-muted">GUARDIANS: 6 ACTIVE</span>
-          <span className="hidden lg:inline text-slate-tertiary/60">•</span>
-          <span className="hidden lg:inline text-cyber-amber">AD_RECALL: LIVE</span>
+          <span className="hidden sm:inline text-slate-border font-bold">•</span>
+          <span className="hidden sm:inline text-slate-muted">PROTOCOL: EVIDENCE-FIRST</span>
+          <span className="hidden md:inline text-slate-border font-bold">•</span>
+          <span className="hidden md:inline text-slate-muted">GUARDIANS: 6 CONCURRENT</span>
+          <span className="hidden lg:inline text-slate-border font-bold">•</span>
+          <span className="hidden lg:inline text-status-warning font-bold">RECALL ENGINE: READY</span>
         </div>
         <div className="flex items-center gap-3 shrink-0">
-          <span className="text-cyber-green text-[9px] px-1.5 py-0.5 rounded border border-cyber-green/40 bg-cyber-green/10 uppercase tracking-wider">
-            RAG: CHROMADB
+          <span className="text-obsidian-950 bg-status-success font-bold text-[10px] px-2 py-0.5 rounded border border-black uppercase shadow-neo-sm">
+            RAG: ACTIVE
           </span>
-          <span className="text-glacial text-[9px] hidden sm:inline">
-            LATENCY: 14MS
-          </span>
-          <span className="text-slate-tertiary text-[9px] font-mono">
-            PINNACLE
+          <span className="text-slate-muted text-[10px] font-mono font-bold">
+            TEAM PINNACLE
           </span>
         </div>
       </div>
 
       <div 
-        className={`w-full transition-all duration-200 border-b ${
-          scrolled 
-            ? 'glass-panel border-cyber-border shadow-cyber-panel py-2.5' 
-            : 'bg-obsidian-900/90 backdrop-blur-md border-slate-border/50 py-3'
+        className={`w-full transition-all duration-150 border-b-2 border-slate-border bg-obsidian-900 ${
+          scrolled ? 'shadow-neo py-2' : 'py-3'
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-4">
@@ -101,21 +100,20 @@ export function Header({ onOpenSearch }: HeaderProps) {
             className="flex items-center gap-3 select-none group"
             aria-label="NEXORA Home"
           >
-            <div className="w-9 h-9 rounded-xl bg-cyber-panel border border-cyber-cyan/40 flex items-center justify-center text-cyber-cyan group-hover:shadow-cyber-cyan group-hover:border-cyber-cyan transition-all relative overflow-hidden">
-              <div className="absolute inset-0 bg-cyber-cyan/10 opacity-0 group-hover:opacity-100 transition-opacity" />
-              <ShieldCheck className="w-5 h-5 text-cyber-cyan stroke-[2.2] relative z-10" />
+            <div className="w-9 h-9 rounded bg-glacial border-2 border-black flex items-center justify-center text-obsidian-950 shadow-neo-sm group-hover:translate-x-[-1px] group-hover:translate-y-[-1px] group-hover:shadow-neo transition-all">
+              <ShieldCheck className="w-5 h-5 stroke-[2.5]" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="font-extrabold tracking-wider text-base text-slate-text uppercase group-hover:text-cyber-cyan transition-colors">
+                <span className="font-extrabold tracking-wider text-base text-slate-text uppercase">
                   NEXORA
                 </span>
-                <span className="text-[9px] tracking-wider uppercase px-1.5 py-0.5 rounded bg-cyber-cyan/15 text-cyber-cyan font-mono border border-cyber-cyan/30">
-                  CYBERCORE
+                <span className="text-[9px] tracking-wider uppercase px-1.5 py-0.5 rounded bg-obsidian-800 text-glacial font-mono border-2 border-slate-border font-bold shadow-neo-sm">
+                  NEO-CORE
                 </span>
               </div>
               <p className="text-[10px] text-slate-muted tracking-tight font-mono">
-                AI Brand Governance
+                Brand Governance
               </p>
             </div>
           </Link>
@@ -128,16 +126,22 @@ export function Header({ onOpenSearch }: HeaderProps) {
               <Link
                 key={link.path}
                 to={link.path}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-150 ${
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded text-xs transition-all duration-150 ${
                   isActive
-                    ? 'text-glacial bg-glacial/15 border border-glacial/30 font-semibold'
-                    : 'text-slate-muted hover:text-slate-text hover:bg-obsidian-700/50'
+                    ? 'text-obsidian-950 bg-glacial border-2 border-black font-bold shadow-neo-sm'
+                    : 'text-slate-text hover:bg-obsidian-800 border-2 border-transparent font-medium'
                 }`}
               >
                 <span>{link.label}</span>
                 {link.badge && (
-                  <span className={`text-[9px] font-mono px-1 py-0.2 rounded ${
-                    link.badge === 'Active' ? 'bg-status-warning/20 text-status-warning border border-status-warning/30' : 'bg-glacial/20 text-glacial'
+                  <span className={`text-[10px] font-mono px-1 py-0.2 rounded font-bold border ${
+                    isActive 
+                      ? 'bg-obsidian-950 text-glacial border-black' 
+                      : link.badge === 'Active' 
+                      ? 'bg-status-warning text-obsidian-950 border-black' 
+                      : link.badge === '6-Agents'
+                      ? 'bg-status-success text-obsidian-950 border-black'
+                      : 'bg-obsidian-800 text-glacial border-slate-border'
                   }`}>
                     {link.badge}
                   </span>
@@ -152,12 +156,12 @@ export function Header({ onOpenSearch }: HeaderProps) {
           {/* Quick Search Button */}
           <button
             onClick={onOpenSearch}
-            className="flex items-center gap-2 px-2.5 py-1.5 rounded-lg bg-obsidian-800/80 border border-slate-border text-xs text-slate-muted hover:text-slate-text hover:border-glacial/40 transition-colors"
+            className="flex items-center gap-2 px-2.5 py-1.5 rounded bg-obsidian-800 border-2 border-slate-border text-xs text-slate-text font-bold shadow-neo-sm hover:border-glacial transition-all"
             aria-label="Open site search"
           >
             <Search className="w-3.5 h-3.5 text-glacial" />
             <span className="hidden sm:inline">Search</span>
-            <kbd className="hidden sm:inline text-[10px] font-mono px-1.5 py-0.2 rounded bg-obsidian-700 text-slate-tertiary">
+            <kbd className="hidden sm:inline text-[10px] font-mono px-1.5 py-0.2 rounded bg-obsidian-900 border border-slate-border text-slate-muted">
               ⌘K
             </kbd>
           </button>
@@ -165,7 +169,7 @@ export function Header({ onOpenSearch }: HeaderProps) {
           {/* Theme Display Toggle */}
           <button
             onClick={toggleTheme}
-            className="p-2 rounded-lg text-slate-muted hover:text-slate-text hover:bg-obsidian-700/60 transition-colors"
+            className="p-1.5 rounded bg-obsidian-800 border-2 border-slate-border text-slate-text shadow-neo-sm hover:border-glacial transition-colors"
             title={`Active: ${themeMode === 'pure-obsidian' ? 'Obsidian Black (#050707)' : 'Deep Slate (#0A1012)'}`}
             aria-label="Toggle theme contrast"
           >
@@ -179,30 +183,31 @@ export function Header({ onOpenSearch }: HeaderProps) {
           {/* Auth State Actions */}
           <div className="hidden sm:flex items-center gap-2">
             {isAuthenticated && user ? (
-              <div className="flex items-center gap-2.5 pl-2 border-l border-slate-border/60">
+              <div className="flex items-center gap-2 pl-2 border-l-2 border-slate-border">
+                <Link
+                  to="/app/audits"
+                  className="flex items-center gap-1.5 px-2.5 py-1.5 rounded bg-status-success text-obsidian-950 font-bold border-2 border-black text-xs shadow-neo-sm hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-neo transition-all"
+                >
+                  <FileCheck className="w-3.5 h-3.5" />
+                  <span className="hidden md:inline">Ad Audit</span>
+                </Link>
                 <Link
                   to="/app/knowledge"
-                  className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-glacial/10 border border-glacial/30 text-glacial hover:bg-glacial/20 text-xs font-medium transition-all"
+                  className="flex items-center gap-1.5 px-2.5 py-1.5 rounded bg-glacial text-obsidian-950 font-bold border-2 border-black text-xs shadow-neo-sm hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-neo transition-all"
                 >
                   <Database className="w-3.5 h-3.5" />
                   <span className="hidden md:inline">Knowledge Hub</span>
                 </Link>
                 <Link to="/app/settings/organization" className="flex items-center gap-2 group">
-                  <div className="w-8 h-8 rounded-lg bg-obsidian-700 border border-slate-border flex items-center justify-center text-glacial text-xs font-semibold group-hover:border-glacial/40 transition-colors">
+                  <div className="w-8 h-8 rounded bg-obsidian-800 border-2 border-slate-border flex items-center justify-center text-glacial text-xs font-bold shadow-neo-sm group-hover:border-glacial transition-colors">
                     {user.full_name.substring(0, 2).toUpperCase()}
-                  </div>
-                  <div className="text-left select-none hidden md:block">
-                    <p className="text-xs font-semibold text-slate-text leading-tight group-hover:text-glacial transition-colors">
-                      {user.full_name.split(' ')[0]}
-                    </p>
-                    <p className="text-[10px] text-slate-muted font-mono">{user.role}</p>
                   </div>
                 </Link>
                 <button
                   onClick={() => logout()}
                   title="Sign Out"
                   aria-label="Sign Out"
-                  className="p-2 rounded-lg text-slate-muted hover:text-status-critical hover:bg-obsidian-700/60 transition-colors"
+                  className="p-1.5 rounded bg-obsidian-800 border-2 border-slate-border text-slate-muted hover:text-status-critical hover:border-status-critical shadow-neo-sm transition-colors"
                 >
                   <LogOut className="w-4 h-4" />
                 </button>
@@ -210,7 +215,7 @@ export function Header({ onOpenSearch }: HeaderProps) {
             ) : (
               <div className="flex items-center gap-2">
                 <Link to="/login">
-                  <Button variant="ghost" size="sm">
+                  <Button variant="outline" size="sm">
                     Sign In
                   </Button>
                 </Link>
@@ -237,7 +242,7 @@ export function Header({ onOpenSearch }: HeaderProps) {
 
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
-        <div className="lg:hidden fixed inset-0 z-50 bg-obsidian-950/95 backdrop-blur-2xl animate-in fade-in-0 duration-200">
+        <div className="lg:hidden fixed inset-0 z-50 bg-obsidian-950 animate-in fade-in-0 duration-200">
           <div className="p-5 flex flex-col h-full">
             <div className="flex items-center justify-between pb-4 border-b border-slate-border">
               <div className="flex items-center gap-2.5">

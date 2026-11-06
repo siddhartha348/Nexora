@@ -80,7 +80,7 @@ export const StatusIndicator: React.FC<StatusIndicatorProps> = ({
   return (
     <div
       className={cn(
-        "inline-flex items-center rounded-full border backdrop-blur-sm select-none",
+        "inline-flex items-center rounded-none border-2 select-none shadow-neo-sm font-mono font-bold tracking-wider",
         config.bg,
         config.border,
         config.color,
