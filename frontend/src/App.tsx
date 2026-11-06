@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { ToastProvider } from './components/ui/Toast';
 import { AuthProvider } from './context/AuthContext';
 import { ProtectedRoute } from './components/auth/ProtectedRoute';
+import { AdminGuard } from './components/auth/RoleGuard';
 import { Header } from './components/layout/Header';
 import { Footer } from './components/layout/Footer';
 import { ScrollProgress } from './components/layout/ScrollProgress';
@@ -24,6 +25,7 @@ import { Privacy } from './pages/Privacy';
 import { Terms } from './pages/Terms';
 import { CookiePolicy } from './pages/CookiePolicy';
 import { RefundPolicy } from './pages/RefundPolicy';
+import { AccessibilityStatement } from './pages/AccessibilityStatement';
 import { NotFound } from './pages/NotFound';
 
 // Auth & Org Pages
@@ -39,6 +41,7 @@ import { AdRegistry } from './pages/app/AdRegistry';
 import { RecallWorkspace } from './pages/app/RecallWorkspace';
 import { BrandMemory } from './pages/app/BrandMemory';
 import { Dashboard } from './pages/app/Dashboard';
+import { AuditLog } from './pages/app/AuditLog';
 
 function MainApp() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -46,7 +49,7 @@ function MainApp() {
   // Global keyboard shortcut for search (Ctrl+K or Cmd+K)
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+      if (((e.metaKey || e.ctrlKey) && e.key === 'k') || (e.key === '/' && document.activeElement?.tagName !== 'INPUT' && document.activeElement?.tagName !== 'TEXTAREA')) {
         e.preventDefault();
         setIsSearchOpen((prev) => !prev);
       }
@@ -57,6 +60,14 @@ function MainApp() {
 
   return (
     <div className="min-h-dvh bg-obsidian text-slate-text flex flex-col selection:bg-glacial selection:text-obsidian-950 relative overflow-x-hidden max-w-[100vw]">
+      {/* Skip to Content for Screen Readers & Keyboard Navigation */}
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:px-4 focus:py-2 focus:bg-primary focus:text-white focus:font-bold focus:rounded-md focus:border-2 focus:border-ink shadow-neo"
+      >
+        Skip to main content
+      </a>
+
       {/* Top Reading Progress Bar */}
       <ScrollProgress />
 
@@ -64,7 +75,7 @@ function MainApp() {
       <Header onOpenSearch={() => setIsSearchOpen(true)} />
 
       {/* Dynamic Content Routes */}
-      <main className="flex-1 relative z-0 page-transition">
+      <main id="main-content" tabIndex={-1} className="flex-1 relative z-0 page-transition outline-none">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
@@ -79,6 +90,7 @@ function MainApp() {
           <Route path="/terms" element={<Terms />} />
           <Route path="/cookie-policy" element={<CookiePolicy />} />
           <Route path="/refund-policy" element={<RefundPolicy />} />
+          <Route path="/accessibility" element={<AccessibilityStatement />} />
 
           {/* Authentication Routes */}
           <Route path="/login" element={<Login />} />
@@ -141,6 +153,16 @@ function MainApp() {
             element={
               <ProtectedRoute>
                 <OrganizationSettings />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/app/admin/audit-logs"
+            element={
+              <ProtectedRoute>
+                <AdminGuard>
+                  <AuditLog />
+                </AdminGuard>
               </ProtectedRoute>
             }
           />

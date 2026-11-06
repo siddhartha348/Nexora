@@ -6,22 +6,31 @@ import {
   Edit3, 
   XCircle, 
   RefreshCw,
-  Info
+  Info,
+  Award
 } from 'lucide-react';
 import { Button } from '../../components/ui/Button';
 import { Input } from '../../components/ui/Input';
 import { Badge } from '../../components/ui/Badge';
+import { ConfirmationModal } from '../../components/ui/ConfirmationModal';
 import { BrandMemoryApi } from '../../services/api';
 import { useToast } from '../../components/ui/Toast';
+import { useAuth } from '../../context/AuthContext';
 import { SEO } from '../../components/common/SEO';
 
 export function BrandMemory() {
   const { toast } = useToast();
+  const { hasRole } = useAuth();
+  const isAdmin = hasRole(['ADMIN']);
   const [entries, setEntries] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [selectedDecision, setSelectedDecision] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
+  
+  // Promotion modal
+  const [promoteEntry, setPromoteEntry] = useState<any | null>(null);
+  const [isPromoteModalOpen, setIsPromoteModalOpen] = useState(false);
 
   const fetchMemory = async () => {
     try {
@@ -45,6 +54,17 @@ export function BrandMemory() {
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     fetchMemory();
+  };
+
+  const handlePromoteException = async () => {
+    if (!promoteEntry) return;
+    try {
+      await BrandMemoryApi.promoteException(promoteEntry.id, 'Promoted to official policy exception by Brand Administrator');
+      toast.success('Precedent Promoted', 'Official exception approved and logged with audit trail versioning.');
+      fetchMemory();
+    } catch (err: any) {
+      toast.critical('Promotion Failed', err.message);
+    }
   };
 
   const filteredEntries = entries.filter((entry) => {
@@ -250,13 +270,51 @@ export function BrandMemory() {
                 )}
 
                 <div className="pt-2 flex items-center justify-between text-[10px] text-slate-tertiary border-t border-slate-border/40">
-                  <span>Reviewed by: <strong className="text-slate-text">{item.created_by_name || 'Review Steward'}</strong></span>
-                  <span className="text-glacial">Non-Authoritative Advisory Record</span>
+                  <div className="flex items-center gap-2">
+                    <span>Reviewed by: <strong className="text-slate-text">{item.created_by_name || 'Review Steward'}</strong></span>
+                    {item.is_official_policy && (
+                      <span className="px-1.5 py-0.5 rounded bg-status-success/20 text-status-success font-bold flex items-center gap-1 border border-status-success/40">
+                        <Award className="w-3 h-3" />
+                        Official Policy Exception ({item.policy_version || 'Approved'})
+                      </span>
+                    )}
+                  </div>
+                  
+                  <div className="flex items-center gap-2">
+                    {isAdmin && !item.is_official_policy && (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setPromoteEntry(item);
+                          setIsPromoteModalOpen(true);
+                        }}
+                        className="px-2 py-1 rounded bg-glacial/15 hover:bg-glacial/30 text-glacial border border-glacial/40 font-bold transition-colors"
+                      >
+                        Promote to Official Exception
+                      </button>
+                    )}
+                    <span className="text-glacial">Non-Authoritative Advisory Record</span>
+                  </div>
                 </div>
               </div>
             ))
           )}
         </div>
+
+        {/* Promotion Confirmation Modal */}
+        <ConfirmationModal
+          isOpen={isPromoteModalOpen}
+          onClose={() => {
+            setIsPromoteModalOpen(false);
+            setPromoteEntry(null);
+          }}
+          onConfirm={handlePromoteException}
+          title="Promote Precedent to Official Exception"
+          description={`Are you sure you want to promote the reviewer precedent "${promoteEntry?.original_text}" to an official approved brand policy exception? This action is tracked in the audit log and versioned.`}
+          confirmLabel="Promote to Exception"
+          cancelLabel="Cancel"
+          variant="primary"
+        />
 
       </div>
     </>

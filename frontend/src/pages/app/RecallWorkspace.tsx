@@ -32,6 +32,7 @@ export function RecallWorkspace() {
   const [actionChoice, setActionChoice] = useState<'RECHECK_AD' | 'MARK_REMEDIATED' | 'DISMISS'>('RECHECK_AD');
   const [actionNotes, setActionNotes] = useState('');
   const [resolving, setResolving] = useState(false);
+  const [simulating, setSimulating] = useState(false);
 
   const fetchAlerts = async () => {
     try {
@@ -63,6 +64,22 @@ export function RecallWorkspace() {
       toast.critical('Sweep Failed', err.message);
     } finally {
       setEvaluating(false);
+    }
+  };
+
+  const handleSimulateSpecChange = async () => {
+    try {
+      setSimulating(true);
+      const res = await RecallApi.simulateSpecChange();
+      toast.success(
+        'Demo Spec Change Triggered',
+        res.message || 'Aurora X2 benchmark changed to 5 days. Recall Engine triggered.'
+      );
+      fetchAlerts();
+    } catch (err: any) {
+      toast.critical('Simulation Failed', err.message);
+    } finally {
+      setSimulating(false);
     }
   };
 
@@ -110,22 +127,46 @@ export function RecallWorkspace() {
 
           <div className="flex items-center gap-3">
             {isApproverOrAdmin && (
-              <Button
-                variant="primary"
-                size="sm"
-                isLoading={evaluating}
-                onClick={handleRunEvaluationSweep}
-                className="gap-2 shadow-neo-sm"
-              >
-                <Sparkles className="w-4 h-4" />
-                Trigger Knowledge Recall Sweep
-              </Button>
+              <>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  isLoading={simulating}
+                  onClick={handleSimulateSpecChange}
+                  className="gap-2 border-accent-yellow text-ink bg-accent-yellow/20 hover:bg-accent-yellow/40 shadow-neo-sm"
+                  title="Simulates an engineering specification update (Aurora X2 battery benchmark changed to 5 days) to demonstrate the automated recall loop"
+                >
+                  <Sparkles className="w-4 h-4 text-ink" />
+                  Simulate Spec Change
+                </Button>
+                <Button
+                  variant="primary"
+                  size="sm"
+                  isLoading={evaluating}
+                  onClick={handleRunEvaluationSweep}
+                  className="gap-2 shadow-neo-sm"
+                >
+                  <Sparkles className="w-4 h-4" />
+                  Trigger Recall Sweep
+                </Button>
+              </>
             )}
             <Button variant="outline" size="sm" onClick={fetchAlerts} className="gap-2">
               <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} />
               Refresh
             </Button>
           </div>
+        </div>
+
+        {/* Honest Limits Notice Banner */}
+        <div className="p-4 rounded-xl bg-paper border-3 border-ink shadow-neo text-ink text-xs font-mono space-y-1">
+          <div className="font-bold uppercase tracking-tight flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-primary" />
+            Honest Monitoring Scope & Coverage Limits:
+          </div>
+          <p className="text-slate-muted leading-relaxed text-[11px]">
+            NEXORA's Recall Engine monitors registered creatives ingested into your Brand Registry and public URLs where crawling is permitted. Private social media feeds, gated walled gardens, encrypted messaging, and inaccessible intranets are not scraped or monitored.
+          </p>
         </div>
 
         {/* Telemetry Metrics Cards */}

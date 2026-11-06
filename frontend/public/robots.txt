@@ -1,0 +1,19 @@
+# NEXORA Brand Governance — Robots Exclusion Policy
+User-agent: *
+Disallow: /app/
+Disallow: /api/
+Disallow: /admin/
+Allow: /
+Allow: /about
+Allow: /features
+Allow: /how-it-works
+Allow: /agents
+Allow: /recall
+Allow: /security
+Allow: /faq
+Allow: /privacy
+Allow: /terms
+
+# Crawl-delay
+Crawl-delay: 10
+

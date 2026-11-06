@@ -19,8 +19,11 @@ class AgentType(str, Enum):
 class JobStatus(str, Enum):
     PENDING = "PENDING"
     EXTRACTING = "EXTRACTING"
-    AUDITING = "AUDITING"
+    REVIEWING = "REVIEWING"
+    CONSOLIDATING = "CONSOLIDATING"
+    AUDITING = "AUDITING" # Alias for backward compatibility
     COMPLETED = "COMPLETED"
+    READY = "READY"       # Alias for COMPLETED
     FAILED = "FAILED"
 
 class EvidenceReference(BaseModel):

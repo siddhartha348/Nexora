@@ -1,4 +1,5 @@
 import os
+import re
 import uuid
 import shutil
 from datetime import datetime, timezone
@@ -70,6 +71,17 @@ class KnowledgeService:
                         detail="Uploaded file exceeds the maximum 25MB limit."
                     )
                 buffer.write(chunk)
+
+        # Check magic bytes for security
+        with open(file_path, "rb") as check_f:
+            header = check_f.read(64)
+            if header.startswith(b"MZ") or header.startswith(b"\x7fELF") or header.startswith(b"<?php") or header.startswith(b"<script"):
+                check_f.close()
+                os.remove(file_path)
+                raise HTTPException(
+                    status_code=status.HTTP_400_BAD_REQUEST,
+                    detail="Security rejection: File contents match forbidden executable or script formats."
+                )
 
         # Process document through extraction engine
         try:
@@ -540,58 +552,79 @@ class KnowledgeService:
         limit: int = 5
     ) -> List[KnowledgeSearchResult]:
         """
-        RAG RETRIEVAL GATE:
-        Queries ChromaDB for approved chunks. If vector DB has no matches or offline,
-        performs hybrid exact fact matching in MongoDB knowledge_facts.
+        RAG RETRIEVAL GATE (Exact structured lookup first, semantic search second):
+        1. Exact structured fact lookup in MongoDB knowledge_facts (is_approved=True).
+        2. Semantic similarity search across approved vector chunks in ChromaDB.
+        3. Excludes all unapproved/quarantined data from evidence retrieval.
         """
+        results: List[KnowledgeSearchResult] = []
+        seen_ids = set()
         cat_str = category.value if category else None
-        vector_results = chroma_manager.query_approved_knowledge(
-            org_id=org_id,
-            query_text=query,
-            n_results=limit,
-            category=cat_str
-        )
-
-        results = []
-        for r in vector_results:
-            results.append(KnowledgeSearchResult(
-                chunk_id=r["chunk_id"],
-                document_id=r["document_id"],
-                document_title=r["document_title"],
-                version_tag=r["version_tag"],
-                page_number=r["page_number"],
-                category=r["category"],
-                content=r["content"],
-                score=r["score"],
-                is_approved=True
-            ))
-
-        # Hybrid exact fact matching in approved MongoDB knowledge_facts
         db = db_manager.get_db()
-        exact_filter = {"organization_id": org_id, "is_approved": True}
+
+        # Step 1: Exact structured fact lookup in approved MongoDB facts first
+        exact_filter: Dict[str, Any] = {"organization_id": org_id, "is_approved": True}
         if cat_str:
             exact_filter["category"] = cat_str
-        
-        # Query words
-        query_words = [w.lower() for w in query.split() if len(w) > 3]
+
+        query_clean = query.strip()
+        query_words = [w.lower() for w in re.findall(r"\w+", query_clean) if len(w) > 2]
+
         if query_words:
             facts_cursor = db["knowledge_facts"].find(exact_filter)
-            facts = await facts_cursor.to_list(100)
+            facts = await facts_cursor.to_list(200)
             for f in facts:
-                # If fact subject, predicate or value matches query words
-                fact_text = f"{f.get('subject', '')} {f.get('predicate', '')} {f.get('object_value', '')}".lower()
-                if any(qw in fact_text for qw in query_words):
+                subj = str(f.get("subject", "")).lower()
+                pred = str(f.get("predicate", "")).lower()
+                obj = str(f.get("object_value", "")).lower()
+                quote = str(f.get("verbatim_quote", "")).lower()
+                combined = f"{subj} {pred} {obj} {quote}"
+
+                # Calculate structured keyword match count
+                match_count = sum(1 for w in query_words if w in combined)
+                if match_count > 0:
+                    fact_id = str(f.get("_id", f.get("id", "")))
+                    score = min(1.0, 0.90 + (0.02 * match_count))
                     results.append(KnowledgeSearchResult(
-                        chunk_id=f["_id"],
-                        document_id=f["document_id"],
-                        document_title="Verified Fact Registry",
+                        chunk_id=fact_id,
+                        document_id=f.get("document_id", "doc-fact"),
+                        document_title=f.get("document_title", "Verified Brand Knowledge"),
                         version_tag=f.get("version_tag", "v1.0"),
-                        page_number=f["page_number"],
-                        category=f["category"],
-                        content=f"{f['subject']} - {f['predicate']}: {f['object_value']} (Source quote: {f['verbatim_quote']})",
-                        score=0.99,
+                        page_number=f.get("page_number", 1),
+                        category=f.get("category", "SPECIFICATIONS"),
+                        content=f"[{f.get('subject', 'Fact')}] {f.get('predicate', 'spec')}: {f.get('object_value', '')} (Verbatim Evidence: {f.get('verbatim_quote', '')})",
+                        score=score,
                         is_approved=True
                     ))
+                    seen_ids.add(fact_id)
+
+        # Sort exact structured matches by confidence score descending
+        results.sort(key=lambda x: x.score, reverse=True)
+
+        # Step 2: Semantic vector retrieval second from ChromaDB
+        remaining_slots = max(0, limit * 2 - len(results))
+        if remaining_slots > 0:
+            vector_results = chroma_manager.query_approved_knowledge(
+                org_id=org_id,
+                query_text=query,
+                n_results=remaining_slots,
+                category=cat_str
+            )
+
+            for r in vector_results:
+                if r["chunk_id"] not in seen_ids:
+                    results.append(KnowledgeSearchResult(
+                        chunk_id=r["chunk_id"],
+                        document_id=r["document_id"],
+                        document_title=r["document_title"],
+                        version_tag=r["version_tag"],
+                        page_number=r["page_number"],
+                        category=r["category"],
+                        content=r["content"],
+                        score=float(r.get("score", 0.75)),
+                        is_approved=True
+                    ))
+                    seen_ids.add(r["chunk_id"])
 
         return results[:limit]
 

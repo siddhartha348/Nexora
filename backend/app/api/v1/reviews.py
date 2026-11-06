@@ -1,7 +1,8 @@
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 from typing import List, Optional, Dict, Any
+from pydantic import BaseModel
 from app.models.auth import UserProfileResponse, UserRole
-from app.api.deps import get_current_user
+from app.api.deps import get_current_user, require_roles
 from app.services.review_service import ReviewService
 from app.models.review import (
     ResolveFindingRequest,
@@ -104,5 +105,24 @@ async def query_brand_memory_precedents(
         category=category,
         search_query=search,
         limit=limit
+    )
+
+class PromotePrecedentRequest(BaseModel):
+    notes: Optional[str] = None
+
+@router.post("/brand-memory/{entry_id}/promote-exception")
+async def promote_brand_memory_precedent(
+    entry_id: str,
+    req: PromotePrecedentRequest = PromotePrecedentRequest(),
+    current_user: UserProfileResponse = Depends(require_roles([UserRole.ADMIN]))
+):
+    """
+    ADMIN GATE: Promote a Brand Memory review precedent to an official approved exception.
+    """
+    return await ReviewService.promote_precedent_to_exception(
+        entry_id=entry_id,
+        organization_id=current_user.organization_id,
+        user=current_user,
+        notes=req.notes
     )
 

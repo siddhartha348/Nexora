@@ -8,7 +8,8 @@ import {
   RefreshCw, 
   Eye, 
   Download, 
-  Clock, 
+  Printer,
+  ShieldCheck,
   Palette, 
   Type, 
   Scale, 
@@ -26,8 +27,11 @@ import { apiRequest } from '../../services/api';
 import { useToast } from '../../components/ui/Toast';
 import { SEO } from '../../components/common/SEO';
 
+import { Stepper } from '../../components/ui/Stepper';
+import { ProgressBar } from '../../components/ui/ProgressBar';
+
 export type AdvertisementSeverity = 'RED' | 'YELLOW' | 'GREEN';
-export type JobStatus = 'PENDING' | 'EXTRACTING' | 'AUDITING' | 'COMPLETED' | 'FAILED';
+export type JobStatus = 'PENDING' | 'EXTRACTING' | 'REVIEWING' | 'CONSOLIDATING' | 'AUDITING' | 'COMPLETED' | 'READY' | 'FAILED';
 
 export interface EvidenceReference {
   source_document: string;
@@ -99,6 +103,7 @@ export function AdAudit() {
   const [url, setUrl] = useState('');
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isDragOver, setIsDragOver] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Active Job Polling
@@ -474,14 +479,45 @@ export function AdAudit() {
                 Select an audited creative on the left to inspect its multi-agent governance report.
               </div>
             ) : selectedJob.status !== 'COMPLETED' || !selectedJob.report ? (
-              <div className="bg-obsidian-850 border-2 border-obsidian-700 p-12 text-center space-y-3 font-mono">
-                <Clock className="w-8 h-8 text-glacial mx-auto animate-spin" />
-                <h3 className="text-sm font-bold text-slate-text">
-                  Audit In Progress ({selectedJob.status})
-                </h3>
-                <p className="text-xs text-slate-muted">
-                  The Six Specialist Guardians are processing this creative. Findings will appear automatically upon completion.
-                </p>
+              <div className="bg-obsidian-850 border-3 border-ink p-8 text-center space-y-6 shadow-neo">
+                <div className="max-w-md mx-auto">
+                  <h3 className="text-base font-black text-ink uppercase tracking-tight mb-2">
+                    Autonomous Multi-Agent Audit in Progress
+                  </h3>
+                  <p className="text-xs text-slate-muted mb-6">
+                    Auditing advertisement creative against approved organizational knowledge with live multi-stage pipeline:
+                  </p>
+                  
+                  {/* Stepper tracking Extracting -> Reviewing -> Consolidating -> Ready */}
+                  <Stepper
+                    currentStep={
+                      selectedJob.status === 'EXTRACTING'
+                        ? 0
+                        : selectedJob.status === 'REVIEWING' || selectedJob.status === 'AUDITING'
+                        ? 1
+                        : selectedJob.status === 'CONSOLIDATING'
+                        ? 2
+                        : selectedJob.status === 'COMPLETED' || selectedJob.status === 'READY'
+                        ? 3
+                        : 0
+                    }
+                    steps={[
+                      { id: 'extract', label: 'Extracting', description: 'OCR & Vision' },
+                      { id: 'review', label: 'Reviewing', description: '6 Guardians' },
+                      { id: 'consolidate', label: 'Consolidating', description: 'Risk Manager' },
+                      { id: 'ready', label: 'Ready', description: 'Evidence Report' }
+                    ]}
+                  />
+
+                  <div className="mt-6 pt-4 border-t-2 border-slate-border">
+                    <ProgressBar
+                      value={selectedJob.progress || 25}
+                      label="Pipeline Progress"
+                      showPercentage={true}
+                      variant="primary"
+                    />
+                  </div>
+                </div>
               </div>
             ) : (
               /* COMPLETED REPORT VIEW */
@@ -512,6 +548,15 @@ export function AdAudit() {
                     </div>
 
                     <div className="flex items-center gap-2">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => window.print()}
+                        className="gap-1.5"
+                      >
+                        <Printer className="w-3.5 h-3.5" />
+                        Print / Export PDF
+                      </Button>
                       <Button
                         variant="outline"
                         size="sm"
@@ -560,6 +605,19 @@ export function AdAudit() {
                       <div className="text-[10px] font-mono text-slate-muted mt-1">
                         {selectedJob.report.red_count} Critical • {selectedJob.report.yellow_count} Warning • {selectedJob.report.green_count} Verified
                       </div>
+                    </div>
+                  </div>
+
+                  {/* Mandatory Human Responsibility Disclaimer Banner */}
+                  <div className="mt-4 pt-3 border-t-2 border-obsidian-700/80 flex items-start gap-2.5 bg-paper p-3 border-2 border-ink text-ink text-xs font-mono shadow-neo-sm">
+                    <ShieldCheck className="w-4 h-4 text-primary shrink-0 mt-0.5" />
+                    <div>
+                      <span className="font-bold uppercase tracking-tight block">
+                        HONEST POSITIONING & HUMAN RESPONSIBILITY NOTICE:
+                      </span>
+                      <p className="text-[11px] text-slate-muted mt-0.5 leading-relaxed">
+                        NEXORA supports human reviewers. It does not guarantee legal compliance or perfect factual accuracy. GREEN means "no critical issues detected by the automated checks performed", never "safe" or "compliant". Humans make all final approval decisions.
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -805,15 +863,57 @@ export function AdAudit() {
                   Select Creative Asset (PDF, DOCX, PPTX, PNG, JPG) *
                 </label>
                 <div 
+                  role="button"
+                  tabIndex={0}
+                  aria-label="Upload advertisement creative file. Drag and drop or press Enter or Space to browse files"
                   onClick={() => fileInputRef.current?.click()}
-                  className="border-2 border-dashed border-obsidian-700 p-6 text-center cursor-pointer bg-obsidian-900 hover:border-glacial transition-colors"
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault();
+                      fileInputRef.current?.click();
+                    }
+                  }}
+                  onDragOver={(e) => {
+                    e.preventDefault();
+                    setIsDragOver(true);
+                  }}
+                  onDragLeave={(e) => {
+                    e.preventDefault();
+                    setIsDragOver(false);
+                  }}
+                  onDrop={(e) => {
+                    e.preventDefault();
+                    setIsDragOver(false);
+                    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+                      const dropped = e.dataTransfer.files[0];
+                      const validExts = ['pdf', 'docx', 'pptx', 'png', 'jpg', 'jpeg'];
+                      const ext = dropped.name.split('.').pop()?.toLowerCase();
+                      if (!ext || !validExts.includes(ext)) {
+                        toast.critical('Unsupported Format', 'Please upload a PDF, DOCX, PPTX, PNG, or JPG file.');
+                        return;
+                      }
+                      if (dropped.size > 25 * 1024 * 1024) {
+                        toast.critical('File Oversized', 'Maximum permissible file size is 25MB.');
+                        return;
+                      }
+                      setSelectedFile(dropped);
+                      if (!title) {
+                        setTitle(dropped.name.replace(/\.[^/.]+$/, ''));
+                      }
+                    }
+                  }}
+                  className={`border-3 border-dashed p-6 text-center cursor-pointer transition-colors outline-none focus:ring-3 focus:ring-primary ${
+                    isDragOver 
+                      ? 'border-primary bg-primary/10' 
+                      : 'border-ink bg-paper hover:border-primary shadow-neo-sm'
+                  }`}
                 >
-                  <Upload className="w-8 h-8 text-glacial mx-auto mb-2" />
-                  <div className="text-xs font-mono text-slate-text font-bold">
-                    {selectedFile ? selectedFile.name : 'Click to browse or drop file here'}
+                  <Upload className="w-8 h-8 text-primary mx-auto mb-2" />
+                  <div className="text-xs font-mono text-ink font-bold">
+                    {selectedFile ? selectedFile.name : 'Drag & drop creative asset, or press Enter to browse'}
                   </div>
                   <div className="text-[10px] font-mono text-slate-muted mt-1">
-                    Max size: 25MB • Multimodal OCR & Vision enabled
+                    Max size: 25MB • Multimodal OCR, layout regions, & color extraction enabled
                   </div>
                 </div>
                 <input
@@ -823,9 +923,14 @@ export function AdAudit() {
                   accept=".pdf,.docx,.pptx,.png,.jpg,.jpeg"
                   onChange={(e) => {
                     if (e.target.files && e.target.files[0]) {
-                      setSelectedFile(e.target.files[0]);
+                      const f = e.target.files[0];
+                      if (f.size > 25 * 1024 * 1024) {
+                        toast.critical('File Oversized', 'Maximum permissible file size is 25MB.');
+                        return;
+                      }
+                      setSelectedFile(f);
                       if (!title) {
-                        setTitle(e.target.files[0].name.replace(/\.[^/.]+$/, ''));
+                        setTitle(f.name.replace(/\.[^/.]+$/, ''));
                       }
                     }
                   }}

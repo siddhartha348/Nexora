@@ -104,17 +104,26 @@ class AdvertisementService:
 
             ad_text = extracted.get("raw_text", "")
 
-            # 3. Update status to AUDITING
+            # 3. Update status to REVIEWING
             await db["advertisement_jobs"].update_one(
                 {"id": job_id},
                 {"$set": {
-                    "status": JobStatus.AUDITING.value, 
+                    "status": JobStatus.REVIEWING.value, 
                     "progress": 55,
                     "extracted_data": extracted
                 }}
             )
 
-            # 4. Execute 6 Guardians + Risk Arbiter
+            # 4. Update status to CONSOLIDATING
+            await db["advertisement_jobs"].update_one(
+                {"id": job_id},
+                {"$set": {
+                    "status": JobStatus.CONSOLIDATING.value,
+                    "progress": 80
+                }}
+            )
+
+            # 5. Execute Guardians + Risk Arbiter
             report = await RiskArbiter.evaluate_advertisement(
                 organization_id=organization_id,
                 advertisement_id=job_id,
@@ -122,7 +131,7 @@ class AdvertisementService:
                 extracted_data=extracted
             )
 
-            # 5. Store Completed Report and update Job
+            # 6. Store Completed Report and update Job to READY / COMPLETED
             now = datetime.now(timezone.utc).isoformat()
             report_dict = report.model_dump()
             await db["advertisement_reports"].insert_one(report_dict)

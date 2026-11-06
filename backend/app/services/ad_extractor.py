@@ -9,6 +9,7 @@ import numpy as np
 import cv2
 
 from app.services.document_parser import DocumentParser
+from app.core.ssrf import validate_url_safe_for_ssrf, SSRFSecurityError
 
 class AdExtractor:
     """
@@ -54,18 +55,26 @@ class AdExtractor:
     @classmethod
     async def extract_from_url(cls, url: str) -> Dict[str, Any]:
         """
-        Fetch public advertisement URL, extract DOM copy, metadata, and images.
+        Fetch public advertisement URL with strict SSRF defenses,
+        extract DOM copy, metadata, and candidate claims.
         """
+        # Enforce SSRF validation: only http/https, DNS resolution, and block private/loopback IP ranges
+        validate_url_safe_for_ssrf(url)
+
         headers = {
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 NEXORA-Audit/1.0"
         }
         
-        async with httpx.AsyncClient(timeout=15.0, follow_redirects=True) as client:
+        # Max 2 redirects, 5 second timeout, max 5MB response payload
+        async with httpx.AsyncClient(timeout=5.0, max_redirects=2) as client:
             try:
                 response = await client.get(url, headers=headers)
                 response.raise_for_status()
+                # Enforce 5MB payload limit
+                if len(response.content) > 5 * 1024 * 1024:
+                    raise ValueError("Target URL content exceeds 5MB limit.")
                 html = response.text
-            except Exception as e:
+            except (httpx.RequestError, httpx.HTTPStatusError, ValueError) as e:
                 # If network fetch fails in offline sandbox, parse synthetic or fallback copy
                 html = f"<html><head><title>Advertisement Landing Page</title></head><body><h1>Simulated Landing Page</h1><p>Experience Aurora X2 with up to 7 days battery life and 5-year full warranty.</p></body></html>"
 

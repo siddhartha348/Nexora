@@ -11,14 +11,14 @@ class PasswordValidationError(Exception):
 def validate_password_strength(password: str) -> None:
     """
     Enforces high-security enterprise password rules:
-    - Minimum 8 characters
+    - Minimum 12 characters
     - At least 1 uppercase letter
     - At least 1 lowercase letter
     - At least 1 numeric digit
     - At least 1 special character (!@#$%^&*()_+-=[]{}|;:,.<>?)
     """
-    if len(password) < 8:
-        raise PasswordValidationError("Password must contain at least 8 characters.")
+    if len(password) < 12:
+        raise PasswordValidationError("Password must contain at least 12 characters.")
     if not re.search(r"[A-Z]", password):
         raise PasswordValidationError("Password must include at least one uppercase letter (A-Z).")
     if not re.search(r"[a-z]", password):

@@ -20,6 +20,7 @@ import {
 import { Button } from '../ui/Button';
 import { useAuth } from '../../context/AuthContext';
 import { Badge } from '../ui/Badge';
+import { useTheme } from '../../hooks/useTheme';
 
 interface HeaderProps {
   onOpenSearch: () => void;
@@ -45,14 +46,15 @@ const APP_NAV = [
   { label: 'Knowledge Hub', path: '/app/knowledge', badge: 'RAG', icon: Database },
   { label: 'Recall Engine', path: '/app/recall',                 icon: RotateCcw },
   { label: 'Brand Memory',  path: '/app/memory',                 icon: BookOpen },
+  { label: 'Audit Logs',    path: '/app/admin/audit-logs', badge: 'Admin', icon: ShieldCheck, adminOnly: true },
 ];
 
 export function Header({ onOpenSearch }: HeaderProps) {
-  const { user, isAuthenticated, logout } = useAuth();
+  const { user, isAuthenticated, logout, hasRole } = useAuth();
+  const { toggleTheme, isDark } = useTheme();
   const [mobileMenuOpen, setMobileMenuOpen]   = useState(false);
   const [appMenuOpen,    setAppMenuOpen]       = useState(false);
   const [scrolled,       setScrolled]          = useState(false);
-  const [themeMode, setThemeMode] = useState<'pure-obsidian' | 'deep-slate'>('pure-obsidian');
   const location = useLocation();
   const appMenuRef = useRef<HTMLDivElement>(null);
 
@@ -79,12 +81,6 @@ export function Header({ onOpenSearch }: HeaderProps) {
     document.addEventListener('mousedown', handler);
     return () => document.removeEventListener('mousedown', handler);
   }, []);
-
-  const toggleTheme = () => {
-    const next = themeMode === 'pure-obsidian' ? 'deep-slate' : 'pure-obsidian';
-    setThemeMode(next);
-    document.documentElement.classList.toggle('theme-deep-slate', next === 'deep-slate');
-  };
 
   const isAppRoute = location.pathname.startsWith('/app');
 
@@ -202,7 +198,7 @@ export function Header({ onOpenSearch }: HeaderProps) {
 
                 {appMenuOpen && (
                   <div className="absolute top-full left-0 mt-1.5 w-52 bg-obsidian-850 border-2 border-slate-border shadow-neo-lg rounded z-50">
-                    {APP_NAV.map((link) => {
+                    {APP_NAV.filter(item => !item.adminOnly || hasRole(['ADMIN'])).map((link) => {
                       const Icon = link.icon;
                       const isActive = location.pathname === link.path;
                       return (
@@ -251,13 +247,13 @@ export function Header({ onOpenSearch }: HeaderProps) {
             <button
               onClick={toggleTheme}
               className="p-1.5 rounded bg-obsidian-800 border-2 border-slate-border text-slate-text shadow-neo-sm hover:border-glacial transition-colors"
-              title={`Theme: ${themeMode === 'pure-obsidian' ? 'Obsidian' : 'Deep Slate'}`}
-              aria-label="Toggle theme contrast"
+              title={`Switch to ${isDark ? 'Light' : 'Dark'} mode`}
+              aria-label={`Switch to ${isDark ? 'Light' : 'Dark'} mode`}
             >
-              {themeMode === 'pure-obsidian' ? (
-                <Moon className="w-4 h-4 text-glacial" />
-              ) : (
+              {isDark ? (
                 <Sun className="w-4 h-4 text-status-warning" />
+              ) : (
+                <Moon className="w-4 h-4 text-glacial" />
               )}
             </button>
 
@@ -382,7 +378,7 @@ export function Header({ onOpenSearch }: HeaderProps) {
                 <p className="text-[10px] font-mono font-bold text-slate-tertiary uppercase tracking-widest px-2 pt-4 pb-1">
                   Workspace
                 </p>
-                {APP_NAV.map((link) => {
+                {APP_NAV.filter(item => !item.adminOnly || hasRole(['ADMIN'])).map((link) => {
                   const Icon = link.icon;
                   const isActive = location.pathname === link.path;
                   return (

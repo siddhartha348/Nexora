@@ -18,6 +18,7 @@ export default defineConfig({
   },
 
   build: {
+    sourcemap: false, // Security: Disable source maps in production to prevent source code exposure
     // Split large pages into separate async chunks to stay under 500 KB
     rollupOptions: {
       output: {

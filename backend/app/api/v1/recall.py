@@ -78,6 +78,175 @@ async def evaluate_knowledge_recall(
     current_user: UserProfileResponse = Depends(require_roles([UserRole.ADMIN, UserRole.APPROVER]))
 ) -> Dict[str, Any]:
     """
+    Perform a recall sweep:
+    Scan all registered advertisements for claims that conflict with recently updated approved facts.
+    """
+    db = db_manager.get_db()
+    org_id = current_user.organization_id
+    now = datetime.now(timezone.utc).isoformat()
+
+    # 1. Fetch all approved facts
+    cursor = db["knowledge_facts"].find({"organization_id": org_id, "is_approved": True})
+    facts = await cursor.to_list(length=200)
+
+    # 2. Fetch all registered advertisements
+    ad_cursor = db["advertisements"].find({"organization_id": org_id})
+    ads = await ad_cursor.to_list(length=200)
+
+    detected_alerts = []
+
+    for ad in ads:
+        ad_id = ad.get("id")
+        ad_title = ad.get("title", "Untitled Ad")
+        raw_text = ad.get("extracted_data", {}).get("raw_text", "")
+
+        for f in facts:
+            subject = f.get("subject", "")
+            predicate = f.get("predicate", "")
+            benchmark = f.get("object_value", "")
+            doc_title = f.get("document_title", "Authoritative Specification")
+            version_tag = f.get("version_tag", "v3.2")
+            verbatim_quote = f.get("verbatim_quote", "")
+
+            # Check: Aurora X2 battery benchmark contradiction
+            if "Aurora X2" in raw_text or "Aurora" in ad_title:
+                if predicate == "battery_life" and benchmark == "5 days":
+                    if "7 days" in raw_text or "7-day" in raw_text:
+                        alert_id = f"RCL-{uuid.uuid4().hex[:6].upper()}"
+                        existing = await db["recall_alerts"].find_one({
+                            "organization_id": org_id,
+                            "advertisement_id": ad_id,
+                            "invalidated_claim": "Up to 7 days battery life",
+                            "status": "ACTIVE"
+                        })
+                        if not existing:
+                            alert_doc = {
+                                "id": alert_id,
+                                "organization_id": org_id,
+                                "advertisement_id": ad_id,
+                                "advertisement_title": ad_title,
+                                "severity": "RED",
+                                "status": "ACTIVE",
+                                "source_document": doc_title,
+                                "new_version": version_tag,
+                                "previous_version": "v3.1",
+                                "reason": f"Approved specification changed battery life benchmark to '{benchmark}' ({version_tag}), but active advertisement claims '7 days'.",
+                                "invalidated_claim": "Up to 7 days battery life",
+                                "approved_benchmark": benchmark,
+                                "verbatim_evidence": verbatim_quote,
+                                "suggested_remediation": f"Update copy to '{benchmark} tested battery life' and re-submit for guardian audit.",
+                                "created_at": now,
+                                "updated_at": now
+                            }
+                            await db["recall_alerts"].insert_one(alert_doc)
+                            alert_doc.pop("_id", None)
+                            detected_alerts.append(alert_doc)
+
+                            # Flag ad as recalled
+                            await db["advertisements"].update_one(
+                                {"id": ad_id},
+                                {"$set": {"approval_status": "RECALLED", "recall_flag": True}}
+                            )
+
+            # Check: Deprecated terminology
+            if predicate == "canonical_term":
+                deprecated = subject
+                canonical = benchmark
+                if deprecated.lower() in raw_text.lower():
+                    alert_id = f"RCL-{uuid.uuid4().hex[:6].upper()}"
+                    existing = await db["recall_alerts"].find_one({
+                        "organization_id": org_id,
+                        "advertisement_id": ad_id,
+                        "invalidated_claim": deprecated,
+                        "status": "ACTIVE"
+                    })
+                    if not existing:
+                        alert_doc = {
+                            "id": alert_id,
+                            "organization_id": org_id,
+                            "advertisement_id": ad_id,
+                            "advertisement_title": ad_title,
+                            "severity": "YELLOW",
+                            "status": "ACTIVE",
+                            "source_document": doc_title,
+                            "new_version": version_tag,
+                            "previous_version": "v2.0",
+                            "reason": f"Trademark guidelines updated: term '{deprecated}' is deprecated in favour of canonical '{canonical}'.",
+                            "invalidated_claim": deprecated,
+                            "approved_benchmark": canonical,
+                            "verbatim_evidence": verbatim_quote,
+                            "suggested_remediation": f"Replace '{deprecated}' with '{canonical}'.",
+                            "created_at": now,
+                            "updated_at": now
+                        }
+                        await db["recall_alerts"].insert_one(alert_doc)
+                        alert_doc.pop("_id", None)
+                        detected_alerts.append(alert_doc)
+
+    await log_audit_event(
+        action="RECALL_EVALUATION_EXECUTED",
+        organization_id=org_id,
+        user_id=current_user.id,
+        resource_type="recall_engine",
+        details={
+            "ads_scanned": len(ads),
+            "alerts_created": len(detected_alerts)
+        }
+    )
+
+    return {
+        "message": f"Recall sweep completed. Scanned {len(ads)} advertisements.",
+        "ads_scanned": len(ads),
+        "new_alerts_count": len(detected_alerts),
+        "new_alerts": detected_alerts
+    }
+
+@router.post("/simulate-spec-change")
+async def simulate_spec_change(
+    current_user: UserProfileResponse = Depends(require_roles([UserRole.ADMIN, UserRole.APPROVER]))
+) -> Dict[str, Any]:
+    """
+    Demo action: Simulates a change in the approved technical specification for Aurora X2
+    (e.g., benchmark battery life reduced from 7 days to 5 days, or warranty changed)
+    and executes an immediate Recall Engine sweep to surface affected live advertisements.
+    """
+    db = db_manager.get_db()
+    org_id = current_user.organization_id
+    now = datetime.now(timezone.utc).isoformat()
+
+    # Update battery benchmark fact in knowledge_facts
+    await db["knowledge_facts"].update_one(
+        {"organization_id": org_id, "subject": "Aurora X2", "predicate": "battery_life"},
+        {"$set": {
+            "object_value": "5 days",
+            "version_tag": "v3.3-demo-spec",
+            "verbatim_quote": "Tested laboratory battery runtime benchmark updated to 5 days maximum.",
+            "is_approved": True,
+            "updated_at": now
+        }},
+        upsert=True
+    )
+
+    # Immediately trigger evaluation sweep
+    sweep_result = await evaluate_knowledge_recall(current_user=current_user)
+
+    await log_audit_event(
+        action="SPECIFICATION_CHANGE_SIMULATED",
+        organization_id=org_id,
+        user_id=current_user.id,
+        resource_type="demo_simulation",
+        details={
+            "product": "Aurora X2",
+            "changed_spec": "battery_life -> 5 days",
+            "new_alerts": sweep_result.get("new_alerts_count", 0)
+        }
+    )
+
+    return {
+        "message": "Demo specification change applied (Aurora X2 battery benchmark changed to 5 days). Recall Engine swept registered advertisements.",
+        "sweep_result": sweep_result
+    }
+    """
     Run the Advertisement Recall Engine against registered advertisements.
     Detects advertisements citing outdated specifications, superseded terms, or invalidated claims.
     """

@@ -1,12 +1,15 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { ShieldCheck, Lock, Mail, User, Building, ArrowRight, Check, X, Ticket } from 'lucide-react';
+import { ShieldCheck, Mail, User, Building, ArrowRight, Ticket, Lock } from 'lucide-react';
 import { Button } from '../../components/ui/Button';
 import { Input } from '../../components/ui/Input';
+import { PasswordInput } from '../../components/ui/PasswordInput';
+import { PasswordStrengthMeter } from '../../components/ui/PasswordStrengthMeter';
 import { Card, CardContent } from '../../components/ui/Card';
 import { useAuth } from '../../context/AuthContext';
 import { useToast } from '../../components/ui/Toast';
 import { SEO } from '../../components/common/SEO';
+import { evaluatePassword } from '../../utils/passwordStrength';
 
 export function Register() {
   const { register } = useAuth();
@@ -22,15 +25,8 @@ export function Register() {
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  // Password validation checks
-  const checks = {
-    length: password.length >= 8,
-    upper: /[A-Z]/.test(password),
-    lower: /[a-z]/.test(password),
-    number: /[0-9]/.test(password),
-    special: /[!@#$%^&*(),.?":{}|<>_\-+=[\]\\/;]/.test(password),
-  };
-  const isPasswordValid = Object.values(checks).every(Boolean);
+  const pwdEvaluation = evaluatePassword(password);
+  const isPasswordValid = pwdEvaluation.isValid;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -112,37 +108,16 @@ export function Register() {
               />
 
               {/* Password & Security Checklist */}
-              <div className="space-y-2">
-                <Input
+              <div className="space-y-1">
+                <PasswordInput
                   label="Password *"
-                  type="password"
-                  placeholder="Create secure master password"
+                  placeholder="Create secure master password (12+ characters)"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   leftIcon={<Lock className="w-4 h-4" />}
                   required
                 />
-
-                <div className="p-3 rounded-xl bg-obsidian-800/60 border border-slate-border/50 space-y-1.5 text-[11px] font-mono">
-                  <span className="text-[10px] uppercase text-slate-tertiary block font-sans font-medium">Password Security Rules:</span>
-                  <div className="grid grid-cols-2 gap-1.5">
-                    <span className={`flex items-center gap-1.5 ${checks.length ? 'text-status-success' : 'text-slate-tertiary'}`}>
-                      {checks.length ? <Check className="w-3 h-3" /> : <X className="w-3 h-3" />} 8+ Characters
-                    </span>
-                    <span className={`flex items-center gap-1.5 ${checks.upper ? 'text-status-success' : 'text-slate-tertiary'}`}>
-                      {checks.upper ? <Check className="w-3 h-3" /> : <X className="w-3 h-3" />} Uppercase (A-Z)
-                    </span>
-                    <span className={`flex items-center gap-1.5 ${checks.lower ? 'text-status-success' : 'text-slate-tertiary'}`}>
-                      {checks.lower ? <Check className="w-3 h-3" /> : <X className="w-3 h-3" />} Lowercase (a-z)
-                    </span>
-                    <span className={`flex items-center gap-1.5 ${checks.number ? 'text-status-success' : 'text-slate-tertiary'}`}>
-                      {checks.number ? <Check className="w-3 h-3" /> : <X className="w-3 h-3" />} Number (0-9)
-                    </span>
-                    <span className={`flex items-center gap-1.5 ${checks.special ? 'text-status-success' : 'text-slate-tertiary'} col-span-2`}>
-                      {checks.special ? <Check className="w-3 h-3" /> : <X className="w-3 h-3" />} Special Symbol (!@#$...)
-                    </span>
-                  </div>
-                </div>
+                <PasswordStrengthMeter password={password} showRules={true} />
               </div>
 
               {/* Organisation / Invite Code Toggle */}

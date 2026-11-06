@@ -101,7 +101,7 @@ class MockCollection:
             inserted_ids = ids
         return ManyResult()
 
-    async def update_one(self, filter_dict: Dict[str, Any], update_dict: Dict[str, Any]):
+    async def update_one(self, filter_dict: Dict[str, Any], update_dict: Dict[str, Any], upsert: bool = False):
         matched = 0
         modified = 0
         for doc_id, doc in self._docs.items():
@@ -117,6 +117,19 @@ class MockCollection:
                             del doc[uk]
                             modified = 1
                 break
+        
+        if matched == 0 and upsert:
+            new_doc = copy.deepcopy(filter_dict)
+            if "$set" in update_dict:
+                for sk, sv in update_dict["$set"].items():
+                    new_doc[sk] = copy.deepcopy(sv)
+            doc_id = new_doc.get("id") or new_doc.get("_id") or str(uuid.uuid4())
+            new_doc["id"] = doc_id
+            new_doc["_id"] = doc_id
+            self._docs[str(doc_id)] = new_doc
+            matched = 1
+            modified = 1
+
         class UpdateResult:
             matched_count = matched
             modified_count = modified

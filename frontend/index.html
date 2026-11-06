@@ -1,10 +1,23 @@
 <!doctype html>
-<html lang="en" class="dark">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="theme-color" content="#2F4BFF" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>NEXORA — Intelligent Evidence-Based Brand Governance Platform</title>
+    <script>
+      (function() {
+        const saved = localStorage.getItem('nexora-theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (saved === 'dark' || (!saved && prefersDark)) {
+          document.documentElement.classList.add('dark');
+        } else {
+          document.documentElement.classList.remove('dark');
+        }
+      })();
+    </script>
     <meta name="description" content="AI-powered brand governance platform auditing marketing creatives against approved facts, guidelines, terminology, and visual identity before publication with active Advertisement Recall." />
     
     <!-- Open Graph / Facebook -->

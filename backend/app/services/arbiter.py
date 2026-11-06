@@ -40,15 +40,33 @@ class RiskArbiter:
         """
         start_time = datetime.now(timezone.utc)
 
-        # 1. Dispatch all 6 guardians concurrently via asyncio.gather
+        # Content Router: determine which specialist guardians apply
+        # If document has visual assets or explicit visual checks, run Visual Guardian;
+        # otherwise record a clean bypass metric for text-only inputs
+        has_visuals = bool(
+            extracted_data.get("visual_metadata", {}).get("has_images")
+            or extracted_data.get("visual_metadata", {}).get("dominant_palette")
+            or extracted_data.get("visual_metadata", {}).get("extracted_colors")
+            or extracted_data.get("layout_regions")
+        )
+
         tasks = [
             cls._safe_run_guardian("Fact Guardian", FactGuardian.audit(organization_id, ad_text, extracted_data)),
             cls._safe_run_guardian("Voice Guardian", VoiceGuardian.audit(organization_id, ad_text, extracted_data)),
             cls._safe_run_guardian("Terminology Guardian", TerminologyGuardian.audit(organization_id, ad_text, extracted_data)),
             cls._safe_run_guardian("Claims Guardian", ClaimsGuardian.audit(organization_id, ad_text, extracted_data)),
-            cls._safe_run_guardian("Visual Guardian", VisualGuardian.audit(organization_id, ad_text, extracted_data)),
             cls._safe_run_guardian("Accessibility Guardian", AccessibilityGuardian.audit(organization_id, ad_text, extracted_data)),
         ]
+
+        if has_visuals:
+            tasks.append(
+                cls._safe_run_guardian("Visual Guardian", VisualGuardian.audit(organization_id, ad_text, extracted_data))
+            )
+        else:
+            # Text-only bypass: record zero-finding metric
+            async def _bypassed_visual():
+                return "Visual Guardian", []
+            tasks.append(_bypassed_visual())
 
         results = await asyncio.gather(*tasks)
 

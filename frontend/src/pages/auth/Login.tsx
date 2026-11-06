@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { ShieldCheck, Lock, Mail, ArrowRight, AlertCircle, Sparkles } from 'lucide-react';
+import { ShieldCheck, Lock, Mail, ArrowRight, AlertCircle } from 'lucide-react';
 import { Button } from '../../components/ui/Button';
 import { Input } from '../../components/ui/Input';
+import { PasswordInput } from '../../components/ui/PasswordInput';
 import { Card, CardContent } from '../../components/ui/Card';
 import { useAuth } from '../../context/AuthContext';
 import { useToast } from '../../components/ui/Toast';
@@ -41,12 +42,6 @@ export function Login() {
     } finally {
       setLoading(false);
     }
-  };
-
-  const fillDemoCredentials = () => {
-    setEmail('lead.architect@pinnacle.gov');
-    setPassword('SecurePassword123!');
-    toast.info("Demo Credentials Populated", "Click Sign In to authenticate as Lead Architect.");
   };
 
   return (
@@ -93,9 +88,8 @@ export function Login() {
               />
 
               <div className="space-y-1">
-                <Input
+                <PasswordInput
                   label="Password"
-                  type="password"
                   placeholder="••••••••••••"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
@@ -125,18 +119,6 @@ export function Login() {
                 </Button>
               </div>
             </form>
-
-            {/* Demo Quick Autofill */}
-            <div className="mt-5 pt-4 border-t border-slate-border/50 text-center">
-              <button
-                type="button"
-                onClick={fillDemoCredentials}
-                className="inline-flex items-center gap-1.5 text-xs text-glacial font-mono hover:underline"
-              >
-                <Sparkles className="w-3.5 h-3.5" />
-                <span>Autofill Demo Credentials</span>
-              </button>
-            </div>
           </CardContent>
         </Card>
 

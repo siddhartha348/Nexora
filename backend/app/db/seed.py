@@ -1,13 +1,29 @@
 import uuid
+import os
+import secrets
+import string
+import logging
 from datetime import datetime, timezone
 from app.db.mongo import db_manager
 from app.core.security import hash_password
 
+logger = logging.getLogger("nexora.seed")
+
+def generate_secure_password(length: int = 16) -> str:
+    """Generates a cryptographically strong 16-char password meeting all complexity rules."""
+    alphabet = string.ascii_letters + string.digits + "!@#$%^&*()_+-="
+    while True:
+        pwd = "".join(secrets.choice(alphabet) for _ in range(length))
+        if (any(c.islower() for c in pwd)
+                and any(c.isupper() for c in pwd)
+                and any(c.isdigit() for c in pwd)
+                and any(c in "!@#$%^&*()_+-=" for c in pwd)):
+            return pwd
+
 async def seed_demo_data():
     """
     Seeds comprehensive synthetic demo data for the fictional brand 'AuraTech Global'.
-    Provides four role-delineated users, approved knowledge documents, registered advertisements,
-    human review precedents, reports, and a triggered recall alert.
+    Generates single-session randomized passwords printed once on server boot for all 5 roles.
     """
     db = db_manager.get_db()
     now = datetime.now(timezone.utc).isoformat()
@@ -30,63 +46,59 @@ async def seed_demo_data():
             "updated_at": now
         })
 
-    # 2. Users (Admin, Approver, Reviewer, Creator)
-    demo_users = [
-        {
-            "id": "usr-admin-001",
-            "email": "admin@nexora.com",
-            "password_hash": hash_password("NexoraAdmin2026!"),
-            "full_name": "Audrey Vance",
-            "role": "ADMIN",
+    # 2. Users (Admin, Approver, Reviewer, Creator, Viewer)
+    roles_config = [
+        {"id": "usr-admin-001", "email": "admin@nexora.com", "full_name": "Audrey Vance", "role": "ADMIN"},
+        {"id": "usr-approver-001", "email": "approver@nexora.com", "full_name": "Marcus Kane", "role": "APPROVER"},
+        {"id": "usr-reviewer-001", "email": "reviewer@nexora.com", "full_name": "Elena Rostova", "role": "REVIEWER"},
+        {"id": "usr-creator-001", "email": "creator@nexora.com", "full_name": "Liam Chen", "role": "CREATOR"},
+        {"id": "usr-viewer-001", "email": "viewer@nexora.com", "full_name": "Sophia Zhang", "role": "VIEWER"},
+    ]
+
+    generated_credentials = []
+
+    for conf in roles_config:
+        plain_pwd = os.environ.get("DEMO_ADMIN_PASSWORD", "") if os.environ.get("TESTING") == "1" else ""
+        if not plain_pwd:
+            plain_pwd = generate_secure_password(16)
+        pwd_hash = hash_password(plain_pwd)
+        generated_credentials.append((conf["role"], conf["email"], plain_pwd))
+
+        user_doc = {
+            "id": conf["id"],
+            "_id": conf["id"],
+            "email": conf["email"],
+            "password_hash": pwd_hash,
+            "full_name": conf["full_name"],
+            "role": conf["role"],
             "organization_id": org_id,
             "is_active": True,
-            "email_verified": True,
-            "created_at": now
-        },
-        {
-            "id": "usr-approver-001",
-            "email": "approver@nexora.com",
-            "password_hash": hash_password("NexoraAdmin2026!"),
-            "full_name": "Marcus Kane",
-            "role": "APPROVER",
-            "organization_id": org_id,
-            "is_active": True,
-            "email_verified": True,
-            "created_at": now
-        },
-        {
-            "id": "usr-reviewer-001",
-            "email": "reviewer@nexora.com",
-            "password_hash": hash_password("NexoraAdmin2026!"),
-            "full_name": "Elena Rostova",
-            "role": "REVIEWER",
-            "organization_id": org_id,
-            "is_active": True,
-            "email_verified": True,
-            "created_at": now
-        },
-        {
-            "id": "usr-creator-001",
-            "email": "creator@nexora.com",
-            "password_hash": hash_password("NexoraAdmin2026!"),
-            "full_name": "Liam Chen",
-            "role": "CREATOR",
-            "organization_id": org_id,
-            "is_active": True,
+            "is_verified": True,
             "email_verified": True,
             "created_at": now
         }
-    ]
 
-    for u in demo_users:
-        existing_user = await db["users"].find_one({"email": u["email"]})
+        existing_user = await db["users"].find_one({"email": conf["email"]})
         if not existing_user:
-            await db["users"].insert_one(u)
+            await db["users"].insert_one(user_doc)
         else:
             await db["users"].update_one(
-                {"email": u["email"]},
-                {"$set": {"organization_id": org_id, "role": u["role"]}}
+                {"email": conf["email"]},
+                {"$set": {
+                    "password_hash": pwd_hash,
+                    "organization_id": org_id,
+                    "role": conf["role"],
+                    "is_active": True
+                }}
             )
+
+    print("\n" + "=" * 70)
+    print(" [NEXORA SECURITY] DEMO ACCOUNTS SEEDED WITH RANDOM PASSWORDS")
+    print(" NOTICE: Passwords are generated per boot and never hard-coded.")
+    print("=" * 70)
+    for role, email, pwd in generated_credentials:
+        print(f"  ROLE: {role:<12} | EMAIL: {email:<22} | PASS: {pwd}")
+    print("=" * 70 + "\n")
 
     # 3. Approved Knowledge Documents
     doc_specs_id = "doc-aurora-spec-v32"

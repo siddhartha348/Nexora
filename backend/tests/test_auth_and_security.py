@@ -51,11 +51,11 @@ def test_duplicate_registration_fails():
 
 def test_invalid_passwords_rejected():
     invalid_passwords = [
-        ("short1!", "at least 8 characters"),
+        ("short1!", "at least 12 characters"),
         ("lowercaseonly123!", "uppercase letter"),
         ("UPPERCASEONLY123!", "lowercase letter"),
-        ("NoSpecialChar123", "special character"),
-        ("NoNumericDigit!@", "numeric digit"),
+        ("NoSpecialChar12345", "special character"),
+        ("NoNumericDigits!@#", "numeric digit"),
     ]
     for pwd, expected_err in invalid_passwords:
         payload = {

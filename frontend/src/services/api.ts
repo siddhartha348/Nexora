@@ -42,6 +42,12 @@ export async function apiRequest<T = any>(
     headers.set('Authorization', `Bearer ${inMemoryAccessToken}`);
   }
 
+  // Attach CSRF protection header for state-changing requests
+  const method = (options.method || 'GET').toUpperCase();
+  if (['POST', 'PUT', 'PATCH', 'DELETE'].includes(method) && !headers.has('X-CSRF-Token')) {
+    headers.set('X-CSRF-Token', inMemoryAccessToken ? inMemoryAccessToken.slice(-16) : 'nexora-csrf-guard');
+  }
+
   const config: RequestInit = {
     ...options,
     headers,
@@ -109,6 +115,10 @@ export const RecallApi = {
       method: 'POST',
       body: JSON.stringify({ action, notes }),
     }),
+  simulateSpecChange: () =>
+    apiRequest<{ message: string; sweep_result: any }>('/recall/simulate-spec-change', {
+      method: 'POST',
+    }),
 };
 
 export const BrandMemoryApi = {
@@ -118,6 +128,11 @@ export const BrandMemoryApi = {
     if (searchQuery) params.set('search', searchQuery);
     return apiRequest<any[]>(`/reviews/brand-memory/query?${params.toString()}`);
   },
+  promoteException: (entryId: string, notes?: string) =>
+    apiRequest<any>(`/reviews/brand-memory/${entryId}/promote-exception`, {
+      method: 'POST',
+      body: JSON.stringify({ notes }),
+    }),
 };
 
 export const AnalyticsApi = {

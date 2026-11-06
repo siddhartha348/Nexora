@@ -22,8 +22,9 @@ try {
 } catch (error) {
   if (error instanceof z.ZodError) {
     console.error('❌ [CRITICAL SECURITY ERROR] Server environment validation failed:');
-    error.errors.forEach((err) => {
-      console.error(`  - ${err.path.join('.')}: ${err.message}`);
+    const issues = (error as any).issues || (error as any).errors || [];
+    issues.forEach((err: any) => {
+      console.error(`  - ${Array.isArray(err.path) ? err.path.join('.') : err.path}: ${err.message}`);
     });
     console.error('Server boot refused due to missing or weak security configurations.');
     process.exit(1);

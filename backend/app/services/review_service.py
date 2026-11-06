@@ -449,3 +449,62 @@ class ReviewService:
 
         return entries
 
+    @staticmethod
+    async def promote_precedent_to_exception(
+        entry_id: str,
+        organization_id: str,
+        user: UserProfileResponse,
+        notes: Optional[str] = None
+    ) -> Dict[str, Any]:
+        """
+        ADMIN ACTION:
+        Promotes a reviewer precedent in Brand Memory to an official approved exception.
+        Precedents by default never change Official Knowledge; an Admin promotion
+        explicitly approves the precedent with audit logging and version tracking.
+        """
+        if user.role != UserRole.ADMIN:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Only Administrators can promote a Brand Memory precedent to an official policy exception."
+            )
+
+        db = db_manager.get_db()
+        entry = await db["brand_memory"].find_one({
+            "id": entry_id,
+            "organization_id": organization_id
+        })
+        if not entry:
+            raise HTTPException(status_code=404, detail="Brand Memory entry not found")
+
+        now = datetime.now(timezone.utc).isoformat()
+        update_fields = {
+            "is_official_policy": True,
+            "promoted_by": user.id,
+            "promoted_by_name": user.full_name,
+            "promoted_at": now,
+            "promotion_notes": notes,
+            "policy_version": f"v-exc-{datetime.now(timezone.utc).strftime('%Y%m%d%H%M')}"
+        }
+
+        await db["brand_memory"].update_one(
+            {"id": entry_id},
+            {"$set": update_fields}
+        )
+
+        await log_audit_event(
+            user_id=user.id,
+            organization_id=organization_id,
+            action="BRAND_MEMORY_PROMOTED_TO_OFFICIAL_EXCEPTION",
+            resource_type="brand_memory",
+            resource_id=entry_id,
+            details={
+                "original_text": entry.get("original_text"),
+                "final_replacement": entry.get("final_replacement"),
+                "promoted_by": user.full_name,
+                "notes": notes
+            }
+        )
+
+        entry.update(update_fields)
+        return entry
+

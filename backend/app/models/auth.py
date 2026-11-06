@@ -12,7 +12,7 @@ class UserRole(str, Enum):
 
 class UserRegisterRequest(BaseModel):
     email: EmailStr
-    password: str = Field(..., min_length=8)
+    password: str = Field(..., min_length=12)
     full_name: str = Field(..., min_length=2, max_length=100)
     organization_name: Optional[str] = Field(None, min_length=2, max_length=100)
     invite_code: Optional[str] = None
@@ -48,12 +48,12 @@ class ForgotPasswordRequest(BaseModel):
 
 class ResetPasswordRequest(BaseModel):
     token: str
-    new_password: str = Field(..., min_length=8)
+    new_password: str = Field(..., min_length=12)
 
 class VerifyEmailRequest(BaseModel):
     token: str
 
 class ChangePasswordRequest(BaseModel):
     current_password: str
-    new_password: str = Field(..., min_length=8)
+    new_password: str = Field(..., min_length=12)
 
