@@ -269,11 +269,11 @@ export function KnowledgeHub() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-slate-border/50">
         <div className="space-y-1">
           <div className="flex items-center gap-2">
-            <Badge variant="primary" dot size="sm">Brand Knowledge Hub</Badge>
-            <Badge variant="mono" size="sm">ChromaDB + MongoDB RAG</Badge>
+            <Badge variant="cyber" dot size="sm">[ BRAND KNOWLEDGE HUB ]</Badge>
+            <Badge variant="cyber-terminal" size="sm">CHROMADB + MONGODB RAG // ACTIVE</Badge>
           </div>
           <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-text">
-            Authoritative <span className="text-glacial">Brand Knowledge Repository</span>
+            Authoritative <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyber-cyan via-glacial to-white">Brand Knowledge Repository</span>
           </h1>
           <p className="text-xs text-slate-muted">
             The single source of truth for product specifications, brand guidelines, and approved terminology
@@ -282,24 +282,26 @@ export function KnowledgeHub() {
 
         <div className="flex items-center gap-3">
           <Button
-            variant="primary"
+            variant="cyber"
             size="md"
+            cyberBracket
             onClick={() => setIsUploadOpen(true)}
-            leftIcon={<Upload className="w-4 h-4 text-obsidian" />}
+            leftIcon={<Upload className="w-4 h-4 text-cyber-cyan" />}
           >
-            Upload Document
+            INGEST DOCUMENT
           </Button>
         </div>
       </div>
 
       {/* RAG Verification Playground */}
-      <Card className="border-glacial/30 bg-obsidian-800/50">
+      <Card variant="cyber" className="border-cyber-cyan/40 bg-cyber-panel/90 shadow-cyber-panel cyber-frame">
         <CardHeader
           title="RAG Evidence Retrieval Engine"
           description="Test semantic vector retrieval and exact fact lookup against approved knowledge"
+          telemetry="SEMANTIC_COSINE_V1.4"
           action={
-            <span className="text-[11px] font-mono text-glacial flex items-center gap-1.5">
-              <ShieldCheck className="w-4 h-4 text-status-success" />
+            <span className="text-[11px] font-mono text-cyber-cyan flex items-center gap-1.5">
+              <ShieldCheck className="w-4 h-4 text-cyber-green" />
               <span>Strict Gate: Only Approved Chunks Retrievable</span>
             </span>
           }
@@ -310,16 +312,18 @@ export function KnowledgeHub() {
               placeholder="Query specifications or claims (e.g. 'What is the battery life and warranty of Aurora X2?')..."
               value={ragQuery}
               onChange={(e) => setRagQuery(e.target.value)}
-              leftIcon={<Search className="w-4 h-4 text-glacial" />}
+              telemetryCode="RAG_SEARCH_QUERY"
+              leftIcon={<Search className="w-4 h-4 text-cyber-cyan" />}
             />
             <Button
               type="submit"
-              variant="secondary"
+              variant="cyber"
               size="md"
+              cyberBracket
               isLoading={isSearchingRag}
-              leftIcon={<Sparkles className="w-4 h-4 text-glacial" />}
+              leftIcon={<Sparkles className="w-4 h-4 text-cyber-cyan" />}
             >
-              Verify RAG
+              QUERY RAG
             </Button>
           </form>
 

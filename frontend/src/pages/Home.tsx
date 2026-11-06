@@ -71,19 +71,19 @@ export function Home() {
       {/* Hero Section */}
       <section className="relative pt-12 sm:pt-20 pb-8 overflow-hidden">
         {/* Glow ambient background elements */}
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[350px] bg-glacial/10 blur-[130px] rounded-full pointer-events-none" />
+        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[650px] h-[350px] bg-cyber-cyan/10 blur-[140px] rounded-full pointer-events-none" />
         
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center space-y-6">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full glass-panel border border-glacial/30 text-xs text-glacial font-medium animate-in fade-in-0 slide-in-from-top-3 duration-500">
-            <span className="w-2 h-2 rounded-full bg-glacial animate-pulse" />
-            <span>Code Nexus Hackathon • Team PINNACLE</span>
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full glass-panel border border-cyber-cyan/40 text-xs text-cyber-cyan font-mono animate-in fade-in-0 slide-in-from-top-3 duration-500 shadow-cyber-cyan">
+            <span className="w-2 h-2 rounded-full bg-cyber-cyan animate-pulse shadow-cyber-cyan" />
+            <span>[ CYBERCORE DEFENSE ] • Team PINNACLE</span>
             <span className="text-slate-tertiary">|</span>
             <span className="text-slate-muted">Problem by Inkloom AI</span>
           </div>
 
           <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold text-slate-text tracking-tight max-w-5xl mx-auto leading-[1.1]">
             Evidence-Based <br className="hidden sm:inline" />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-glacial via-glacial-200 to-white">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyber-cyan via-glacial-200 to-white">
               Brand Governance
             </span>
           </h1>
@@ -107,13 +107,13 @@ export function Home() {
 
           {/* Central Product Review Canvas Preview */}
           <div className="pt-10 max-w-5xl mx-auto">
-            <div className="rounded-2xl glass-panel border border-slate-border p-2 sm:p-4 shadow-glass-glow text-left">
-              <div className="flex items-center justify-between pb-3 px-3 border-b border-slate-border/50 text-xs">
+            <div className="rounded-xl glass-panel border border-cyber-border p-2 sm:p-4 shadow-cyber-panel text-left relative cyber-frame">
+              <div className="flex items-center justify-between pb-3 px-3 border-b border-cyber-border/40 text-xs">
                 <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 rounded-full bg-status-critical/60" />
-                  <div className="w-3 h-3 rounded-full bg-status-warning/60" />
-                  <div className="w-3 h-3 rounded-full bg-status-success/60" />
-                  <span className="ml-2 font-mono text-slate-muted">NEXORA Review Canvas: #AD-AURORA-X2</span>
+                  <div className="w-2.5 h-2.5 rounded-full bg-status-critical shadow-sm" />
+                  <div className="w-2.5 h-2.5 rounded-full bg-status-warning shadow-sm" />
+                  <div className="w-2.5 h-2.5 rounded-full bg-status-success shadow-sm" />
+                  <span className="ml-2 font-mono text-cyber-cyan text-[11px]">// CANVAS_AUDIT: #AD-AURORA-X2</span>
                 </div>
                 <StatusIndicator level="RED" label="1 Critical Contradiction Detected" size="sm" />
               </div>
@@ -121,28 +121,28 @@ export function Home() {
               <div className="grid grid-cols-1 md:grid-cols-12 gap-4 p-4 text-xs">
                 {/* Creative Simulation */}
                 <div className="md:col-span-5 p-4 rounded-xl bg-obsidian-900/90 border border-slate-border space-y-3">
-                  <Badge variant="mono" size="sm">Submitted Creative (PDF Extract)</Badge>
-                  <p className="text-sm font-medium text-slate-text italic border-l-2 border-status-critical pl-3 py-1">
+                  <Badge variant="mono" size="sm">[ INGESTED CREATIVE // PDF ]</Badge>
+                  <p className="text-sm font-medium text-slate-text italic border-l-2 border-status-critical pl-3 py-1 font-sans">
                     "Experience Aurora X2: up to 7 days of active battery life with our industry-exclusive 5-year warranty."
                   </p>
                   <div className="flex items-center justify-between text-[11px] text-slate-tertiary font-mono pt-2 border-t border-slate-border/40">
-                    <span>Format: PDF (Extracted)</span>
-                    <span>Confidence: 98.4%</span>
+                    <span>EXTRACT: PYMUPDF</span>
+                    <span className="text-cyber-cyan">CONFIDENCE: 98.4%</span>
                   </div>
                 </div>
 
                 {/* Evidence Citation */}
-                <div className="md:col-span-7 p-4 rounded-xl bg-obsidian-800/80 border border-glacial/30 space-y-3">
+                <div className="md:col-span-7 p-4 rounded-xl bg-cyber-panel/90 border border-cyber-cyan/40 space-y-3 shadow-sm">
                   <div className="flex items-center justify-between">
                     <Badge variant="critical" size="sm">Contradiction with Approved Fact</Badge>
-                    <span className="text-[11px] font-mono text-glacial">Hub Ref: #SPEC-DOC-409</span>
+                    <span className="text-[11px] font-mono text-cyber-cyan">RAG_REF: #SPEC-DOC-409</span>
                   </div>
                   <p className="text-xs text-slate-muted leading-relaxed">
-                    <strong className="text-slate-text">Fact Guardian Evidence:</strong> Aurora X2 specification sheet <span className="font-mono text-glacial">v3.2, p.4</span> states battery life is <strong className="text-slate-text">up to 5 days</strong> and standard warranty is <strong className="text-slate-text">2 years</strong>.
+                    <strong className="text-slate-text">Fact Guardian Evidence:</strong> Aurora X2 specification sheet <span className="font-mono text-cyber-cyan">v3.2, p.4</span> states battery life is <strong className="text-slate-text">up to 5 days</strong> and standard warranty is <strong className="text-slate-text">2 years</strong>.
                   </p>
-                  <div className="p-2.5 rounded-lg bg-obsidian-900/80 border border-slate-border/60">
-                    <span className="text-[10px] uppercase font-mono text-slate-tertiary block">Suggested Approved Revision:</span>
-                    <span className="text-xs text-status-success font-medium">
+                  <div className="p-2.5 rounded-lg bg-obsidian-950/90 border border-cyber-border">
+                    <span className="text-[10px] uppercase font-mono text-slate-tertiary block">// Suggested Approved Revision:</span>
+                    <span className="text-xs text-status-success font-medium font-mono">
                       "Experience Aurora X2: up to 5 days of active battery life with our 2-year warranty."
                     </span>
                   </div>
@@ -165,10 +165,11 @@ export function Home() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {problems.map((prob, idx) => (
-            <Card key={idx} variant="interactive">
+            <Card key={idx} variant="interactive" className="border-cyber-border/50 hover:border-cyber-cyan/60 hover:shadow-cyber-cyan">
               <CardHeader 
                 title={prob.title}
-                action={<Badge variant="mono" size="sm">{prob.badge}</Badge>}
+                telemetry={`RISK_VECTOR_0${idx + 1}`}
+                action={<Badge variant="cyber" size="sm">[{prob.badge}]</Badge>}
               />
               <CardContent>
                 <p className="text-xs text-slate-muted leading-relaxed">
@@ -243,19 +244,20 @@ export function Home() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {agents.map((agent, idx) => (
-            <Card key={idx} variant="default" className="hover:border-glacial/40 transition-colors">
+            <Card key={idx} variant="cyber" className="hover:border-cyber-cyan transition-all">
               <CardHeader 
                 title={agent.name}
                 description={agent.role}
-                action={<div className="p-2 rounded-xl bg-obsidian-800 border border-slate-border">{agent.icon}</div>}
+                telemetry={`GUARD_CORE_0${idx + 1}`}
+                action={<div className="p-2 rounded-lg bg-obsidian-850 border border-cyber-border/60 shadow-sm">{agent.icon}</div>}
               />
               <CardContent className="space-y-3">
                 <p className="text-xs text-slate-muted leading-relaxed">
                   {agent.desc}
                 </p>
-                <div className="pt-2 border-t border-slate-border/40 flex items-center justify-between text-[11px] font-mono">
-                  <span className="text-slate-tertiary">Output Standard:</span>
-                  <span className="text-glacial">{agent.status}</span>
+                <div className="pt-2 border-t border-cyber-border/40 flex items-center justify-between text-[11px] font-mono">
+                  <span className="text-slate-tertiary">TELEMETRY_SPEC:</span>
+                  <span className="text-cyber-cyan">{agent.status}</span>
                 </div>
               </CardContent>
             </Card>

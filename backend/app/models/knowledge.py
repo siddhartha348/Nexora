@@ -94,3 +94,4 @@ class VersionDiffResponse(BaseModel):
     added_facts: List[Dict[str, Any]]
     removed_facts: List[Dict[str, Any]]
     text_diff_summary: str
+

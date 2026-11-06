@@ -51,7 +51,11 @@ function MainApp() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-obsidian text-slate-text flex flex-col selection:bg-glacial/20 selection:text-glacial-100">
+    <div className="min-h-screen bg-obsidian text-slate-text flex flex-col selection:bg-cyber-cyan/25 selection:text-cyber-cyan relative cyber-grid">
+      {/* Ambient Cybercore Lighting Orbs */}
+      <div className="fixed top-0 left-1/4 w-[600px] h-[600px] bg-cyber-cyan/5 rounded-full blur-[140px] pointer-events-none -z-10" />
+      <div className="fixed bottom-1/3 right-10 w-[500px] h-[500px] bg-glacial/5 rounded-full blur-[140px] pointer-events-none -z-10" />
+
       {/* Top Reading Progress Bar */}
       <ScrollProgress />
 
@@ -59,7 +63,7 @@ function MainApp() {
       <Header onOpenSearch={() => setIsSearchOpen(true)} />
 
       {/* Dynamic Content Routes */}
-      <main className="flex-1">
+      <main className="flex-1 relative z-0">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />

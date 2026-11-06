@@ -87,12 +87,12 @@ export function Recall() {
       />
 
       {/* Hero Explainer Card */}
-      <div className="rounded-3xl glass-panel border border-status-warning/40 p-8 sm:p-10 relative overflow-hidden bg-gradient-to-br from-obsidian-800/80 to-obsidian-900">
+      <div className="rounded-xl glass-panel border border-status-warning/40 p-8 sm:p-10 relative overflow-hidden bg-gradient-to-br from-obsidian-850/90 to-obsidian-950 cyber-frame">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
           <div className="lg:col-span-7 space-y-4">
             <div className="flex items-center gap-2">
-              <Badge variant="warning" dot size="sm">Deliberate Scope Feature</Badge>
-              <span className="text-xs font-mono text-status-warning">Real-time Version Synchronization</span>
+              <Badge variant="warning" dot size="sm">[ DELIBERATE SCOPE ENGINE ]</Badge>
+              <span className="text-xs font-mono text-status-warning">// Real-time Version Delta Sync</span>
             </div>
             <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-text">
               Closing the Factual Aging Gap
@@ -106,13 +106,14 @@ export function Recall() {
 
             <div className="pt-2">
               <Button
-                variant="primary"
+                variant="cyber"
                 size="md"
                 onClick={handleSimulateRecall}
                 isLoading={isSimulating}
-                leftIcon={<Zap className="w-4 h-4 text-obsidian" />}
+                cyberBracket
+                leftIcon={<Zap className="w-4 h-4 text-cyber-cyan" />}
               >
-                Simulate Spec Sheet Update (v3.2)
+                EXECUTE SIMULATION: SPEC SHEET DELTA (v3.2)
               </Button>
             </div>
           </div>

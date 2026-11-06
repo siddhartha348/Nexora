@@ -13,26 +13,31 @@ export function Footer() {
           
           {/* Brand Identity & Mission */}
           <div className="lg:col-span-2 space-y-4">
-            <Link to="/" className="flex items-center gap-3 select-none">
-              <div className="w-9 h-9 rounded-xl bg-glacial/15 border border-glacial/40 flex items-center justify-center text-glacial shadow-glass-glow">
-                <ShieldCheck className="w-5 h-5 text-glacial stroke-[2]" />
+            <Link to="/" className="flex items-center gap-3 select-none group">
+              <div className="w-9 h-9 rounded-lg bg-cyber-panel border border-cyber-cyan/40 flex items-center justify-center text-cyber-cyan shadow-cyber-cyan group-hover:border-cyber-cyan transition-all">
+                <ShieldCheck className="w-5 h-5 text-cyber-cyan stroke-[2.2]" />
               </div>
-              <span className="font-extrabold tracking-widest text-lg text-slate-text uppercase">
-                NEXORA
-              </span>
+              <div className="flex items-center gap-2">
+                <span className="font-extrabold tracking-widest text-lg text-slate-text uppercase">
+                  NEXORA
+                </span>
+                <span className="text-[9px] font-mono uppercase px-1.5 py-0.5 rounded bg-cyber-cyan/15 text-cyber-cyan border border-cyber-cyan/30">
+                  CYBERCORE
+                </span>
+              </div>
             </Link>
             
             <p className="text-xs text-slate-muted leading-relaxed max-w-sm">
               An evidence-driven, multimodal brand governance platform. Auditing advertisements against approved guidelines, specification facts, terminology, and visual assets before publication with active Advertisement Recall.
             </p>
 
-            <div className="p-3 rounded-xl bg-obsidian-800/60 border border-slate-border/60 text-[11px] space-y-1 font-mono">
-              <div className="text-glacial font-semibold flex items-center gap-1.5">
-                <span className="w-1.5 h-1.5 rounded-full bg-glacial animate-pulse" />
-                Code Nexus Hackathon Entry
+            <div className="p-3 rounded-xl bg-cyber-panel/90 border border-cyber-border/70 text-[11px] space-y-1 font-mono shadow-cyber-panel">
+              <div className="text-cyber-cyan font-semibold flex items-center gap-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-cyber-cyan animate-pulse shadow-cyber-cyan" />
+                Code Nexus Hackathon // Team PINNACLE
               </div>
               <div className="text-slate-tertiary">Problem Provider: <span className="text-slate-text">Inkloom AI</span></div>
-              <div className="text-slate-tertiary">Category: <span className="text-slate-text">AI Brand Governance</span></div>
+              <div className="text-slate-tertiary">Architecture: <span className="text-cyber-green">Six-Agent Multi-Model Autonomous Defense</span></div>
             </div>
           </div>
 
@@ -99,7 +104,7 @@ export function Footer() {
             <span>•</span>
             <Link to="/security" className="hover:text-slate-text transition-colors">Security</Link>
             <span>•</span>
-            <span className="font-mono text-[10px] text-glacial">v1.0-RC</span>
+            <span className="font-mono text-[10px] text-cyber-cyan font-semibold">[ v2.4 // CYBERCORE ]</span>
           </div>
         </div>
 

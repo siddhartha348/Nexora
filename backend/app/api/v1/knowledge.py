@@ -134,3 +134,4 @@ async def search_approved_knowledge(
         category=query.category,
         limit=query.limit
     )
+

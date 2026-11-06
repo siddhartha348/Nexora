@@ -58,38 +58,67 @@ export function Header({ onOpenSearch }: HeaderProps) {
   ];
 
   return (
-    <header 
-      className={`sticky top-0 z-40 w-full transition-all duration-200 border-b ${
-        scrolled 
-          ? 'glass-panel border-slate-border/80 shadow-glass py-2.5' 
-          : 'bg-obsidian/80 backdrop-blur-md border-transparent py-3.5'
-      }`}
-    >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-4">
-        
-        {/* Clickable Brand Logo */}
-        <Link 
-          to="/" 
-          className="flex items-center gap-3 select-none group"
-          aria-label="NEXORA Home"
-        >
-          <div className="w-9 h-9 rounded-xl bg-glacial/15 border border-glacial/40 flex items-center justify-center text-glacial group-hover:shadow-glass-glow group-hover:border-glacial transition-all">
-            <ShieldCheck className="w-5 h-5 text-glacial stroke-[2]" />
-          </div>
-          <div>
-            <div className="flex items-center gap-2">
-              <span className="font-extrabold tracking-wider text-base text-slate-text uppercase">
-                NEXORA
-              </span>
-              <span className="text-[9px] tracking-wider uppercase px-1.5 py-0.5 rounded bg-glacial/15 text-glacial font-mono border border-glacial/30">
-                Code Nexus
-              </span>
+    <header className="sticky top-0 z-40 w-full transition-all duration-200">
+      {/* Cybercore HUD Telemetry Status Ticker */}
+      <div className="w-full bg-cyber-dark/95 border-b border-cyber-border/70 py-1 px-4 sm:px-6 lg:px-8 text-[10px] font-mono text-slate-muted flex items-center justify-between overflow-x-auto select-none backdrop-blur-md">
+        <div className="flex items-center gap-3">
+          <span className="flex items-center gap-1.5 text-cyber-cyan font-semibold">
+            <span className="w-1.5 h-1.5 rounded-full bg-cyber-cyan animate-pulse shadow-cyber-cyan" />
+            SYS_CORE // ARMORED
+          </span>
+          <span className="hidden sm:inline text-slate-tertiary/60">•</span>
+          <span className="hidden sm:inline text-slate-muted">DEFENSE_PROTOCOL: EVIDENCE_FIRST</span>
+          <span className="hidden md:inline text-slate-tertiary/60">•</span>
+          <span className="hidden md:inline text-slate-muted">GUARDIANS: 6 ACTIVE</span>
+          <span className="hidden lg:inline text-slate-tertiary/60">•</span>
+          <span className="hidden lg:inline text-cyber-amber">AD_RECALL: LIVE</span>
+        </div>
+        <div className="flex items-center gap-3 shrink-0">
+          <span className="text-cyber-green text-[9px] px-1.5 py-0.5 rounded border border-cyber-green/40 bg-cyber-green/10 uppercase tracking-wider">
+            RAG: CHROMADB
+          </span>
+          <span className="text-glacial text-[9px] hidden sm:inline">
+            LATENCY: 14MS
+          </span>
+          <span className="text-slate-tertiary text-[9px] font-mono">
+            PINNACLE
+          </span>
+        </div>
+      </div>
+
+      <div 
+        className={`w-full transition-all duration-200 border-b ${
+          scrolled 
+            ? 'glass-panel border-cyber-border shadow-cyber-panel py-2.5' 
+            : 'bg-obsidian-900/90 backdrop-blur-md border-slate-border/50 py-3'
+        }`}
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-4">
+          
+          {/* Clickable Brand Logo */}
+          <Link 
+            to="/" 
+            className="flex items-center gap-3 select-none group"
+            aria-label="NEXORA Home"
+          >
+            <div className="w-9 h-9 rounded-xl bg-cyber-panel border border-cyber-cyan/40 flex items-center justify-center text-cyber-cyan group-hover:shadow-cyber-cyan group-hover:border-cyber-cyan transition-all relative overflow-hidden">
+              <div className="absolute inset-0 bg-cyber-cyan/10 opacity-0 group-hover:opacity-100 transition-opacity" />
+              <ShieldCheck className="w-5 h-5 text-cyber-cyan stroke-[2.2] relative z-10" />
             </div>
-            <p className="text-[10px] text-slate-muted tracking-tight font-mono">
-              Brand Governance
-            </p>
-          </div>
-        </Link>
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="font-extrabold tracking-wider text-base text-slate-text uppercase group-hover:text-cyber-cyan transition-colors">
+                  NEXORA
+                </span>
+                <span className="text-[9px] tracking-wider uppercase px-1.5 py-0.5 rounded bg-cyber-cyan/15 text-cyber-cyan font-mono border border-cyber-cyan/30">
+                  CYBERCORE
+                </span>
+              </div>
+              <p className="text-[10px] text-slate-muted tracking-tight font-mono">
+                AI Brand Governance
+              </p>
+            </div>
+          </Link>
 
         {/* Desktop Navigation Links */}
         <nav className="hidden lg:flex items-center gap-1">
@@ -204,6 +233,7 @@ export function Header({ onOpenSearch }: HeaderProps) {
           </button>
         </div>
       </div>
+    </div>
 
       {/* Mobile Drawer */}
       {mobileMenuOpen && (

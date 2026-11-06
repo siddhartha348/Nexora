@@ -594,3 +594,4 @@ class KnowledgeService:
                     ))
 
         return results[:limit]
+

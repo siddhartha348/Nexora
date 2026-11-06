@@ -6,6 +6,7 @@
   :root {
     --bg-primary: #050707;
     --accent-primary: #A0C0D0;
+    --cyber-cyan: #56D4E8;
     --surface-dark: #0A1012;
     --surface-card: #10191D;
     --text-primary: #EDF4F6;
@@ -19,84 +20,250 @@
   html {
     color-scheme: dark;
     background-color: #050707;
+    background-image: 
+      radial-gradient(ellipse 80% 50% at 50% -20%, rgba(86, 212, 232, 0.08), transparent 70%),
+      radial-gradient(circle at 10% 40%, rgba(160, 192, 208, 0.04), transparent 40%),
+      radial-gradient(circle at 90% 70%, rgba(86, 212, 232, 0.04), transparent 40%);
+    background-attachment: fixed;
   }
 
-  /* Custom scrollbar for glassmorphic dark theme */
+  /* Custom scrollbar for cybercore dark theme */
   ::-webkit-scrollbar {
     width: 6px;
     height: 6px;
   }
   ::-webkit-scrollbar-track {
-    background: #050707;
+    background: #030708;
+    border-left: 1px solid rgba(86, 212, 232, 0.08);
   }
   ::-webkit-scrollbar-thumb {
     background: #18242A;
-    border-radius: 9999px;
+    border: 1px solid rgba(160, 192, 208, 0.2);
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: #72838A;
+    background: #56D4E8;
+    box-shadow: 0 0 10px rgba(86, 212, 232, 0.5);
   }
 
-  /* Accessible focus indicators */
+  /* Accessible focus indicators with cybercore neon outline */
   *:focus-visible {
     outline: none;
-    ring-offset-width: 2px;
-    box-shadow: 0 0 0 2px #050707, 0 0 0 4px #A0C0D0;
+    box-shadow: 0 0 0 1px #050707, 0 0 0 3px #56D4E8, 0 0 12px rgba(86, 212, 232, 0.4);
   }
 }
 
 @layer components {
-  /* Premium Dark Glassmorphism */
+  /* ========================================================
+     CYBERCORE DESIGN SYSTEM UTILITIES
+     ======================================================== */
+
+  /* Cyber Grid Background Matrix */
+  .cyber-grid {
+    background-size: 36px 36px;
+    background-image: 
+      linear-gradient(to right, rgba(160, 192, 208, 0.04) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(160, 192, 208, 0.04) 1px, transparent 1px);
+  }
+
+  .cyber-grid-dense {
+    background-size: 20px 20px;
+    background-image: 
+      linear-gradient(to right, rgba(86, 212, 232, 0.05) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(86, 212, 232, 0.05) 1px, transparent 1px);
+  }
+
+  /* Cyber Scanline Overlay */
+  .cyber-scanline {
+    position: relative;
+    overflow: hidden;
+  }
+  .cyber-scanline::after {
+    content: " ";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(
+      rgba(18, 16, 16, 0) 50%, 
+      rgba(0, 0, 0, 0.25) 50%
+    );
+    background-size: 100% 4px;
+    z-index: 2;
+    opacity: 0.35;
+  }
+
+  /* Chamfered Tactical Corner Polygon Clips */
+  .clip-cyber {
+    clip-path: polygon(
+      0 0, 
+      calc(100% - 14px) 0, 
+      100% 14px, 
+      100% 100%, 
+      14px 100%, 
+      0 calc(100% - 14px)
+    );
+  }
+
+  .clip-cyber-sm {
+    clip-path: polygon(
+      0 0, 
+      calc(100% - 8px) 0, 
+      100% 8px, 
+      100% 100%, 
+      8px 100%, 
+      0 calc(100% - 8px)
+    );
+  }
+
+  .clip-cyber-btn {
+    clip-path: polygon(
+      8px 0, 
+      100% 0, 
+      100% calc(100% - 8px), 
+      calc(100% - 8px) 100%, 
+      0 100%, 
+      0 8px
+    );
+  }
+
+  /* Tactical HUD Brackets & Frames */
+  .cyber-frame {
+    position: relative;
+    border: 1px solid rgba(86, 212, 232, 0.15);
+    background: rgba(7, 13, 15, 0.75);
+    backdrop-filter: blur(16px);
+  }
+
+  .cyber-frame::before {
+    content: "";
+    position: absolute;
+    top: -1px;
+    left: -1px;
+    width: 8px;
+    height: 8px;
+    border-top: 2px solid #56D4E8;
+    border-left: 2px solid #56D4E8;
+    pointer-events: none;
+  }
+
+  .cyber-frame::after {
+    content: "";
+    position: absolute;
+    bottom: -1px;
+    right: -1px;
+    width: 8px;
+    height: 8px;
+    border-bottom: 2px solid #56D4E8;
+    border-right: 2px solid #56D4E8;
+    pointer-events: none;
+  }
+
+  /* Cyber Glass Panel with Top Neon Laser Beam */
   .glass-panel {
-    background: rgba(10, 16, 18, 0.75);
+    position: relative;
+    background: rgba(10, 16, 18, 0.85);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
-    border: 1px solid rgba(160, 192, 208, 0.12);
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    border: 1px solid rgba(86, 212, 232, 0.14);
+    box-shadow: 0 10px 35px -5px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(86, 212, 232, 0.2);
+  }
+
+  .glass-panel-glow {
+    position: relative;
+  }
+  .glass-panel-glow::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 10%;
+    right: 10%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #56D4E8, transparent);
+    opacity: 0.8;
   }
 
   .glass-card {
-    background: rgba(16, 25, 29, 0.65);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(160, 192, 208, 0.08);
-    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+    background: rgba(16, 25, 29, 0.7);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid rgba(160, 192, 208, 0.1);
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   .glass-card:hover {
-    border-color: rgba(160, 192, 208, 0.22);
-    box-shadow: 0 0 25px -5px rgba(160, 192, 208, 0.1);
+    border-color: rgba(86, 212, 232, 0.35);
+    box-shadow: 0 0 25px -4px rgba(86, 212, 232, 0.18), inset 0 0 15px -3px rgba(86, 212, 232, 0.05);
+    transform: translateY(-1px);
   }
 
+  /* Cyber Input Styling */
   .glass-input {
-    background: rgba(10, 16, 18, 0.85);
+    background: rgba(7, 13, 15, 0.9);
     border: 1px solid rgba(114, 131, 138, 0.35);
     color: #EDF4F6;
     transition: all 0.2s ease;
   }
 
   .glass-input:focus {
-    border-color: #A0C0D0;
-    box-shadow: 0 0 0 1px #A0C0D0, 0 0 15px -3px rgba(160, 192, 208, 0.25);
+    border-color: #56D4E8;
+    box-shadow: 0 0 0 1px #56D4E8, 0 0 16px -2px rgba(86, 212, 232, 0.3);
   }
 
-  /* Restrained Glow accents */
+  /* Cyber Glow Accents */
   .glow-glacial {
-    box-shadow: 0 0 25px -5px rgba(160, 192, 208, 0.2);
+    box-shadow: 0 0 25px -5px rgba(86, 212, 232, 0.25);
+  }
+
+  .glow-cyan {
+    box-shadow: 0 0 25px -3px rgba(86, 212, 232, 0.4);
   }
 
   .glow-critical {
-    box-shadow: 0 0 25px -5px rgba(227, 111, 112, 0.25);
+    box-shadow: 0 0 25px -4px rgba(255, 77, 77, 0.35);
   }
 
   .glow-warning {
-    box-shadow: 0 0 25px -5px rgba(217, 174, 104, 0.25);
+    box-shadow: 0 0 25px -4px rgba(245, 158, 11, 0.35);
   }
 
   .glow-success {
-    box-shadow: 0 0 25px -5px rgba(130, 185, 160, 0.25);
+    box-shadow: 0 0 25px -4px rgba(0, 240, 168, 0.35);
+  }
+
+  /* Tactical Telemetry Label */
+  .cyber-telemetry {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  /* Cyber HUD Corner crosshairs */
+  .cyber-crosshair {
+    position: relative;
+  }
+  .cyber-crosshair::before {
+    content: "+";
+    position: absolute;
+    top: 3px;
+    left: 4px;
+    font-family: monospace;
+    font-size: 10px;
+    color: rgba(86, 212, 232, 0.4);
+    pointer-events: none;
+  }
+  .cyber-crosshair::after {
+    content: "+";
+    position: absolute;
+    bottom: 3px;
+    right: 4px;
+    font-family: monospace;
+    font-size: 10px;
+    color: rgba(86, 212, 232, 0.4);
+    pointer-events: none;
   }
 }
+
 
 /* Reduced motion support */
 @media (prefers-reduced-motion: reduce) {

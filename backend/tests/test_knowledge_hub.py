@@ -210,3 +210,4 @@ def test_version_replacement_and_diff(auth_context):
     modified_preds = [m["predicate"] for m in diff_data["modified_facts"]]
     # Should detect modified battery and/or warranty
     assert "battery_life" in modified_preds or "warranty_period" in modified_preds
+

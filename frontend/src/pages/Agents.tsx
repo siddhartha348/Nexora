@@ -122,19 +122,22 @@ export function Agents() {
 
       {/* The 6 Guardians Deep Dive */}
       <div className="space-y-12">
-        {guardians.map((g) => (
-          <div key={g.id} id={g.id} className="rounded-3xl glass-panel border border-slate-border p-6 sm:p-8 space-y-6">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-border/50">
+        {guardians.map((g, idx) => (
+          <div key={g.id} id={g.id} className="rounded-xl glass-panel border border-cyber-border/70 p-6 sm:p-8 space-y-6 cyber-frame shadow-cyber-panel relative group">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-cyber-border/40">
               <div className="flex items-center gap-3.5">
-                <div className="p-3 rounded-2xl bg-obsidian-800 border border-slate-border">
+                <div className="p-3 rounded-xl bg-obsidian-850 border border-cyber-border/60 shadow-sm">
                   {g.icon}
                 </div>
                 <div>
-                  <h3 className="text-xl font-bold text-slate-text">{g.name}</h3>
+                  <div className="flex items-center gap-2">
+                    <h3 className="text-xl font-bold text-slate-text">{g.name}</h3>
+                    <span className="text-[10px] font-mono text-cyber-cyan/70 uppercase">// CORE_NODE_0{idx + 1}</span>
+                  </div>
                   <p className="text-xs text-glacial font-mono">{g.pillar}</p>
                 </div>
               </div>
-              <Badge variant="mono" size="sm">asyncio concurrency</Badge>
+              <Badge variant="cyber" size="sm">[ ASYNCIO CONCURRENCY // LIVE ]</Badge>
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
