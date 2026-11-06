@@ -6,7 +6,8 @@ import {
   Check, 
   Trash2, 
   Sliders, 
-  Key
+  Key,
+  RefreshCw
 } from 'lucide-react';
 import { Card, CardHeader, CardContent } from '../../components/ui/Card';
 import { Button } from '../../components/ui/Button';
@@ -16,7 +17,7 @@ import { Badge } from '../../components/ui/Badge';
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from '../../components/ui/Table';
 import { Modal } from '../../components/ui/Modal';
 import { useAuth, type UserRole } from '../../context/AuthContext';
-import { apiRequest } from '../../services/api';
+import { apiRequest, AuditApi } from '../../services/api';
 import { useToast } from '../../components/ui/Toast';
 import { SEO } from '../../components/common/SEO';
 
@@ -65,6 +66,23 @@ export function OrganizationSettings() {
 
   const isAdmin = hasRole(['ADMIN']);
 
+  // Audit Logs State
+  const [auditLogs, setAuditLogs] = useState<any[]>([]);
+  const [logsLoading, setLogsLoading] = useState(false);
+
+  const fetchLogs = async () => {
+    if (!isAdmin) return;
+    try {
+      setLogsLoading(true);
+      const res = await AuditApi.listLogs();
+      setAuditLogs(res.logs || []);
+    } catch {
+      // ignore
+    } finally {
+      setLogsLoading(false);
+    }
+  };
+
   const loadOrgData = async () => {
     if (!user) return;
     try {
@@ -77,6 +95,7 @@ export function OrganizationSettings() {
 
       const memberList = await apiRequest<Member[]>(`/organizations/${orgData.id}/members`);
       setMembers(memberList);
+      fetchLogs();
     } catch (err: any) {
       toast.critical("Failed to load organisation", err.message);
     } finally {
@@ -374,6 +393,48 @@ export function OrganizationSettings() {
               </Table>
             </CardContent>
           </Card>
+          {/* Immutable Audit Trail Section (ADMIN Only) */}
+          {isAdmin && (
+            <Card className="mt-8">
+              <CardHeader
+                title="Immutable Governance Audit Trail"
+                description="Tamper-evident record of all administrative, knowledge approval, review, and recall operations"
+                action={
+                  <Button variant="outline" size="sm" onClick={fetchLogs} className="gap-1.5 h-7 text-[11px]">
+                    <RefreshCw className={`w-3 h-3 ${logsLoading ? 'animate-spin' : ''}`} />
+                    Refresh Logs
+                  </Button>
+                }
+              />
+              <CardContent>
+                <div className="border border-slate-border/50 rounded-lg overflow-hidden bg-obsidian-950 font-mono text-xs">
+                  <div className="max-h-72 overflow-y-auto divide-y divide-slate-border/40">
+                    {auditLogs.length === 0 ? (
+                      <div className="p-6 text-center text-slate-muted">No audit events recorded yet.</div>
+                    ) : (
+                      auditLogs.map((log: any, idx: number) => (
+                        <div key={idx} className="p-3 hover:bg-obsidian-900 transition-colors flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                          <div className="space-y-0.5">
+                            <div className="flex items-center gap-2">
+                              <span className="font-bold text-glacial">{log.action}</span>
+                              <span className="text-[10px] text-slate-tertiary">[{log.resource_type || 'system'}]</span>
+                            </div>
+                            <div className="text-[10px] text-slate-muted">
+                              Actor ID: <span className="text-slate-text">{log.user_id || 'System Daemon'}</span>
+                            </div>
+                          </div>
+                          <div className="text-[10px] text-slate-tertiary sm:text-right shrink-0">
+                            {new Date(log.timestamp).toLocaleString()}
+                          </div>
+                        </div>
+                      ))
+                    )}
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          )}
+
         </div>
 
       </div>

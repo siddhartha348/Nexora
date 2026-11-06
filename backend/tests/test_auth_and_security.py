@@ -23,24 +23,24 @@ def test_health_check():
 
 def test_registration_success():
     payload = {
-        "email": "lead.architect@pinnacle.gov",
+        "email": "lead.architect@nexora.internal",
         "password": "SecurePassword123!",
-        "full_name": "Vadlapudi Siddhartha",
-        "organization_name": "Team PINNACLE"
+        "full_name": "Platform Administrator",
+        "organization_name": "AuraTech Global"
     }
     response = client.post("/api/v1/auth/register", json=payload)
     assert response.status_code == 201
     data = response.json()
-    assert data["email"] == "lead.architect@pinnacle.gov"
+    assert data["email"] == "lead.architect@nexora.internal"
     assert data["role"] == "ADMIN"
-    assert data["organization_name"] == "Team PINNACLE"
+    assert data["organization_name"] == "AuraTech Global"
     assert "access_token" in data
     # Verify HttpOnly cookie was set
     assert "nexora_access_token" in response.cookies
 
 def test_duplicate_registration_fails():
     payload = {
-        "email": "lead.architect@pinnacle.gov",
+        "email": "lead.architect@nexora.internal",
         "password": "SecurePassword123!",
         "full_name": "Duplicate User",
         "organization_name": "Another Org"
@@ -70,18 +70,18 @@ def test_invalid_passwords_rejected():
 
 def test_login_success():
     payload = {
-        "email": "lead.architect@pinnacle.gov",
+        "email": "lead.architect@nexora.internal",
         "password": "SecurePassword123!"
     }
     response = client.post("/api/v1/auth/login", json=payload)
     assert response.status_code == 200
     data = response.json()
-    assert data["email"] == "lead.architect@pinnacle.gov"
+    assert data["email"] == "lead.architect@nexora.internal"
     assert "access_token" in data
 
 def test_login_invalid_password():
     payload = {
-        "email": "lead.architect@pinnacle.gov",
+        "email": "lead.architect@nexora.internal",
         "password": "WrongPassword999!"
     }
     response = client.post("/api/v1/auth/login", json=payload)
@@ -223,7 +223,7 @@ def test_cross_organisation_access_isolation():
 
 def test_password_reset_flow():
     # 1. Request password reset
-    forgot_res = client.post("/api/v1/auth/forgot-password", json={"email": "lead.architect@pinnacle.gov"})
+    forgot_res = client.post("/api/v1/auth/forgot-password", json={"email": "lead.architect@nexora.internal"})
     assert forgot_res.status_code == 200
     reset_token = forgot_res.json().get("reset_token")
     assert reset_token is not None
@@ -237,14 +237,14 @@ def test_password_reset_flow():
 
     # 3. Old password should fail
     old_login = client.post("/api/v1/auth/login", json={
-        "email": "lead.architect@pinnacle.gov",
+        "email": "lead.architect@nexora.internal",
         "password": "SecurePassword123!"
     })
     assert old_login.status_code == 401
 
     # 4. New password should succeed
     new_login = client.post("/api/v1/auth/login", json={
-        "email": "lead.architect@pinnacle.gov",
+        "email": "lead.architect@nexora.internal",
         "password": "NewSecurePassword456!"
     })
     assert new_login.status_code == 200

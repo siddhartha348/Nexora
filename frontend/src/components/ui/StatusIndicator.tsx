@@ -9,78 +9,72 @@ export interface StatusIndicatorProps {
   label?: string;
   size?: 'sm' | 'md' | 'lg';
   showIcon?: boolean;
-  pulse?: boolean;
   className?: string;
 }
 
+/**
+ * Strict accessibility rule: Never use colour alone to indicate severity.
+ * Always renders an explicit icon + descriptive text label.
+ */
 export const StatusIndicator: React.FC<StatusIndicatorProps> = ({
   level,
   label,
   size = 'md',
   showIcon = true,
-  pulse = true,
   className,
 }) => {
   const config = {
     RED: {
-      color: 'text-status-critical',
-      bg: 'bg-status-critical/10',
-      border: 'border-status-critical/30',
-      dot: 'bg-status-critical',
-      glow: 'shadow-status-critical',
-      defaultLabel: 'Critical Contradiction',
+      color: 'text-white',
+      bg: 'bg-severity-red',
+      border: 'border-ink',
+      defaultLabel: 'RED // ACTION REQUIRED',
       icon: AlertCircle,
     },
     YELLOW: {
-      color: 'text-status-warning',
-      bg: 'bg-status-warning/10',
-      border: 'border-status-warning/30',
-      dot: 'bg-status-warning',
-      glow: 'shadow-status-warning',
-      defaultLabel: 'Warning / Inconsistency',
+      color: 'text-ink',
+      bg: 'bg-accent-yellow',
+      border: 'border-ink',
+      defaultLabel: 'YELLOW // CAUTION',
       icon: AlertTriangle,
     },
     GREEN: {
-      color: 'text-status-success',
-      bg: 'bg-status-success/10',
-      border: 'border-status-success/30',
-      dot: 'bg-status-success',
-      glow: 'shadow-status-success',
-      defaultLabel: 'Compliant Check',
+      color: 'text-white',
+      bg: 'bg-severity-green',
+      border: 'border-ink',
+      defaultLabel: 'GREEN // NO CRITICAL ISSUES DETECTED',
       icon: CheckCircle2,
     },
     UNVERIFIABLE: {
-      color: 'text-slate-muted',
-      bg: 'bg-obsidian-700/60',
-      border: 'border-slate-border',
-      dot: 'bg-slate-muted',
-      glow: '',
-      defaultLabel: 'Unverifiable Claim',
+      color: 'text-ink',
+      bg: 'bg-surface',
+      border: 'border-ink',
+      defaultLabel: 'UNVERIFIABLE CLAIM',
       icon: HelpCircle,
     },
     NEUTRAL: {
-      color: 'text-slate-muted',
-      bg: 'bg-obsidian-700/40',
-      border: 'border-slate-border',
-      dot: 'bg-slate-muted',
-      glow: '',
-      defaultLabel: 'Pending',
+      color: 'text-ink',
+      bg: 'bg-paper',
+      border: 'border-ink',
+      defaultLabel: 'PENDING AUDIT',
       icon: HelpCircle,
     },
   }[level];
 
   const sizeClasses = {
-    sm: 'text-xs px-2.5 py-0.5 gap-1.5',
-    md: 'text-xs px-3 py-1 gap-2 font-medium',
-    lg: 'text-sm px-4 py-1.5 gap-2.5 font-semibold',
+    sm: 'text-[11px] px-2 py-0.5 gap-1.5 rounded-[4px]',
+    md: 'text-xs px-2.5 py-1 gap-2 rounded-[4px] font-bold',
+    lg: 'text-sm px-3.5 py-1.5 gap-2.5 rounded-[6px] font-bold',
   }[size];
 
   const Icon = config.icon;
 
   return (
     <div
+      role="status"
+      aria-label={label || config.defaultLabel}
       className={cn(
-        "inline-flex items-center rounded-none border-2 select-none shadow-neo-sm font-mono font-bold tracking-wider",
+        "inline-flex items-center border-2 select-none shadow-neo-sm font-sans tracking-wide",
         config.bg,
         config.border,
         config.color,
@@ -88,17 +82,8 @@ export const StatusIndicator: React.FC<StatusIndicatorProps> = ({
         className
       )}
     >
-      <div className="relative flex items-center justify-center">
-        <span className={cn("w-2 h-2 rounded-full", config.dot)} />
-        {pulse && (level === 'RED' || level === 'YELLOW') && (
-          <span className={cn("absolute w-2 h-2 rounded-full animate-ping opacity-75", config.dot)} />
-        )}
-      </div>
-
-      {showIcon && <Icon className="w-3.5 h-3.5 shrink-0" />}
-
+      {showIcon && <Icon className="w-4 h-4 shrink-0 stroke-[2.5]" aria-hidden="true" />}
       <span>{label || config.defaultLabel}</span>
     </div>
   );
 };
-

@@ -290,7 +290,7 @@ export function Recall() {
             <CardHeader title="Walled Social Networks" description="Future Integration Scope" />
             <CardContent>
               <p className="text-slate-muted leading-relaxed">
-                Private social media or restricted ad platforms require authenticated partner APIs and user uploads (planned for post-hackathon enterprise modules).
+                Private social media or restricted ad platforms require authenticated partner APIs and user uploads (planned for enterprise release modules).
               </p>
             </CardContent>
           </Card>

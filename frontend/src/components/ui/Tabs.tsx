@@ -27,10 +27,10 @@ export const Tabs: React.FC<TabsProps> = ({
     <div
       role="tablist"
       className={cn(
-        "flex items-center gap-1.5 p-1 select-none",
-        variant === 'pills' && "bg-obsidian-800/80 rounded-xl border border-slate-border",
-        variant === 'glass' && "glass-panel rounded-xl p-1.5",
-        variant === 'underline' && "border-b border-slate-border w-full gap-6 px-0",
+        "flex items-center gap-2 p-1.5 select-none font-sans overflow-x-auto",
+        variant === 'pills' && "bg-surface rounded-[6px] border-3 border-ink shadow-neo-sm",
+        variant === 'glass' && "bg-surface rounded-[6px] border-3 border-ink shadow-neo",
+        variant === 'underline' && "border-b-3 border-ink w-full gap-4 px-0",
         className
       )}
     >
@@ -45,10 +45,11 @@ export const Tabs: React.FC<TabsProps> = ({
               aria-selected={isActive}
               onClick={() => onChange(tab.id)}
               className={cn(
-                "pb-3 pt-1 text-sm font-medium transition-all relative flex items-center gap-2",
+                "pb-2.5 pt-1 text-sm font-bold transition-all relative flex items-center gap-2 border-b-3 -mb-[3px] cursor-pointer",
+                "focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-primary focus-visible:ring-offset-2",
                 isActive
-                  ? "text-glacial border-b-2 border-glacial font-semibold"
-                  : "text-slate-muted hover:text-slate-text"
+                  ? "text-primary border-primary"
+                  : "text-text-muted border-transparent hover:text-ink hover:border-ink/40"
               )}
             >
               {tab.icon && <span className="shrink-0">{tab.icon}</span>}
@@ -56,8 +57,8 @@ export const Tabs: React.FC<TabsProps> = ({
               {tab.count !== undefined && (
                 <span
                   className={cn(
-                    "text-xs px-1.5 py-0.5 rounded-full font-mono",
-                    isActive ? "bg-glacial/20 text-glacial" : "bg-obsidian-700 text-slate-muted"
+                    "text-xs px-2 py-0.5 rounded-[4px] border-2 border-ink font-mono font-bold",
+                    isActive ? "bg-primary text-white" : "bg-paper text-ink"
                   )}
                 >
                   {tab.count}
@@ -74,10 +75,11 @@ export const Tabs: React.FC<TabsProps> = ({
             aria-selected={isActive}
             onClick={() => onChange(tab.id)}
             className={cn(
-              "flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-medium transition-all duration-200",
+              "flex items-center gap-2 px-3.5 py-1.5 rounded-[4px] text-xs font-bold transition-all duration-120 cursor-pointer border-2",
+              "focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-primary focus-visible:ring-offset-2",
               isActive
-                ? "bg-glacial/20 text-glacial shadow-sm border border-glacial/30 font-semibold"
-                : "text-slate-muted hover:text-slate-text hover:bg-obsidian-700/50"
+                ? "bg-primary text-white border-ink shadow-neo-sm"
+                : "bg-transparent text-ink border-transparent hover:bg-paper hover:border-ink/30"
             )}
           >
             {tab.icon && <span className="shrink-0">{tab.icon}</span>}
@@ -85,8 +87,8 @@ export const Tabs: React.FC<TabsProps> = ({
             {tab.count !== undefined && (
               <span
                 className={cn(
-                  "text-[10px] px-1.5 py-0.5 rounded-full font-mono",
-                  isActive ? "bg-glacial/30 text-glacial" : "bg-obsidian-700 text-slate-muted"
+                  "text-[10px] px-1.5 py-0.2 rounded-[3px] font-mono font-bold border",
+                  isActive ? "bg-white text-ink border-ink" : "bg-paper text-ink border-ink/40"
                 )}
               >
                 {tab.count}

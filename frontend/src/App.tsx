@@ -35,6 +35,10 @@ import { VerifyEmail } from './pages/auth/VerifyEmail';
 import { OrganizationSettings } from './pages/app/OrganizationSettings';
 import { KnowledgeHub } from './pages/app/KnowledgeHub';
 import { AdAudit } from './pages/app/AdAudit';
+import { AdRegistry } from './pages/app/AdRegistry';
+import { RecallWorkspace } from './pages/app/RecallWorkspace';
+import { BrandMemory } from './pages/app/BrandMemory';
+import { Dashboard } from './pages/app/Dashboard';
 
 function MainApp() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -52,7 +56,7 @@ function MainApp() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-obsidian text-slate-text flex flex-col selection:bg-glacial selection:text-obsidian-950 relative">
+    <div className="min-h-dvh bg-obsidian text-slate-text flex flex-col selection:bg-glacial selection:text-obsidian-950 relative overflow-x-hidden max-w-[100vw]">
       {/* Top Reading Progress Bar */}
       <ScrollProgress />
 
@@ -60,7 +64,7 @@ function MainApp() {
       <Header onOpenSearch={() => setIsSearchOpen(true)} />
 
       {/* Dynamic Content Routes */}
-      <main className="flex-1 relative z-0">
+      <main className="flex-1 relative z-0 page-transition">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
@@ -85,6 +89,22 @@ function MainApp() {
 
           {/* Protected Application Routes */}
           <Route
+            path="/app/dashboard"
+            element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/app/registry"
+            element={
+              <ProtectedRoute>
+                <AdRegistry />
+              </ProtectedRoute>
+            }
+          />
+          <Route
             path="/app/audits"
             element={
               <ProtectedRoute>
@@ -97,6 +117,22 @@ function MainApp() {
             element={
               <ProtectedRoute>
                 <KnowledgeHub />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/app/recall"
+            element={
+              <ProtectedRoute>
+                <RecallWorkspace />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/app/memory"
+            element={
+              <ProtectedRoute>
+                <BrandMemory />
               </ProtectedRoute>
             }
           />

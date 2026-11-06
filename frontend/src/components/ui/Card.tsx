@@ -10,25 +10,23 @@ export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
 export const Card: React.FC<CardProps> = ({
   className,
   variant = 'default',
-  glow = false,
-  cyberHeaderLine = false,
   children,
   ...props
 }) => {
   const variantStyles = {
-    default: "bg-obsidian-800 border-2 border-slate-border text-slate-text shadow-neo",
-    elevated: "bg-obsidian-750 border-2 border-slate-border shadow-neo-lg text-slate-text",
-    interactive: "bg-obsidian-800 border-2 border-slate-border hover:border-glacial hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-neo-lg cursor-pointer transition-all duration-150 text-slate-text",
-    critical: "bg-status-critical-bg border-2 border-status-critical text-slate-text shadow-neo-critical",
-    warning: "bg-status-warning-bg border-2 border-status-warning text-slate-text shadow-neo-warning",
-    success: "bg-status-success-bg border-2 border-status-success text-slate-text shadow-neo-success",
-    cyber: "bg-obsidian-850 border-2 border-glacial text-slate-text shadow-neo-accent",
+    default: "bg-surface border-3 border-ink text-ink shadow-neo",
+    elevated: "bg-surface border-3 border-ink shadow-neo-lg text-ink",
+    interactive: "bg-surface border-3 border-ink hover:-translate-x-[2px] hover:-translate-y-[2px] hover:shadow-neo-lg cursor-pointer transition-all duration-150 text-ink",
+    critical: "bg-surface border-3 border-severity-red text-ink shadow-neo-critical",
+    warning: "bg-surface border-3 border-severity-yellow text-ink shadow-neo-warning",
+    success: "bg-surface border-3 border-severity-green text-ink shadow-neo-success",
+    cyber: "bg-surface border-3 border-primary text-ink shadow-neo-primary",
   };
 
   return (
     <div
       className={cn(
-        "rounded-md p-5 relative transition-all duration-150",
+        "rounded-[6px] p-5 relative transition-all duration-150 font-sans",
         variantStyles[variant],
         className
       )}
@@ -55,15 +53,15 @@ export const CardHeader: React.FC<CardHeaderProps> = ({
   children,
   ...props
 }) => (
-  <div className={cn("flex items-start justify-between gap-4 mb-4 pb-3 border-b-2 border-slate-border/40", className)} {...props}>
+  <div className={cn("flex items-start justify-between gap-4 mb-4 pb-3 border-b-2 border-ink/20", className)} {...props}>
     <div>
       {telemetry && (
-        <span className="text-[10px] font-mono tracking-widest text-glacial font-bold uppercase block mb-1">
+        <span className="text-[10px] font-mono tracking-widest text-primary font-bold uppercase block mb-1">
           // {telemetry}
         </span>
       )}
-      {title && <h3 className="text-base font-bold text-slate-text tracking-tight flex items-center gap-2">{title}</h3>}
-      {description && <p className="text-xs text-slate-muted mt-0.5">{description}</p>}
+      {title && <h3 className="text-base font-bold text-ink tracking-tight flex items-center gap-2">{title}</h3>}
+      {description && <p className="text-xs text-text-muted mt-0.5">{description}</p>}
       {children}
     </div>
     {action && <div className="shrink-0">{action}</div>}
@@ -81,7 +79,7 @@ export const CardFooter: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
 }) => (
   <div
     className={cn(
-      "mt-5 pt-3 border-t-2 border-slate-border flex items-center justify-between text-xs text-slate-muted font-mono",
+      "mt-5 pt-3 border-t-2 border-ink/20 flex items-center justify-between text-xs text-text-muted font-mono",
       className
     )}
     {...props}

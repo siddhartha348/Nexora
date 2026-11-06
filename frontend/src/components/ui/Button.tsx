@@ -1,6 +1,5 @@
 import React, { forwardRef } from 'react';
 import { cn } from '../../utils/cn';
-import { Loader2 } from 'lucide-react';
 
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'danger' | 'success' | 'cyber';
@@ -26,23 +25,23 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     ...props 
   }, ref) => {
 
-    const baseStyles = "relative inline-flex items-center justify-center font-bold border-2 transition-all duration-150 select-none disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none active:translate-x-[2px] active:translate-y-[2px] active:shadow-none";
+    const baseStyles = "relative inline-flex items-center justify-center font-bold border-3 border-ink transition-all duration-120 select-none font-sans cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none hover:not(:disabled):-translate-x-[2px] hover:not(:disabled):-translate-y-[2px] hover:not(:disabled):shadow-neo-sm active:not(:disabled):translate-x-[2px] active:not(:disabled):translate-y-[2px] active:not(:disabled):shadow-none focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-primary focus-visible:ring-offset-2";
 
     const sizeStyles = {
-      sm: "text-xs px-3 py-1.5 gap-1.5 rounded shadow-neo-sm",
-      md: "text-sm px-4 py-2 gap-2 rounded shadow-neo",
-      lg: "text-base px-6 py-2.5 gap-2.5 rounded shadow-neo-lg",
-      icon: "p-2 aspect-square rounded shadow-neo-sm",
+      sm: "text-xs px-3 py-1.5 gap-1.5 rounded-[4px] shadow-neo-sm",
+      md: "text-sm px-4 py-2 gap-2 rounded-[6px] shadow-neo",
+      lg: "text-base px-6 py-2.5 gap-2.5 rounded-[6px] shadow-neo-lg",
+      icon: "p-2 aspect-square rounded-[6px] shadow-neo-sm",
     };
 
     const variantStyles = {
-      primary: "bg-glacial text-obsidian-950 border-black hover:bg-glacial-300",
-      secondary: "bg-obsidian-800 text-slate-text border-slate-border hover:bg-obsidian-750 hover:border-glacial",
-      outline: "bg-obsidian text-slate-text border-slate-border hover:bg-obsidian-800 hover:border-glacial",
-      ghost: "bg-transparent text-slate-muted border-transparent hover:text-slate-text hover:bg-obsidian-800 active:shadow-none",
-      danger: "bg-status-critical text-obsidian-950 border-black hover:bg-red-400 shadow-neo",
-      success: "bg-status-success text-obsidian-950 border-black hover:bg-emerald-300 shadow-neo",
-      cyber: "bg-obsidian-900 text-glacial border-glacial hover:bg-glacial hover:text-obsidian-950 font-mono text-xs uppercase",
+      primary: "bg-primary text-white hover:bg-primary-hover",
+      secondary: "bg-surface text-ink hover:bg-paper",
+      outline: "bg-transparent text-ink hover:bg-surface",
+      ghost: "bg-transparent text-ink border-transparent shadow-none hover:bg-surface hover:border-ink hover:shadow-neo-sm",
+      danger: "bg-severity-red text-white hover:brightness-105",
+      success: "bg-severity-green text-white hover:brightness-105",
+      cyber: "bg-surface text-primary border-primary hover:bg-primary hover:text-white font-mono text-xs uppercase",
     };
 
     return (
@@ -56,7 +55,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         {cyberBracket && <span className="font-mono text-xs mr-1 opacity-70">[</span>}
 
         {isLoading ? (
-          <Loader2 className="w-4 h-4 animate-spin text-current" />
+          <span className="inline-block w-4 h-4 border-2 border-current bg-current animate-pulse mr-1.5 shrink-0" aria-label="Loading..." />
         ) : leftIcon ? (
           <span className="shrink-0">{leftIcon}</span>
         ) : null}

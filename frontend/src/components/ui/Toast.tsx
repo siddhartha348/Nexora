@@ -59,7 +59,7 @@ export const ToastProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       {children}
       <div 
         aria-live="polite"
-        className="fixed bottom-5 right-5 z-50 flex flex-col gap-2.5 max-w-sm w-full pointer-events-none"
+        className="fixed bottom-5 right-5 z-50 flex flex-col gap-3 max-w-sm w-full pointer-events-none font-sans"
       >
         {toasts.map((item) => (
           <ToastCard key={item.id} item={item} onDismiss={() => removeToast(item.id)} />
@@ -80,32 +80,28 @@ export const useToast = () => {
 const ToastCard: React.FC<{ item: ToastItem; onDismiss: () => void }> = ({ item, onDismiss }) => {
   const config = {
     success: {
-      border: 'border-status-success/30',
-      bg: 'bg-obsidian-800/95',
+      tag: 'SUCCESS',
+      tagBg: 'bg-severity-green text-white',
       icon: CheckCircle2,
-      iconColor: 'text-status-success',
-      glow: 'shadow-status-success',
+      iconColor: 'text-severity-green',
     },
     warning: {
-      border: 'border-status-warning/30',
-      bg: 'bg-obsidian-800/95',
+      tag: 'WARNING',
+      tagBg: 'bg-accent-yellow text-ink',
       icon: AlertTriangle,
-      iconColor: 'text-status-warning',
-      glow: 'shadow-status-warning',
+      iconColor: 'text-accent-yellow',
     },
     critical: {
-      border: 'border-status-critical/30',
-      bg: 'bg-obsidian-800/95',
+      tag: 'CRITICAL',
+      tagBg: 'bg-severity-red text-white',
       icon: AlertCircle,
-      iconColor: 'text-status-critical',
-      glow: 'shadow-status-critical',
+      iconColor: 'text-severity-red',
     },
     info: {
-      border: 'border-glacial/30',
-      bg: 'bg-obsidian-800/95',
+      tag: 'INFO',
+      tagBg: 'bg-primary text-white',
       icon: Info,
-      iconColor: 'text-glacial',
-      glow: 'shadow-glass-glow',
+      iconColor: 'text-primary',
     },
   }[item.type];
 
@@ -115,26 +111,29 @@ const ToastCard: React.FC<{ item: ToastItem; onDismiss: () => void }> = ({ item,
     <div
       role="alert"
       className={cn(
-        "pointer-events-auto flex items-start gap-3 p-4 border-2 shadow-neo transition-all bg-obsidian-850",
-        "animate-in slide-in-from-right-5 fade-in-0 duration-200",
-        config.border
+        "pointer-events-auto flex items-start gap-3 p-4 border-3 border-ink rounded-[6px] shadow-neo-lg transition-all bg-surface",
+        "animate-in slide-in-from-right-5 fade-in-0 duration-150"
       )}
     >
-      <Icon className={cn("w-5 h-5 shrink-0 mt-0.5", config.iconColor)} />
+      <Icon className={cn("w-5 h-5 shrink-0 mt-0.5 stroke-[2.5]", config.iconColor)} aria-hidden="true" />
       <div className="flex-1 min-w-0">
-        <h4 className="text-xs font-semibold text-slate-text">{item.title}</h4>
+        <div className="flex items-center gap-2 mb-1">
+          <span className={cn("text-[9px] font-bold px-1.5 py-0.2 rounded-[3px] border border-ink uppercase", config.tagBg)}>
+            {config.tag}
+          </span>
+          <h4 className="text-xs font-bold text-ink truncate">{item.title}</h4>
+        </div>
         {item.message && (
-          <p className="text-xs text-slate-muted mt-0.5 leading-relaxed">{item.message}</p>
+          <p className="text-xs text-text-muted leading-relaxed break-words">{item.message}</p>
         )}
       </div>
       <button
         onClick={onDismiss}
-        className="text-slate-tertiary hover:text-slate-text transition-colors p-1 -mr-1 -mt-1 rounded-md"
+        className="text-text-muted hover:text-ink transition-colors p-1 -mr-1 -mt-1 rounded-[4px] cursor-pointer"
         aria-label="Dismiss notification"
       >
-        <X className="w-4 h-4" />
+        <X className="w-4 h-4 stroke-[2.5]" />
       </button>
     </div>
   );
 };
-

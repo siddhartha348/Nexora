@@ -124,7 +124,27 @@ class AdvertisementService:
 
             # 5. Store Completed Report and update Job
             now = datetime.now(timezone.utc).isoformat()
-            await db["advertisement_reports"].insert_one(report.model_dump())
+            report_dict = report.model_dump()
+            await db["advertisement_reports"].insert_one(report_dict)
+            await db["consolidated_reports"].insert_one(report_dict)
+
+            # Register in advertisements inventory
+            await db["advertisements"].update_one(
+                {"id": job_id},
+                {"$set": {
+                    "id": job_id,
+                    "organization_id": organization_id,
+                    "title": job_doc.get("title", "Untitled Ad"),
+                    "source_type": job_doc.get("source_type", "URL"),
+                    "report_id": report.report_id,
+                    "overall_severity": report.overall_severity,
+                    "approval_status": "DRAFT",
+                    "extracted_data": extracted,
+                    "created_at": job_doc.get("created_at", now),
+                    "updated_at": now
+                }},
+                upsert=True
+            )
 
             await db["advertisement_jobs"].update_one(
                 {"id": job_id},
@@ -132,7 +152,8 @@ class AdvertisementService:
                     "status": JobStatus.COMPLETED.value,
                     "progress": 100,
                     "completed_at": now,
-                    "report": report.model_dump()
+                    "report_id": report.report_id,
+                    "report": report_dict
                 }}
             )
 

@@ -74,6 +74,22 @@ def decode_jwt_token(token: str, expected_type: str = "access") -> Dict[str, Any
     except jwt.InvalidTokenError as e:
         raise jwt.InvalidTokenError(f"Invalid token: {str(e)}")
 
+def sanitize_mongo_input(data: Any) -> Any:
+    """
+    Recursively strips MongoDB operator injection keys (starting with $ or containing .)
+    from query and input payloads.
+    """
+    if isinstance(data, dict):
+        clean_dict = {}
+        for key, value in data.items():
+            if isinstance(key, str) and (key.startswith("$") or "." in key):
+                continue
+            clean_dict[key] = sanitize_mongo_input(value)
+        return clean_dict
+    elif isinstance(data, list):
+        return [sanitize_mongo_input(item) for item in data]
+    return data
+
 # Rate limiting store for brute-force defense
 class LoginRateLimiter:
     def __init__(self, max_attempts: int = 5, lockout_minutes: int = 15):

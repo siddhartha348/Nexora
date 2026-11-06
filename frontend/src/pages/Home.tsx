@@ -73,9 +73,9 @@ export function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center space-y-6">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded bg-obsidian-850 border-2 border-slate-border text-xs text-glacial font-bold shadow-neo font-mono">
             <span className="w-2 h-2 rounded-full bg-status-success border border-black" />
-            <span>[ NEO-BRUTALIST GOVERNANCE ] • Team PINNACLE</span>
+            <span>[ NEO-BRUTALIST GOVERNANCE ]</span>
             <span className="text-slate-border">•</span>
-            <span className="text-slate-muted">Problem by Inkloom AI</span>
+            <span className="text-slate-muted">Autonomous Multi-Agent Verification</span>
           </div>
 
           <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold text-slate-text tracking-tight max-w-5xl mx-auto leading-[1.1]">
@@ -397,19 +397,19 @@ export function Home() {
               Ready to Secure Your Brand Governance?
             </h2>
             <p className="text-xs sm:text-sm text-slate-muted leading-relaxed">
-              Connect with Team PINNACLE to schedule an architecture walkthrough or explore the Code Nexus Hackathon implementation.
+              Connect with our technical team to schedule an architecture walkthrough or explore enterprise deployment.
             </p>
           </div>
 
           <div className="flex flex-wrap items-center justify-center gap-4">
             <Link to="/contact">
               <Button variant="primary" size="lg" rightIcon={<ArrowRight className="w-4 h-4" />}>
-                Connect With Team PINNACLE
+                Connect With Engineering
               </Button>
             </Link>
             <Link to="/about">
               <Button variant="outline" size="lg">
-                About the Team & Submission
+                About NEXORA Architecture
               </Button>
             </Link>
           </div>

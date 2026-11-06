@@ -34,8 +34,8 @@ export function FAQ() {
     {
       id: "faq-recall-2",
       category: "Advertisement Recall",
-      question: "Why was Advertisement Recall included in the current development scope?",
-      answer: "While the original Round 1 roadmap conceptualized Recall for Round 3, Team PINNACLE made a deliberate architectural decision to bring the Advertisement Recall Engine into the active build because pre-publication review and post-publication recall are two halves of the same governance loop. Without recall, advertisements inevitably suffer from factual aging over time."
+      question: "Why is the Advertisement Recall Engine an essential component of the platform?",
+      answer: "Pre-publication review and post-publication recall are two halves of the same governance loop. Advertisements inevitably suffer from factual aging over time as product specifications, warranties, or pricing models evolve. By pairing pre-publication auditing with proactive post-publication recall, NEXORA ensures continuous brand integrity across the entire creative lifecycle."
     },
     {
       id: "faq-hub-1",
@@ -111,7 +111,7 @@ export function FAQ() {
       {/* Accordion List */}
       {filteredFaqs.length === 0 ? (
         <div className="p-8 text-center text-xs text-slate-muted rounded-2xl border border-dashed border-slate-border">
-          No FAQs match your search query "<span className="text-glacial">{searchQuery}</span>". Try another term or contact Team PINNACLE directly.
+          No FAQs match your search query "<span className="text-glacial">{searchQuery}</span>". Try another term or contact our technical team directly.
         </div>
       ) : (
         <Accordion items={filteredFaqs} allowMultiple={true} />
@@ -121,11 +121,11 @@ export function FAQ() {
       <div className="rounded-2xl glass-panel border border-slate-border p-6 sm:p-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
         <div>
           <h4 className="text-sm font-semibold text-slate-text">Have a question not listed here?</h4>
-          <p className="text-slate-muted mt-0.5">Team PINNACLE is available to discuss custom enterprise deployment and hackathon specifics.</p>
+          <p className="text-slate-muted mt-0.5">Our technical team is available to discuss custom enterprise deployment and integrations.</p>
         </div>
         <Link to="/contact" className="shrink-0">
           <Button variant="primary" size="sm" rightIcon={<ArrowRight className="w-3.5 h-3.5" />}>
-            Ask Team PINNACLE
+            Contact Technical Team
           </Button>
         </Link>
       </div>

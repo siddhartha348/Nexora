@@ -16,16 +16,16 @@ export const Skeleton: React.FC<SkeletonProps> = ({
   ...props
 }) => {
   const variantStyles = {
-    text: "h-4 rounded-md w-3/4",
+    text: "h-4 rounded-[4px] w-3/4",
     circular: "rounded-full aspect-square",
-    rectangular: "rounded-xl",
+    rectangular: "rounded-[6px]",
   }[variant];
 
   return (
     <div
       aria-hidden="true"
       className={cn(
-        "relative overflow-hidden bg-obsidian-700/80 border-2 border-obsidian-800 animate-pulse",
+        "relative overflow-hidden bg-surface border-2 border-ink neo-skeleton",
         variantStyles,
         className
       )}
@@ -40,7 +40,7 @@ export const Skeleton: React.FC<SkeletonProps> = ({
 };
 
 export const CardSkeleton: React.FC<{ className?: string }> = ({ className }) => (
-  <div className={cn("p-5 rounded-2xl glass-card space-y-4", className)}>
+  <div className={cn("p-5 rounded-[6px] neo-card space-y-4", className)}>
     <div className="flex items-center gap-3">
       <Skeleton variant="circular" className="w-10 h-10" />
       <div className="space-y-2 flex-1">
@@ -51,8 +51,7 @@ export const CardSkeleton: React.FC<{ className?: string }> = ({ className }) =>
     <Skeleton variant="rectangular" className="w-full h-24" />
     <div className="flex justify-between items-center pt-2">
       <Skeleton variant="text" className="w-20 h-4" />
-      <Skeleton variant="rectangular" className="w-16 h-8 rounded-lg" />
+      <Skeleton variant="rectangular" className="w-16 h-8 rounded-[4px]" />
     </div>
   </div>
 );
-

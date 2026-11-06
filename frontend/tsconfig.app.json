@@ -16,6 +16,13 @@
     "noEmit": true,
     "jsx": "react-jsx",
 
+    /* Path aliases (resolved by Vite at build time) */
+    "paths": {
+      "@/*":      ["./src/*"],
+      "@config/*":["./src/config/*"],
+      "@shared/*":["../shared/*"]
+    },
+
     /* Linting */
     "noUnusedLocals": true,
     "noUnusedParameters": true,

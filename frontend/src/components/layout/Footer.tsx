@@ -34,9 +34,9 @@ export function Footer() {
             <div className="p-3.5 rounded bg-obsidian-850 border-2 border-slate-border text-[11px] space-y-1.5 font-mono shadow-neo-sm">
               <div className="text-glacial font-bold flex items-center gap-1.5">
                 <span className="w-2 h-2 rounded-full bg-status-success border border-black" />
-                Code Nexus Hackathon // Team PINNACLE
+                NEXORA Autonomous Brand Governance
               </div>
-              <div className="text-slate-muted">Problem Provider: <span className="text-slate-text font-bold">Inkloom AI</span></div>
+              <div className="text-slate-muted">Operating Standard: <span className="text-slate-text font-bold">Zero Automated Approval</span></div>
               <div className="text-slate-muted">Architecture: <span className="text-glacial font-bold">Six Specialist Guardians + Risk Arbiter</span></div>
             </div>
           </div>
@@ -78,7 +78,7 @@ export function Footer() {
             </h4>
             <ul className="space-y-2 text-xs">
               <li><Link to="/faq" className="hover:text-glacial transition-colors">Platform FAQ</Link></li>
-              <li><Link to="/about" className="hover:text-glacial transition-colors">Team PINNACLE</Link></li>
+              <li><Link to="/about" className="hover:text-glacial transition-colors">About Architecture</Link></li>
               <li><Link to="/contact" className="hover:text-glacial transition-colors">Contact & Briefing</Link></li>
               <li><Link to="/privacy" className="hover:text-glacial transition-colors">Privacy Policy</Link></li>
               <li><Link to="/terms" className="hover:text-glacial transition-colors">Terms of Governance</Link></li>
@@ -92,9 +92,9 @@ export function Footer() {
         {/* Bottom Bar */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
           <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-6 text-slate-tertiary">
-            <p>© {currentYear} NEXORA. Developed by <strong className="text-slate-text">Team PINNACLE</strong>.</p>
+            <p>© {currentYear} NEXORA. Autonomous Brand Governance Platform.</p>
             <span className="hidden sm:inline">•</span>
-            <p>Vadlapudi Siddhartha • Diviti Sri Vyshnavi • Mokshitha Venati</p>
+            <p>Evidence-Driven • Traceable • Human-Controlled</p>
           </div>
 
           <div className="flex items-center gap-4 text-slate-tertiary">

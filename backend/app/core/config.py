@@ -1,6 +1,7 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
+from pydantic import field_validator, ValidationInfo
 from typing import List, Optional
-import os
+import sys
 
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
@@ -29,6 +30,13 @@ class Settings(BaseSettings):
     GEMINI_API_KEY: Optional[str] = None
     OLLAMA_BASE_URL: str = "http://localhost:11434"
     DEFAULT_AI_PROVIDER: str = "gemini"
+
+    @field_validator("SECRET_KEY")
+    @classmethod
+    def validate_secret_key(cls, v: str, info: ValidationInfo) -> str:
+        if len(v) < 32:
+            raise ValueError("SECRET_KEY must be at least 32 characters long for cryptographic security.")
+        return v
 
     @property
     def cors_origins(self) -> List[str]:

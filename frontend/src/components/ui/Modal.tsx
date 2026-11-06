@@ -51,13 +51,13 @@ export const Modal: React.FC<ModalProps> = ({
 
   return (
     <div 
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 font-sans"
       role="dialog"
       aria-modal="true"
     >
-      {/* Backdrop */}
+      {/* Backdrop with flat solid opacity, no gradient */}
       <div
-        className="fixed inset-0 bg-black/85 transition-opacity duration-150"
+        className="fixed inset-0 bg-ink/75 transition-opacity duration-150"
         onClick={onClose}
         aria-hidden="true"
       />
@@ -66,20 +66,20 @@ export const Modal: React.FC<ModalProps> = ({
       <div
         ref={modalRef}
         className={cn(
-          "relative w-full rounded bg-obsidian-850 shadow-neo-xl border-2 border-slate-border p-6 sm:p-7 z-10",
+          "relative w-full rounded-[6px] bg-surface shadow-neo-xl border-3 border-ink p-6 sm:p-7 z-10",
           "animate-in fade-in-0 duration-150",
           sizeClasses
         )}
       >
-        <div className="flex items-start justify-between gap-4 pb-4 border-b-2 border-slate-border">
+        <div className="flex items-start justify-between gap-4 pb-4 border-b-2 border-ink/20">
           <div>
             {title && (
-              <h2 className="text-lg font-semibold text-slate-text tracking-tight">
+              <h2 className="text-lg sm:text-xl font-bold text-ink tracking-tight">
                 {title}
               </h2>
             )}
             {description && (
-              <p className="text-xs text-slate-muted mt-1">
+              <p className="text-xs text-text-muted mt-1">
                 {description}
               </p>
             )}
@@ -89,18 +89,18 @@ export const Modal: React.FC<ModalProps> = ({
             size="icon"
             onClick={onClose}
             aria-label="Close modal"
-            className="text-slate-muted hover:text-slate-text -mr-2 -mt-2"
+            className="text-ink hover:bg-paper -mr-2 -mt-2"
           >
-            <X className="w-5 h-5" />
+            <X className="w-5 h-5 stroke-[2.5]" />
           </Button>
         </div>
 
-        <div className="py-5 text-sm text-slate-text">
+        <div className="py-5 text-sm text-ink">
           {children}
         </div>
 
         {footer && (
-          <div className="pt-4 border-t border-slate-border/50 flex items-center justify-end gap-3">
+          <div className="pt-4 border-t-2 border-ink/20 flex items-center justify-end gap-3">
             {footer}
           </div>
         )}
@@ -108,4 +108,3 @@ export const Modal: React.FC<ModalProps> = ({
     </div>
   );
 };
-

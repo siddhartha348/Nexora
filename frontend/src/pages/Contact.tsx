@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Send, CheckCircle2, Building } from 'lucide-react';
+import { Send, CheckCircle2, Shield, Mail, Clock, MapPin, Phone } from 'lucide-react';
 import { SectionHeader } from '../components/common/SectionHeader';
 import { Card, CardHeader, CardContent } from '../components/ui/Card';
 import { Input } from '../components/ui/Input';
@@ -7,9 +7,11 @@ import { Select } from '../components/ui/Select';
 import { Button } from '../components/ui/Button';
 import { useToast } from '../components/ui/Toast';
 import { SEO } from '../components/common/SEO';
+import { businessConfig } from '../config/business';
 
 export function Contact() {
   const { toast } = useToast();
+  const { contactEmail, contactPhone, registeredAddress } = businessConfig;
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
@@ -44,22 +46,22 @@ export function Contact() {
     setTimeout(() => {
       setIsSubmitting(false);
       setSubmitted(true);
-      toast.success("Inquiry Dispatched", "Team PINNACLE has received your transmission.");
+      toast.success("Inquiry Dispatched", "NEXORA engineering team has received your transmission.");
     }, 1200);
   };
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-20">
       <SEO
-        title="Contact Team PINNACLE — Code Nexus Inquiry"
-        description="Connect with Team PINNACLE (Vadlapudi Siddhartha, Diviti Sri Vyshnavi, Mokshitha Venati) regarding NEXORA brand governance architecture."
+        title="Contact NEXORA — Enterprise Brand Governance Inquiries"
+        description="Connect with the NEXORA platform team regarding multi-agent brand governance, custom VPC deployments, and Advertisement Recall Engine integration."
       />
 
       <SectionHeader
         badge="Direct Communications"
         title="Connect With"
-        highlight="Team PINNACLE"
-        description="Whether you have questions regarding our six-agent architecture, wish to inspect our Advertisement Recall engine, or want to discuss enterprise brand governance."
+        highlight="NEXORA Engineering"
+        description="Whether you have questions regarding our six-guardian architecture, wish to evaluate our Advertisement Recall engine, or want to discuss enterprise brand governance deployment."
       />
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
@@ -68,8 +70,8 @@ export function Contact() {
         <div className="lg:col-span-7">
           <Card className="border-glacial/30">
             <CardHeader
-              title="Request Architecture Walkthrough"
-              description="Direct submission to Team PINNACLE lead engineers"
+              title="Request Enterprise Consultation"
+              description="Direct submission to NEXORA platform specialists"
             />
             <CardContent>
               {submitted ? (
@@ -79,7 +81,7 @@ export function Contact() {
                   </div>
                   <h3 className="text-lg font-bold text-slate-text">Inquiry Successfully Transmitted</h3>
                   <p className="text-xs text-slate-muted max-w-sm mx-auto leading-relaxed">
-                    Thank you, <strong className="text-slate-text">{form.name}</strong>. Team PINNACLE has logged your inquiry regarding <span className="font-mono text-glacial">{form.inquiryType}</span>. We will follow up directly at <span className="font-mono text-slate-text">{form.email}</span>.
+                    Thank you, <strong className="text-slate-text">{form.name}</strong>. The NEXORA team has logged your inquiry regarding <span className="font-mono text-glacial">{form.inquiryType}</span>. We will follow up directly at <span className="font-mono text-slate-text">{form.email}</span>.
                   </p>
                   <Button
                     variant="outline"
@@ -122,7 +124,7 @@ export function Contact() {
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <Input
                       label="Organisation / Agency"
-                      placeholder="e.g. Inkloom Partner Network"
+                      placeholder="e.g. AuraTech Global"
                       value={form.organisation}
                       onChange={(e) => setForm({ ...form, organisation: e.target.value })}
                     />
@@ -131,10 +133,10 @@ export function Contact() {
                       value={form.inquiryType}
                       onChange={(val) => setForm({ ...form, inquiryType: val })}
                       options={[
-                        { value: 'architecture-briefing', label: 'Architecture & Agent Walkthrough' },
+                        { value: 'architecture-briefing', label: 'Architecture & Guardian Walkthrough' },
                         { value: 'recall-demo', label: 'Advertisement Recall Verification' },
-                        { value: 'code-nexus', label: 'Code Nexus Hackathon Inquiry' },
-                        { value: 'deployment', label: 'Private VPC & Ollama Deployment' },
+                        { value: 'deployment', label: 'Private VPC & On-Premise Deployment' },
+                        { value: 'enterprise-security', label: 'Security & Compliance Specifications' },
                       ]}
                     />
                   </div>
@@ -147,7 +149,7 @@ export function Contact() {
                       rows={4}
                       value={form.message}
                       onChange={(e) => setForm({ ...form, message: e.target.value })}
-                      placeholder="Describe your brand volume, document types, or specific governance questions..."
+                      placeholder="Describe your brand volume, document types, or specific governance requirements..."
                       className="w-full rounded-lg bg-obsidian-800/90 text-sm text-slate-text placeholder:text-slate-tertiary border border-slate-tertiary/30 px-3.5 py-2.5 transition-all duration-200 hover:border-glacial/30 focus:border-glacial focus:ring-1 focus:ring-glacial/40 focus:outline-none"
                     />
                     {errors.message && (
@@ -157,7 +159,7 @@ export function Contact() {
 
                   <div className="pt-2 flex items-center justify-between">
                     <span className="text-[11px] text-slate-tertiary font-mono">
-                      * All fields encrypted & tenant isolated
+                      * All communications encrypted & tenant isolated
                     </span>
                     <Button
                       type="submit"
@@ -179,35 +181,54 @@ export function Contact() {
         <div className="lg:col-span-5 space-y-6">
           <div className="p-6 rounded-2xl glass-panel border border-slate-border space-y-4">
             <h3 className="text-sm font-semibold uppercase tracking-wider text-glacial font-mono">
-              Team PINNACLE Workstream Leads
+              Enterprise Support & Advisory
             </h3>
             <div className="space-y-3 text-xs">
-              <div className="p-3 rounded-xl bg-obsidian-800/80 border border-slate-border/50">
-                <span className="font-semibold text-slate-text block">Vadlapudi Siddhartha</span>
-                <span className="text-slate-muted text-[11px]">AI Intelligence, Multi-Agent Orchestration & Backend</span>
-              </div>
-              <div className="p-3 rounded-xl bg-obsidian-800/80 border border-slate-border/50">
-                <span className="font-semibold text-slate-text block">Diviti Sri Vyshnavi</span>
-                <span className="text-slate-muted text-[11px]">Frontend Platform, UX Design & Brand Memory Precedents</span>
-              </div>
-              <div className="p-3 rounded-xl bg-obsidian-800/80 border border-slate-border/50">
-                <span className="font-semibold text-slate-text block">Mokshitha Venati</span>
-                <span className="text-slate-muted text-[11px]">Visual Intelligence, Knowledge Ingestion & Document OCR</span>
+              {contactEmail && (
+                <div className="p-3 rounded-xl bg-obsidian-800/80 border border-slate-border/50 flex items-start gap-3">
+                  <Mail className="w-4 h-4 text-glacial mt-0.5 shrink-0" />
+                  <div className="min-w-0">
+                    <span className="font-semibold text-slate-text block">Technical Inquiries</span>
+                    <a href={`mailto:${contactEmail}`} className="text-glacial hover:underline font-mono text-[11px] break-all">{contactEmail}</a>
+                  </div>
+                </div>
+              )}
+              {contactPhone && (
+                <div className="p-3 rounded-xl bg-obsidian-800/80 border border-slate-border/50 flex items-start gap-3">
+                  <Phone className="w-4 h-4 text-glacial mt-0.5 shrink-0" />
+                  <div className="min-w-0">
+                    <span className="font-semibold text-slate-text block">Phone</span>
+                    <a href={`tel:${contactPhone}`} className="text-slate-muted hover:text-glacial font-mono text-[11px]">{contactPhone}</a>
+                  </div>
+                </div>
+              )}
+              {registeredAddress && (
+                <div className="p-3 rounded-xl bg-obsidian-800/80 border border-slate-border/50 flex items-start gap-3">
+                  <MapPin className="w-4 h-4 text-glacial mt-0.5 shrink-0" />
+                  <div className="min-w-0">
+                    <span className="font-semibold text-slate-text block">Registered Address</span>
+                    <span className="text-slate-muted text-[11px] break-words">{registeredAddress}</span>
+                  </div>
+                </div>
+              )}
+              <div className="p-3 rounded-xl bg-obsidian-800/80 border border-slate-border/50 flex items-start gap-3">
+                <Clock className="w-4 h-4 text-glacial mt-0.5 shrink-0" />
+                <div>
+                  <span className="font-semibold text-slate-text block">Audit SLA</span>
+                  <span className="text-slate-muted text-[11px]">Sub-minute multi-agent audit response</span>
+                </div>
               </div>
             </div>
           </div>
 
           <div className="p-6 rounded-2xl glass-panel border border-slate-border space-y-3 text-xs text-slate-muted">
             <div className="flex items-center gap-2 text-slate-text font-semibold">
-              <Building className="w-4 h-4 text-glacial" />
-              <span>Hackathon Attribution</span>
+              <Shield className="w-4 h-4 text-glacial" />
+              <span>Platform Integrity</span>
             </div>
             <p>
-              Developed for the <strong className="text-slate-text">Code Nexus Hackathon</strong> under the problem statement provided by <strong className="text-slate-text">Inkloom AI</strong>.
+              NEXORA operates as an on-premise and private cloud brand governance platform. Customer documents, product specifications, and candidate creatives remain within your dedicated organizational partition.
             </p>
-            <div className="pt-2 border-t border-slate-border/40 font-mono text-[11px] text-slate-tertiary">
-              Working Directory: <span className="text-slate-muted">c:\Users\siddh\OneDrive\Desktop\NEXORA _1</span>
-            </div>
           </div>
         </div>
 

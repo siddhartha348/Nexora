@@ -71,3 +71,64 @@ export async function apiRequest<T = any>(
   }
 }
 
+// ==========================================
+// Specialized API Services
+// ==========================================
+
+export const RegistryApi = {
+  list: (params?: { status?: string; channel?: string; severity?: string; search?: string }) => {
+    const searchParams = new URLSearchParams();
+    if (params?.status) searchParams.set('status', params.status);
+    if (params?.channel) searchParams.set('channel', params.channel);
+    if (params?.severity) searchParams.set('severity', params.severity);
+    if (params?.search) searchParams.set('search', params.search);
+    const query = searchParams.toString() ? `?${searchParams.toString()}` : '';
+    return apiRequest<{
+      advertisements: any[];
+      total_count: number;
+      status_counts: Record<string, number>;
+    }>(`/registry${query}`);
+  },
+  getById: (id: string) => apiRequest<any>(`/registry/${id}`),
+  updateStatus: (id: string, status: string, channel?: string) =>
+    apiRequest<any>(`/registry/${id}/status`, {
+      method: 'PATCH',
+      body: JSON.stringify({ status, channel }),
+    }),
+};
+
+export const RecallApi = {
+  listAlerts: (status = 'ALL') =>
+    apiRequest<{ alerts: any[]; total_count: number; counts: Record<string, number> }>(
+      `/recall/alerts?status=${status}`
+    ),
+  getAlertById: (id: string) => apiRequest<any>(`/recall/alerts/${id}`),
+  evaluateSweep: () => apiRequest<any>('/recall/evaluate', { method: 'POST' }),
+  resolveAlert: (alertId: string, action: string, notes?: string) =>
+    apiRequest<any>(`/recall/alerts/${alertId}/resolve`, {
+      method: 'POST',
+      body: JSON.stringify({ action, notes }),
+    }),
+};
+
+export const BrandMemoryApi = {
+  query: (category = 'all', searchQuery = '') => {
+    const params = new URLSearchParams();
+    if (category) params.set('category', category);
+    if (searchQuery) params.set('search', searchQuery);
+    return apiRequest<any[]>(`/reviews/brand-memory/query?${params.toString()}`);
+  },
+};
+
+export const AnalyticsApi = {
+  getOverview: () => apiRequest<any>('/analytics/overview'),
+};
+
+export const AuditApi = {
+  listLogs: (action?: string, limit = 50) => {
+    const params = new URLSearchParams();
+    if (action) params.set('action', action);
+    params.set('limit', limit.toString());
+    return apiRequest<{ logs: any[]; count: number }>(`/audit/logs?${params.toString()}`);
+  },
+};
