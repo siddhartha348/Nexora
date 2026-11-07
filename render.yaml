@@ -2,8 +2,8 @@ services:
   - type: web
     name: nexora-app
     env: python
-    buildCommand: "cd frontend && npm install && npm run build && cd ../backend && pip install -r requirements.txt"
-    startCommand: "cd backend && python -m uvicorn app.main:app --host 0.0.0.0 --port $PORT"
+    buildCommand: "bash build.sh"
+    startCommand: "python -m uvicorn app.main:app --app-dir backend --host 0.0.0.0 --port $PORT"
     envVars:
       - key: PYTHON_VERSION
         value: 3.11.9
@@ -23,3 +23,4 @@ services:
         value: gemini
       - key: MOCK_LLM
         value: "false"
+

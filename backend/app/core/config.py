@@ -54,6 +54,10 @@ class Settings(BaseSettings):
 
     @property
     def cors_origins(self) -> List[str]:
-        return [origin.strip() for origin in self.ALLOWED_ORIGINS.split(",") if origin.strip()]
+        origins = [origin.strip() for origin in self.ALLOWED_ORIGINS.split(",") if origin.strip()]
+        # Allow any *.onrender.com or localhost by default
+        if "*" not in origins and "all" not in [o.lower() for o in origins]:
+            origins.extend(["https://*.onrender.com", "http://localhost:*"])
+        return origins
 
 settings = Settings()
