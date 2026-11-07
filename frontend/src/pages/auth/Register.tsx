@@ -5,7 +5,7 @@ import { Button } from '../../components/ui/Button';
 import { Input } from '../../components/ui/Input';
 import { PasswordInput } from '../../components/ui/PasswordInput';
 import { PasswordStrengthMeter } from '../../components/ui/PasswordStrengthMeter';
-import { Card, CardContent } from '../../components/ui/Card';
+import { CardContent } from '../../components/ui/Card';
 import { useAuth } from '../../context/AuthContext';
 import { useToast } from '../../components/ui/Toast';
 import { SEO } from '../../components/common/SEO';
@@ -67,11 +67,11 @@ export function Register() {
         
         {/* Brand Header */}
         <div className="text-center space-y-2">
-          <div className="w-12 h-12 rounded-2xl bg-glacial/15 border border-glacial/40 flex items-center justify-center text-glacial mx-auto shadow-glass-glow">
-            <ShieldCheck className="w-6 h-6 stroke-[2]" />
+          <div className="w-12 h-12 rounded bg-neo-mint border-3 border-black flex items-center justify-center text-black mx-auto shadow-neo">
+            <ShieldCheck className="w-6 h-6 stroke-[2.5]" />
           </div>
           <h1 className="text-2xl font-extrabold text-slate-text tracking-tight">
-            Create Your <span className="text-glacial">NEXORA</span> Account
+            Create Your <span className="bg-neo-mint px-1.5 py-0.5 rounded border-2 border-black shadow-neo-sm text-black">NEXORA</span> Account
           </h1>
           <p className="text-xs text-slate-muted">
             Establish a new brand workspace or join an existing organisation
@@ -79,8 +79,8 @@ export function Register() {
         </div>
 
         {/* Register Card */}
-        <Card className="border-glacial/30 shadow-glass-glow">
-          <CardContent>
+        <div className="bg-surface border-3 border-black rounded-xl p-6 shadow-neo-lg space-y-4">
+          <CardContent className="p-0">
             {errorMessage && (
               <div className="p-3.5 mb-4 rounded-xl bg-status-critical/15 border border-status-critical/30 text-xs text-status-critical animate-in fade-in-0 duration-150">
                 {errorMessage}
@@ -171,7 +171,7 @@ export function Register() {
               </div>
             </form>
           </CardContent>
-        </Card>
+        </div>
 
         {/* Footer Link */}
         <p className="text-center text-xs text-slate-muted">

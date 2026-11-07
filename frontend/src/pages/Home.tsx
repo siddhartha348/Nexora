@@ -17,7 +17,6 @@ import {
 } from 'lucide-react';
 import { Button } from '../components/ui/Button';
 import { Badge } from '../components/ui/Badge';
-import { Card, CardHeader, CardContent } from '../components/ui/Card';
 import { StatusIndicator } from '../components/ui/StatusIndicator';
 import { SectionHeader } from '../components/common/SectionHeader';
 import { Accordion } from '../components/common/Accordion';
@@ -194,42 +193,46 @@ export function Home() {
 
           {/* Central Product Review Canvas Preview */}
           <div className="pt-10 max-w-5xl mx-auto">
-            <div className="rounded-xl glass-panel border border-cyber-border p-2 sm:p-4 shadow-cyber-panel text-left relative cyber-frame">
-              <div className="flex items-center justify-between pb-3 px-3 border-b border-cyber-border/40 text-xs">
+            <div className="rounded-xl bg-surface border-3 border-black p-2 sm:p-5 shadow-neo-lg text-left relative">
+              <div className="flex items-center justify-between pb-3 px-3 border-b-2 border-black/15 text-xs">
                 <div className="flex items-center gap-2">
-                  <div className="w-2.5 h-2.5 rounded-full bg-status-critical shadow-sm" />
-                  <div className="w-2.5 h-2.5 rounded-full bg-status-warning shadow-sm" />
-                  <div className="w-2.5 h-2.5 rounded-full bg-status-success shadow-sm" />
-                  <span className="ml-2 font-mono text-cyber-cyan text-[11px]">// CANVAS_AUDIT: #AD-AURORA-X2</span>
+                  <span className="w-3 h-3 rounded-full bg-neo-coral border-2 border-black shadow-neo-sm" />
+                  <span className="w-3 h-3 rounded-full bg-neo-yellow border-2 border-black shadow-neo-sm" />
+                  <span className="w-3 h-3 rounded-full bg-neo-mint border-2 border-black shadow-neo-sm" />
+                  <span className="ml-2 font-mono text-slate-text font-bold text-[11px]">// CANVAS_AUDIT: #AD-AURORA-X2</span>
                 </div>
                 <StatusIndicator level="RED" label="1 Critical Contradiction Detected" size="sm" />
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-12 gap-4 p-4 text-xs">
                 {/* Creative Simulation */}
-                <div className="md:col-span-5 p-4 rounded-xl bg-obsidian-900/90 border border-slate-border space-y-3">
-                  <Badge variant="mono" size="sm">[ INGESTED CREATIVE // PDF ]</Badge>
-                  <p className="text-sm font-medium text-slate-text italic border-l-2 border-status-critical pl-3 py-1 font-sans">
+                <div className="md:col-span-5 p-4 rounded-xl bg-surface border-3 border-black space-y-3 shadow-neo-sm">
+                  <span className="px-2 py-0.5 rounded font-mono font-bold text-[10px] bg-neo-pink text-white border-2 border-black shadow-neo-sm">
+                    [ INGESTED CREATIVE // PDF ]
+                  </span>
+                  <p className="text-sm font-semibold text-slate-text italic border-l-3 border-neo-coral pl-3 py-1 font-sans">
                     &quot;Experience Aurora X2: up to 7 days of active battery life with our industry-exclusive 5-year warranty.&quot;
                   </p>
-                  <div className="flex items-center justify-between text-[11px] text-slate-tertiary font-mono pt-2 border-t border-slate-border/40">
+                  <div className="flex items-center justify-between text-[11px] text-slate-muted font-mono pt-2 border-t-2 border-black/10">
                     <span>EXTRACT: PYMUPDF</span>
-                    <span className="text-cyber-cyan">CONFIDENCE: 98.4%</span>
+                    <span className="text-neo-blue font-bold">CONFIDENCE: 98.4%</span>
                   </div>
                 </div>
 
                 {/* Evidence Citation */}
-                <div className="md:col-span-7 p-4 rounded-xl bg-cyber-panel/90 border border-cyber-cyan/40 space-y-3 shadow-sm">
+                <div className="md:col-span-7 p-4 rounded-xl bg-neo-yellow/15 border-3 border-black space-y-3 shadow-neo-sm">
                   <div className="flex items-center justify-between">
-                    <Badge variant="critical" size="sm">Contradiction with Approved Fact</Badge>
-                    <span className="text-[11px] font-mono text-cyber-cyan">RAG_REF: #SPEC-DOC-409</span>
+                    <span className="px-2 py-0.5 rounded font-mono font-bold text-[10px] bg-neo-coral text-white border-2 border-black shadow-neo-sm">
+                      Contradiction with Approved Fact
+                    </span>
+                    <span className="text-[11px] font-mono text-slate-text font-bold">RAG_REF: #SPEC-DOC-409</span>
                   </div>
-                  <p className="text-xs text-slate-muted leading-relaxed">
-                    <strong className="text-slate-text">Fact Guardian Evidence:</strong> Aurora X2 specification sheet <span className="font-mono text-cyber-cyan">v3.2, p.4</span> states battery life is <strong className="text-slate-text">up to 5 days</strong> and standard warranty is <strong className="text-slate-text">2 years</strong>.
+                  <p className="text-xs text-slate-text leading-relaxed">
+                    <strong className="text-black">Fact Guardian Evidence:</strong> Aurora X2 specification sheet <span className="font-mono font-bold text-neo-blue">v3.2, p.4</span> states battery life is <strong className="text-black bg-neo-yellow px-1 border border-black">up to 5 days</strong> and standard warranty is <strong className="text-black bg-neo-yellow px-1 border border-black">2 years</strong>.
                   </p>
-                  <div className="p-2.5 rounded-lg bg-obsidian-950/90 border border-cyber-border">
-                    <span className="text-[10px] uppercase font-mono text-slate-tertiary block">// Suggested Approved Revision:</span>
-                    <span className="text-xs text-status-success font-medium font-mono">
+                  <div className="p-3 rounded-lg bg-surface border-2 border-black shadow-neo-sm">
+                    <span className="text-[10px] uppercase font-mono text-slate-muted font-bold block">// Suggested Approved Revision:</span>
+                    <span className="text-xs text-black font-extrabold font-mono">
                       &quot;Experience Aurora X2: up to 5 days of active battery life with our 2-year warranty.&quot;
                     </span>
                   </div>
@@ -252,43 +255,46 @@ export function Home() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {workflowSteps.map((step, idx) => {
-            const cardColors = [
-              'bg-neo-yellow/10 border-neo-yellow',
-              'bg-neo-mint/10 border-neo-mint',
-              'bg-neo-purple/10 border-neo-purple',
-              'bg-neo-coral/10 border-neo-coral',
-              'bg-neo-pink/10 border-neo-pink',
-              'bg-neo-blue/10 border-neo-blue',
+            const solidBackgrounds = [
+              'bg-[#FFE600] text-black', // Neo Yellow
+              'bg-[#2CEAA3] text-black', // Neo Mint
+              'bg-[#A368FC] text-white', // Neo Purple
+              'bg-[#FF5E5B] text-white', // Neo Coral
+              'bg-[#FF6EA7] text-white', // Neo Pink
+              'bg-[#2F4BFF] text-white', // Neo Blue
             ];
-            const badgeColors = [
-              'bg-neo-yellow text-black',
-              'bg-neo-mint text-black',
-              'bg-neo-purple text-white',
-              'bg-neo-coral text-white',
-              'bg-neo-pink text-white',
-              'bg-neo-blue text-white',
+            const badgeStyles = [
+              'bg-black text-[#FFE600]',
+              'bg-black text-[#2CEAA3]',
+              'bg-black text-[#A368FC]',
+              'bg-black text-[#FF5E5B]',
+              'bg-black text-[#FF6EA7]',
+              'bg-black text-[#2F4BFF]',
             ];
+            const iconBg = 'bg-white text-black border-2 border-black';
 
             return (
               <div 
                 key={step.num}
-                className={`p-6 rounded-xl border-3 border-black shadow-neo hover:translate-x-0.5 hover:translate-y-0.5 transition-all bg-surface ${cardColors[idx % cardColors.length]}`}
+                className={`p-6 rounded-xl border-3 border-black shadow-neo-lg hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all ${solidBackgrounds[idx % solidBackgrounds.length]}`}
               >
-                <div className="flex items-center justify-between pb-3 border-b-2 border-black/20">
-                  <span className="font-mono text-xs font-extrabold text-slate-tertiary">STAGE_{step.num}</span>
-                  <span className={`px-2 py-0.5 rounded text-[11px] font-mono font-bold border-2 border-black shadow-neo-sm ${badgeColors[idx % badgeColors.length]}`}>
+                <div className="flex items-center justify-between pb-3 border-b-3 border-black">
+                  <span className="font-mono text-xs font-black tracking-wider uppercase opacity-90">
+                    STAGE_{step.num}
+                  </span>
+                  <span className={`px-2.5 py-0.5 rounded text-[11px] font-mono font-black border-2 border-black shadow-neo-sm ${badgeStyles[idx % badgeStyles.length]}`}>
                     {step.actor}
                   </span>
                 </div>
-                <div className="pt-3 space-y-2">
-                  <h3 className="font-bold text-base text-slate-text">{step.title}</h3>
-                  <p className="text-xs text-slate-muted leading-relaxed">
+                <div className="pt-4 space-y-2.5">
+                  <h3 className="font-extrabold text-lg tracking-tight leading-snug">{step.title}</h3>
+                  <p className="text-xs leading-relaxed font-medium opacity-90">
                     {step.desc}
                   </p>
                 </div>
-                <div className="pt-4 mt-4 border-t-2 border-black/10 flex items-center justify-between text-[11px] font-mono text-slate-tertiary">
-                  <span>STEP // {step.num}</span>
-                  <div className="p-1.5 rounded bg-surface border-2 border-black shadow-neo-sm">
+                <div className="pt-4 mt-4 border-t-3 border-black flex items-center justify-between text-[11px] font-mono font-bold">
+                  <span className="opacity-80">STEP // {step.num}</span>
+                  <div className={`p-2 rounded shadow-neo-sm ${iconBg}`}>
                     {step.icon}
                   </div>
                 </div>
@@ -317,37 +323,30 @@ export function Home() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {problems.map((prob, idx) => {
-            const colors = [
-              'bg-neo-coral/10 border-neo-coral',
-              'bg-neo-yellow/15 border-neo-yellow',
-              'bg-neo-pink/15 border-neo-pink',
-              'bg-neo-purple/15 border-neo-purple',
-              'bg-neo-blue/10 border-neo-blue',
-              'bg-neo-mint/15 border-neo-mint',
+            const solidCardColors = [
+              'bg-[#FF5E5B] text-white', // Neo Coral
+              'bg-[#FFE600] text-black', // Neo Yellow
+              'bg-[#FF6EA7] text-white', // Neo Pink
+              'bg-[#A368FC] text-white', // Neo Purple
+              'bg-[#2CEAA3] text-black', // Neo Mint
+              'bg-[#2F4BFF] text-white', // Neo Blue
             ];
-            const badges = [
-              'bg-neo-coral text-white',
-              'bg-neo-yellow text-black',
-              'bg-neo-pink text-white',
-              'bg-neo-purple text-white',
-              'bg-neo-blue text-white',
-              'bg-neo-mint text-black',
-            ];
+            const solidBadge = 'bg-black text-white';
 
             return (
               <div 
                 key={idx} 
-                className={`p-6 rounded-xl border-3 border-black shadow-neo hover:translate-x-0.5 hover:translate-y-0.5 transition-all bg-surface ${colors[idx % colors.length]}`}
+                className={`p-6 rounded-xl border-3 border-black shadow-neo-lg hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all ${solidCardColors[idx % solidCardColors.length]}`}
               >
-                <div className="flex items-center justify-between pb-3 border-b-2 border-black/20">
-                  <span className="font-mono text-xs font-extrabold text-slate-tertiary">RISK_VECTOR_0{idx + 1}</span>
-                  <span className={`px-2 py-0.5 rounded text-[10px] font-mono font-bold border-2 border-black shadow-neo-sm ${badges[idx % badges.length]}`}>
+                <div className="flex items-center justify-between pb-3 border-b-3 border-black">
+                  <span className="font-mono text-xs font-black uppercase opacity-90">RISK_VECTOR_0{idx + 1}</span>
+                  <span className={`px-2 py-0.5 rounded text-[10px] font-mono font-black border-2 border-black shadow-neo-sm ${solidBadge}`}>
                     [{prob.badge}]
                   </span>
                 </div>
-                <div className="pt-3 space-y-2">
-                  <h3 className="font-bold text-base text-slate-text">{prob.title}</h3>
-                  <p className="text-xs text-slate-muted leading-relaxed">
+                <div className="pt-3.5 space-y-2">
+                  <h3 className="font-extrabold text-lg tracking-tight leading-snug">{prob.title}</h3>
+                  <p className="text-xs leading-relaxed font-medium opacity-90">
                     {prob.desc}
                   </p>
                 </div>
@@ -417,25 +416,42 @@ export function Home() {
         />
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {agents.map((agent, idx) => (
-            <Card key={idx} variant="cyber" className="hover:border-cyber-cyan transition-all">
-              <CardHeader 
-                title={agent.name}
-                description={agent.role}
-                telemetry={`GUARD_CORE_0${idx + 1}`}
-                action={<div className="p-2 rounded-lg bg-obsidian-850 border border-cyber-border/60 shadow-sm">{agent.icon}</div>}
-              />
-              <CardContent className="space-y-3">
-                <p className="text-xs text-slate-muted leading-relaxed">
+          {agents.map((agent, idx) => {
+            const agentColors = [
+              'bg-[#FFE600] text-black', // Fact Guardian
+              'bg-[#FF6EA7] text-white', // Voice Guardian
+              'bg-[#2CEAA3] text-black', // Terminology Guardian
+              'bg-[#FF5E5B] text-white', // Claims Guardian
+              'bg-[#A368FC] text-white', // Visual Guardian
+              'bg-[#2F4BFF] text-white', // Accessibility Guardian
+            ];
+
+            return (
+              <div 
+                key={idx} 
+                className={`p-6 rounded-xl border-3 border-black shadow-neo-lg hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all space-y-4 ${agentColors[idx % agentColors.length]}`}
+              >
+                <div className="flex items-center justify-between pb-3 border-b-3 border-black">
+                  <div>
+                    <h3 className="font-black text-lg tracking-tight leading-snug">{agent.name}</h3>
+                    <p className="text-xs font-mono font-bold opacity-85 mt-0.5">{agent.role}</p>
+                  </div>
+                  <div className="p-2.5 rounded bg-white text-black border-2 border-black shadow-neo-sm shrink-0">
+                    {agent.icon}
+                  </div>
+                </div>
+                <p className="text-xs leading-relaxed font-medium opacity-90">
                   {agent.desc}
                 </p>
-                <div className="pt-2 border-t border-cyber-border/40 flex items-center justify-between text-[11px] font-mono">
-                  <span className="text-slate-tertiary">TELEMETRY_SPEC:</span>
-                  <span className="text-cyber-cyan">{agent.status}</span>
+                <div className="pt-3 border-t-3 border-black flex items-center justify-between text-[11px] font-mono font-bold">
+                  <span className="opacity-80">VERDICT PROTOCOL:</span>
+                  <span className="bg-black text-white px-2 py-0.5 rounded border border-black shadow-neo-sm text-[10px]">
+                    {agent.status}
+                  </span>
                 </div>
-              </CardContent>
-            </Card>
-          ))}
+              </div>
+            );
+          })}
         </div>
 
         <div className="text-center pt-2">
@@ -457,29 +473,35 @@ export function Home() {
         />
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <Card>
-            <CardHeader title="Review Memory (Precedents)" description="Created automatically from authorized human reviewer actions" />
-            <CardContent className="space-y-3 text-xs text-slate-muted">
-              <p>
-                When a reviewer accepts or rejects a suggestion (for example, allowing a festive wording variation during a holiday campaign), the decision is stored as a <strong>Review Precedent</strong> in ChromaDB.
-              </p>
-              <div className="p-3 rounded-xl bg-obsidian-800 border border-slate-border font-mono text-[11px] text-slate-text">
-                Role: Contextual guidance provided to later reviewers facing similar phrasing.
-              </div>
-            </CardContent>
-          </Card>
+          <div className="p-8 rounded-xl bg-[#2CEAA3] text-black border-3 border-black shadow-neo-lg space-y-4">
+            <div className="flex items-center justify-between pb-3 border-b-3 border-black">
+              <h3 className="font-black text-xl tracking-tight">Review Memory (Precedents)</h3>
+              <span className="bg-black text-[#2CEAA3] px-2.5 py-0.5 rounded text-[11px] font-mono font-bold border-2 border-black">
+                CONTEXTUAL
+              </span>
+            </div>
+            <p className="text-xs leading-relaxed font-semibold">
+              When a reviewer accepts or rejects a suggestion (for example, allowing a festive wording variation during a holiday campaign), the decision is stored as a <strong>Review Precedent</strong> in ChromaDB.
+            </p>
+            <div className="p-3.5 rounded bg-white text-black border-2 border-black font-mono text-xs font-bold shadow-neo-sm">
+              Role: Contextual guidance provided to later reviewers facing similar phrasing.
+            </div>
+          </div>
 
-          <Card>
-            <CardHeader title="Official Brand Knowledge" description="Immutable governance baseline strictly gated by Administrators" />
-            <CardContent className="space-y-3 text-xs text-slate-muted">
-              <p>
-                Official knowledge comprises versioned guidelines, verified facts, and formal policies. Reviewers cannot alter this baseline during a review.
-              </p>
-              <div className="p-3 rounded-xl bg-obsidian-800 border border-slate-border font-mono text-[11px] text-glacial">
-                Role: The only authoritative evidence used to verify claims and calculate severity.
-              </div>
-            </CardContent>
-          </Card>
+          <div className="p-8 rounded-xl bg-[#FFE600] text-black border-3 border-black shadow-neo-lg space-y-4">
+            <div className="flex items-center justify-between pb-3 border-b-3 border-black">
+              <h3 className="font-black text-xl tracking-tight">Official Brand Knowledge</h3>
+              <span className="bg-black text-[#FFE600] px-2.5 py-0.5 rounded text-[11px] font-mono font-bold border-2 border-black">
+                IMMUTABLE
+              </span>
+            </div>
+            <p className="text-xs leading-relaxed font-semibold">
+              Official knowledge comprises versioned guidelines, verified facts, and formal policies. Reviewers cannot alter this baseline during a review.
+            </p>
+            <div className="p-3.5 rounded bg-white text-black border-2 border-black font-mono text-xs font-bold shadow-neo-sm">
+              Role: The only authoritative evidence used to verify claims and calculate severity.
+            </div>
+          </div>
         </div>
       </section>
 
@@ -504,9 +526,9 @@ export function Home() {
 
       {/* Contact CTA */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="rounded-3xl glass-panel border border-glacial/40 p-8 sm:p-12 text-center space-y-6 shadow-glass-glow relative overflow-hidden">
+        <div className="rounded-2xl bg-surface border-3 border-black p-8 sm:p-12 text-center space-y-6 shadow-neo-xl relative overflow-hidden">
           <div className="max-w-2xl mx-auto space-y-3">
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-text">
+            <h2 className="text-2xl sm:text-4xl font-extrabold text-slate-text tracking-tight">
               Ready to Secure Your Brand Governance?
             </h2>
             <p className="text-xs sm:text-sm text-slate-muted leading-relaxed">
@@ -516,12 +538,12 @@ export function Home() {
 
           <div className="flex flex-wrap items-center justify-center gap-4">
             <Link to="/contact">
-              <Button variant="primary" size="lg" rightIcon={<ArrowRight className="w-4 h-4" />}>
+              <Button variant="primary" size="lg" className="bg-neo-blue text-white shadow-neo border-3 border-black" rightIcon={<ArrowRight className="w-4 h-4" />}>
                 Connect With Engineering
               </Button>
             </Link>
             <Link to="/about">
-              <Button variant="outline" size="lg">
+              <Button variant="outline" size="lg" className="border-3 border-black shadow-neo bg-surface">
                 About NEXORA Architecture
               </Button>
             </Link>
