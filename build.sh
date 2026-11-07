@@ -8,10 +8,13 @@ pip install -r backend/requirements.txt
 
 echo "=== [2/4] Installing Node dependencies ==="
 cd frontend
-npm ci || npm install
+# Clean install ensuring optional platform-specific native binaries (e.g. linux-x64) are downloaded
+rm -rf node_modules package-lock.json
+npm install
 
 echo "=== [3/4] Building Vite Frontend ==="
 npm run build
 cd ..
 
 echo "=== [4/4] Build complete! ==="
+
