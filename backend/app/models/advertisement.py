@@ -71,6 +71,7 @@ class AdvertisementJob(BaseModel):
     status: JobStatus = JobStatus.PENDING
     progress: int = 0
     created_at: str
+    created_by: Optional[str] = None
     completed_at: Optional[str] = None
     extracted_data: Optional[Dict[str, Any]] = None
     report: Optional[ConsolidatedReport] = None

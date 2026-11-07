@@ -47,7 +47,7 @@ export function Register() {
         invite_code: hasInvite ? inviteCode.trim() : undefined
       });
       toast.success("Account Created", "Your organisation and administrator session are active.");
-      navigate('/app/settings/organization');
+      navigate('/app/dashboard');
     } catch (err: any) {
       setErrorMessage(err.message || "Registration failed. Verify your details.");
       toast.critical("Registration Error", err.message || "Failed to create account.");

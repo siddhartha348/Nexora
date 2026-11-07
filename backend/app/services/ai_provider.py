@@ -40,6 +40,13 @@ class AIProviderService:
         Execute LLM query across configured provider (Gemini -> Ollama -> Heuristic)
         with enforced prompt-injection safety boundaries.
         """
+        if settings.MOCK_LLM:
+            return fallback_data or {
+                "status": "SUCCESS",
+                "analysis": "Deterministic mock LLM output. No external model was called.",
+                "label": "Unverifiable",
+            }
+
         active_provider = provider or settings.DEFAULT_AI_PROVIDER.lower()
         hardened_system_instruction = f"{system_instruction}\n\n{SECURITY_INJECTION_DEFENSE_PROMPT}"
 

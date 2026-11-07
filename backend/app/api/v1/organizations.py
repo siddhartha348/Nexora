@@ -10,7 +10,7 @@ from app.models.organization import (
 )
 from app.models.auth import UserRole, UserProfileResponse
 from app.services.org_service import OrganizationService
-from app.api.deps import get_current_user, require_roles, verify_org_isolation
+from app.api.deps import get_current_user, require_permission, verify_org_isolation
 
 router = APIRouter(prefix="/organizations", tags=["Organizations & Access Control"])
 
@@ -24,7 +24,7 @@ async def get_current_organization(
 async def update_organization_settings(
     org_id: str,
     req: OrganizationUpdateRequest,
-    current_user: UserProfileResponse = Depends(require_roles([UserRole.ADMIN]))
+    current_user: UserProfileResponse = Depends(require_permission("users.manage"))
 ):
     await verify_org_isolation(org_id, current_user)
     return await OrganizationService.update_settings(org_id, req, actor_id=current_user.id)
@@ -33,7 +33,7 @@ async def update_organization_settings(
 async def invite_member(
     org_id: str,
     req: OrganizationInviteRequest,
-    current_user: UserProfileResponse = Depends(require_roles([UserRole.ADMIN]))
+    current_user: UserProfileResponse = Depends(require_permission("users.manage"))
 ):
     await verify_org_isolation(org_id, current_user)
     return await OrganizationService.create_invite(org_id, req, actor_id=current_user.id)
@@ -51,7 +51,7 @@ async def update_member_role(
     org_id: str,
     user_id: str,
     req: MemberUpdateRequest,
-    current_user: UserProfileResponse = Depends(require_roles([UserRole.ADMIN]))
+    current_user: UserProfileResponse = Depends(require_permission("users.manage"))
 ):
     await verify_org_isolation(org_id, current_user)
     return await OrganizationService.update_member_role(org_id, user_id, req.role, actor_id=current_user.id)
@@ -60,7 +60,7 @@ async def update_member_role(
 async def deactivate_member(
     org_id: str,
     user_id: str,
-    current_user: UserProfileResponse = Depends(require_roles([UserRole.ADMIN]))
+    current_user: UserProfileResponse = Depends(require_permission("users.manage"))
 ):
     await verify_org_isolation(org_id, current_user)
     await OrganizationService.deactivate_member(org_id, user_id, actor_id=current_user.id)

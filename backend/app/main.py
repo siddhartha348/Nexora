@@ -13,6 +13,7 @@ from app.api.v1.registry import router as registry_router
 from app.api.v1.recall import router as recall_router
 from app.api.v1.analytics import router as analytics_router
 from app.api.v1.audit_logs import router as audit_router
+from app.api.v1.users import router as users_router
 from app.db.seed import seed_demo_data
 from app.core.security import hash_password
 import uuid
@@ -99,6 +100,19 @@ app.include_router(registry_router, prefix=settings.API_V1_PREFIX)
 app.include_router(recall_router, prefix=settings.API_V1_PREFIX)
 app.include_router(analytics_router, prefix=settings.API_V1_PREFIX)
 app.include_router(audit_router, prefix=settings.API_V1_PREFIX)
+app.include_router(users_router, prefix=settings.API_V1_PREFIX)
+
+# Spec paths without the version prefix, alongside /api/v1.
+if settings.API_V1_PREFIX:
+    app.include_router(auth_router)
+    app.include_router(users_router)
+    app.include_router(knowledge_router)
+    app.include_router(ads_router)
+    app.include_router(reviews_router)
+    app.include_router(registry_router)
+    app.include_router(recall_router)
+    app.include_router(analytics_router)
+    app.include_router(audit_router)
 
 @app.get("/health")
 @app.get(f"{settings.API_V1_PREFIX}/health")

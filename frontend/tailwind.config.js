@@ -28,7 +28,18 @@ export default {
         'severity-yellow': 'var(--color-severity-yellow)',
         'severity-green': 'var(--color-severity-green)',
 
-        // Backwards compatibility mappings for existing dark/cyber tokens
+        // ── Fresh Vibrant Neo-Brutalist Block Colors ────────────────────────
+        neo: {
+          yellow: '#FFE600',
+          pink: '#FF6EA7',
+          mint: '#2CEAA3',
+          purple: '#A368FC',
+          coral: '#FF5E5B',
+          blue: '#2F4BFF',
+          cream: '#FFFBF0',
+          dark: '#111111',
+          lime: '#CCFF00',
+        },
         obsidian: {
           DEFAULT: 'var(--color-paper)',
           950: 'var(--color-paper)',

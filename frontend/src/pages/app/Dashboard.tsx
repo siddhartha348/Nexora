@@ -8,7 +8,13 @@ import {
   Lightbulb, 
   Layers,
   ArrowRight,
-  FileCheck
+  FileCheck,
+  UserCheck,
+  Archive,
+  Database,
+  PlusCircle,
+  RotateCcw,
+  Eye
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Button } from '../../components/ui/Button';
@@ -16,11 +22,15 @@ import { Badge } from '../../components/ui/Badge';
 import { AnalyticsApi } from '../../services/api';
 import { useToast } from '../../components/ui/Toast';
 import { SEO } from '../../components/common/SEO';
+import { useAuth } from '../../context/AuthContext';
 
 export function Dashboard() {
   const { toast } = useToast();
+  const { user } = useAuth();
   const [data, setData] = useState<any | null>(null);
   const [loading, setLoading] = useState(true);
+
+  const role = user?.role || 'VIEWER';
 
   const fetchAnalytics = async () => {
     try {
@@ -69,22 +79,105 @@ export function Dashboard() {
           <div>
             <div className="flex items-center gap-2 mb-1">
               <span className="w-2.5 h-2.5 bg-glacial rounded-full" />
+              <Badge variant="primary" size="sm">[{role} WORKSPACE]</Badge>
               <span className="text-xs uppercase text-glacial font-bold">
-                Governance Intelligence // Phase 11
+                Governance Intelligence
               </span>
             </div>
             <h1 className="text-3xl font-extrabold text-slate-text tracking-tight">
-              Governance Analytics & Insights
+              {role === 'ADMIN' && 'Enterprise Administration & Governance Operations'}
+              {role === 'APPROVER' && 'Executive Approval & Release Control Dashboard'}
+              {role === 'REVIEWER' && 'Active Audit Review & Precedent Memory Hub'}
+              {role === 'CREATOR' && 'Creative Ingestion & Compliance Submission Desk'}
+              {role === 'VIEWER' && 'Read-Only Governance Compliance Monitor'}
             </h1>
             <p className="text-xs sm:text-sm text-slate-muted mt-1">
-              Evidence-based analytics aggregated from parallel guardian audits, human review resolutions, and recall sweeps.
+              {role === 'ADMIN' && 'Full administrative oversight: policy management, user access control, exception promotions, and vector health.'}
+              {role === 'APPROVER' && 'Review sign-offs, pending release authorizations, recall alert interventions, and brand consistency reports.'}
+              {role === 'REVIEWER' && 'Inspect guardian findings, accept or reject proposed edits, and build organizational brand memory.'}
+              {role === 'CREATOR' && 'Submit campaigns for multi-agent evaluation, monitor job progress, and fix flagged contradictions.'}
+              {role === 'VIEWER' && 'Auditor and stakeholder telemetry: view-only real-time metrics, audit logs, and compliance distributions.'}
             </p>
           </div>
 
-          <Button variant="outline" size="sm" onClick={fetchAnalytics} className="gap-2 shrink-0">
-            <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} />
-            Refresh Telemetry
-          </Button>
+          <div className="flex items-center gap-3 shrink-0">
+            {role === 'CREATOR' && (
+              <Link to="/app/audits">
+                <Button variant="primary" size="sm" className="gap-2">
+                  <PlusCircle className="w-3.5 h-3.5" />
+                  New Ad Audit
+                </Button>
+              </Link>
+            )}
+            {role === 'ADMIN' && (
+              <Link to="/app/settings/organization">
+                <Button variant="outline" size="sm" className="gap-2">
+                  <ShieldCheck className="w-3.5 h-3.5 text-glacial" />
+                  Org Settings
+                </Button>
+              </Link>
+            )}
+            <Button variant="outline" size="sm" onClick={fetchAnalytics} className="gap-2 shrink-0">
+              <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} />
+              Refresh
+            </Button>
+          </div>
+        </div>
+
+        {/* Role-Specific Quick Action Banner */}
+        <div className="p-4 rounded-xl bg-obsidian-900 border-2 border-slate-border flex flex-col md:flex-row md:items-center justify-between gap-4 text-xs">
+          <div className="flex items-center gap-3">
+            <div className="p-2.5 rounded bg-obsidian-850 border border-slate-border text-glacial shrink-0">
+              {role === 'ADMIN' && <ShieldCheck className="w-5 h-5 text-status-warning" />}
+              {role === 'APPROVER' && <UserCheck className="w-5 h-5 text-status-success" />}
+              {role === 'REVIEWER' && <FileCheck className="w-5 h-5 text-glacial" />}
+              {role === 'CREATOR' && <PlusCircle className="w-5 h-5 text-glacial" />}
+              {role === 'VIEWER' && <Eye className="w-5 h-5 text-slate-muted" />}
+            </div>
+            <div>
+              <span className="font-bold text-slate-text block">
+                {role === 'ADMIN' && 'System Health & Administrative Operations'}
+                {role === 'APPROVER' && 'Campaign Approvals & Recall Mitigations'}
+                {role === 'REVIEWER' && 'Active Finding Remediation Workflow'}
+                {role === 'CREATOR' && 'Creative Ingestion Pipeline'}
+                {role === 'VIEWER' && 'Read-Only Audit Monitor'}
+              </span>
+              <span className="text-slate-muted text-[11px]">
+                {role === 'ADMIN' && '3 Knowledge documents approved • Recall engine active • ChromaDB online'}
+                {role === 'APPROVER' && '1 Active Recall Alert requires authorization • Review pending creatives'}
+                {role === 'REVIEWER' && 'Check side-by-side evidence quotes and log decision precedents'}
+                {role === 'CREATOR' && 'Upload new campaign creatives (PDF, DOCX, PNG, JPG) to audit against brand standards'}
+                {role === 'VIEWER' && 'Viewing aggregate governance metrics and compliance trends'}
+              </span>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2">
+            {['ADMIN', 'APPROVER'].includes(role) && (
+              <Link to="/app/recall">
+                <Button variant="secondary" size="sm" className="gap-1.5 text-xs">
+                  <RotateCcw className="w-3.5 h-3.5 text-status-warning" />
+                  Recall Center
+                </Button>
+              </Link>
+            )}
+            {['ADMIN', 'REVIEWER', 'APPROVER', 'CREATOR'].includes(role) && (
+              <Link to="/app/registry">
+                <Button variant="outline" size="sm" className="gap-1.5 text-xs">
+                  <Archive className="w-3.5 h-3.5" />
+                  Ad Registry
+                </Button>
+              </Link>
+            )}
+            {['ADMIN', 'APPROVER'].includes(role) && (
+              <Link to="/app/knowledge">
+                <Button variant="outline" size="sm" className="gap-1.5 text-xs">
+                  <Database className="w-3.5 h-3.5 text-glacial" />
+                  Knowledge Hub
+                </Button>
+              </Link>
+            )}
+          </div>
         </div>
 
         {/* Honest Positioning Banner */}

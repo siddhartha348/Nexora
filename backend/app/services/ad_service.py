@@ -24,7 +24,8 @@ class AdvertisementService:
         organization_id: str, 
         title: str, 
         file_path: str, 
-        file_type: str
+        file_type: str,
+        created_by: Optional[str] = None,
     ) -> AdvertisementJob:
         job_id = f"JOB-{uuid.uuid4().hex[:8].upper()}"
         now = datetime.now(timezone.utc).isoformat()
@@ -38,7 +39,8 @@ class AdvertisementService:
             file_path=file_path,
             status=JobStatus.PENDING,
             progress=5,
-            created_at=now
+            created_at=now,
+            created_by=created_by,
         )
 
         db = get_database()
@@ -54,7 +56,8 @@ class AdvertisementService:
         cls, 
         organization_id: str, 
         title: str, 
-        url: str
+        url: str,
+        created_by: Optional[str] = None,
     ) -> AdvertisementJob:
         job_id = f"JOB-{uuid.uuid4().hex[:8].upper()}"
         now = datetime.now(timezone.utc).isoformat()

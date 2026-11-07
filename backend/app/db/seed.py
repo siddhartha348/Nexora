@@ -5,6 +5,7 @@ import string
 import logging
 from datetime import datetime, timezone
 from app.db.mongo import db_manager
+from app.core.config import settings
 from app.core.security import hash_password
 
 logger = logging.getLogger("nexora.seed")
@@ -30,9 +31,10 @@ async def seed_demo_data():
     org_id = "demo-org-auratech-001"
 
     # 1. Organization
-    org = await db["organisations"].find_one({"id": org_id})
+    org = await db["organisations"].find_one({"$or": [{"_id": org_id}, {"id": org_id}]})
     if not org:
         await db["organisations"].insert_one({
+            "_id": org_id,
             "id": org_id,
             "name": "AuraTech Global",
             "tier": "ENTERPRISE",
@@ -58,9 +60,7 @@ async def seed_demo_data():
     generated_credentials = []
 
     for conf in roles_config:
-        plain_pwd = os.environ.get("DEMO_ADMIN_PASSWORD", "") if os.environ.get("TESTING") == "1" else ""
-        if not plain_pwd:
-            plain_pwd = generate_secure_password(16)
+        plain_pwd = os.environ.get("DEMO_PASSWORD") or settings.DEMO_PASSWORD
         pwd_hash = hash_password(plain_pwd)
         generated_credentials.append((conf["role"], conf["email"], plain_pwd))
 
@@ -386,6 +386,8 @@ async def seed_demo_data():
                 "updated_at": now
             }
         ]
+        for ad in ads:
+            ad["created_by"] = "usr-creator-001"
         await db["advertisements"].insert_many(ads)
 
         # 6. Active Recall Alert

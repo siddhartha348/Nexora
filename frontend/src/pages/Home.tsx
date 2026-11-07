@@ -9,7 +9,11 @@ import {
   Eye, 
   Check, 
   ChevronRight,
-  Scale
+  Scale,
+  ShieldCheck,
+  Cpu,
+  UserCheck,
+  LayoutDashboard
 } from 'lucide-react';
 import { Button } from '../components/ui/Button';
 import { Badge } from '../components/ui/Badge';
@@ -18,8 +22,11 @@ import { StatusIndicator } from '../components/ui/StatusIndicator';
 import { SectionHeader } from '../components/common/SectionHeader';
 import { Accordion } from '../components/common/Accordion';
 import { SEO } from '../components/common/SEO';
+import { useAuth } from '../context/AuthContext';
 
 export function Home() {
+  const { user, isAuthenticated } = useAuth();
+
   const problems = [
     { title: "Incorrect Product Specs", desc: "Advertisements quote battery life, dimensions, or capabilities the product lacks.", badge: "Fact Drift" },
     { title: "Outdated Warranties & Pricing", desc: "Campaign creatives circulate quoting last season's pricing or expired warranty terms.", badge: "Version Lag" },
@@ -27,6 +34,51 @@ export function Home() {
     { title: "Tone & Voice Inconsistency", desc: "Agency and freelance creatives alternate between overly formal or erratic casual tone.", badge: "Voice Drift" },
     { title: "Off-Palette Colours & Misused Logos", desc: "Distorted logo aspect ratios and slight hexadecimal color drift bypassing human eyes.", badge: "Visual Brand" },
     { title: "Zero Traceability to Sources", desc: "Reviewers cannot pinpoint which document, page, or version justifies an advertised claim.", badge: "Compliance Void" }
+  ];
+
+  const workflowSteps = [
+    {
+      num: "01",
+      title: "Brand Knowledge Hub & Quarantine Gate",
+      actor: "Brand Admin",
+      desc: "Upload specification sheets, guidelines, trademark rosters, and official color hex palettes. Every document enters an isolated quarantine gate until formally validated by an Administrator, ensuring draft documents never pollute AI audits.",
+      icon: <ShieldCheck className="w-5 h-5 text-glacial" />
+    },
+    {
+      num: "02",
+      title: "Multimodal Creative Extraction",
+      actor: "Ingestion Engine",
+      desc: "Submit advertisements via PDF, DOCX, PPTX, PNG, JPG, or verified public URLs. Text extraction, table parsing, Tesseract OCR, and OpenCV color & contrast measurement run automatically.",
+      icon: <Cpu className="w-5 h-5 text-glacial" />
+    },
+    {
+      num: "03",
+      title: "Six Specialist AI Guardians (In Parallel)",
+      actor: "6 AI Guardians",
+      desc: "Fact, Voice, Terminology, Claims, Visual, and Accessibility Guardians run concurrently via asynchronous pipelines. Findings return in a standardized schema quoting exact source document, version, and page number.",
+      icon: <Layers className="w-5 h-5 text-glacial" />
+    },
+    {
+      num: "04",
+      title: "Risk Manager Arbiter Consolidation",
+      actor: "Risk Arbiter",
+      desc: "Deduplicates cross-agent overlap, resolves conflicting advice, and assigns deterministic severity ratings (RED, YELLOW, GREEN). Missing evidence is marked strictly as Unverifiable—never hallucinated.",
+      icon: <Scale className="w-5 h-5 text-status-warning" />
+    },
+    {
+      num: "05",
+      title: "Mandatory Human Review & Decision Gate",
+      actor: "Authorized Reviewer",
+      desc: "Nothing publishes or approves automatically. Human reviewers inspect side-by-side diffs, accept or reject suggestions, and sign off. Every human decision forms Brand Memory precedents for future reviews.",
+      icon: <UserCheck className="w-5 h-5 text-status-success" />
+    },
+    {
+      num: "06",
+      title: "Active Advertisement Recall Engine",
+      actor: "Recall Engine",
+      desc: "When a specification updates in the Knowledge Hub (e.g., warranty changes from 3 to 2 years), the Recall Engine diffs the delta, finds all live ads in the Registry citing that fact, and triggers prioritized recall alerts.",
+      icon: <RotateCcw className="w-5 h-5 text-status-warning" />
+    }
   ];
 
   const agents = [
@@ -46,8 +98,8 @@ export function Home() {
     },
     {
       id: "faq-2",
-      question: "What is the Advertisement Recall Engine?",
-      answer: "When a product manager uploads and approves a new spec sheet (e.g. warranty reduced from 3 years to 2 years), the Advertisement Recall Engine identifies all previously reviewed creatives in the Registry citing that outdated fact, automatically re-runs audits, and alerts marketing teams."
+      question: "How does the Advertisement Recall Engine work under the workflow?",
+      answer: "The Recall Engine is the closing stage of the governance workflow: when an approved spec sheet changes in the Knowledge Hub, the engine diffs the change against earlier versions, searches the Advertisement Registry for live creatives quoting that fact, and raises high-priority recall alerts."
     },
     {
       id: "faq-3",
@@ -80,27 +132,65 @@ export function Home() {
 
           <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold text-slate-text tracking-tight max-w-5xl mx-auto leading-[1.1]">
             Evidence-Based <br className="hidden sm:inline" />
-            <span className="text-glacial">
+            <span className="text-glacial bg-neo-yellow px-3 py-0.5 rounded border-3 border-black text-black inline-block my-1 shadow-neo">
               Brand Governance
             </span>
           </h1>
 
           <p className="text-base sm:text-xl text-slate-muted max-w-3xl mx-auto leading-relaxed">
-            NEXORA reviews advertisements before publication against your organisation’s own approved facts, guidelines, terminology, and visual identity. Powered by six parallel specialist AI guardians and continuous <strong>Advertisement Recall</strong>.
+            NEXORA reviews advertisements before publication against your organisation’s approved facts, guidelines, terminology, and visual identity with six parallel specialist AI guardians, human review gates, and active Advertisement Recall.
           </p>
 
-          <div className="flex flex-wrap items-center justify-center gap-4 pt-4">
-            <Link to="/features">
-              <Button variant="primary" size="lg" rightIcon={<ArrowRight className="w-4 h-4" />}>
-                Explore Platform Architecture
-              </Button>
-            </Link>
-            <Link to="/recall">
-              <Button variant="secondary" size="lg" leftIcon={<RotateCcw className="w-4 h-4 text-status-warning" />}>
-                Advertisement Recall Demo
-              </Button>
-            </Link>
-          </div>
+          {/* Conditional Role-Aware Action Bar */}
+          {isAuthenticated && user ? (
+            <div className={`p-5 rounded-xl border-3 border-black max-w-2xl mx-auto shadow-neo-lg flex flex-col sm:flex-row items-center justify-between gap-4 text-left ${
+              user.role === 'ADMIN' ? 'bg-neo-purple/15 border-neo-purple' :
+              user.role === 'APPROVER' ? 'bg-neo-mint/15 border-neo-mint' :
+              user.role === 'REVIEWER' ? 'bg-neo-yellow/15 border-neo-yellow' :
+              user.role === 'CREATOR' ? 'bg-neo-pink/15 border-neo-pink' :
+              'bg-obsidian-850'
+            }`}>
+              <div>
+                <div className="flex items-center gap-2">
+                  <span className={`px-2 py-0.5 rounded font-mono font-bold text-xs border-2 border-black shadow-neo-sm ${
+                    user.role === 'ADMIN' ? 'bg-neo-purple text-white' :
+                    user.role === 'APPROVER' ? 'bg-neo-mint text-black' :
+                    user.role === 'REVIEWER' ? 'bg-neo-yellow text-black' :
+                    user.role === 'CREATOR' ? 'bg-neo-pink text-white' :
+                    'bg-glacial text-black'
+                  }`}>
+                    {user.role} WORKSPACE
+                  </span>
+                  <span className="text-sm font-mono text-slate-text font-bold">{user.full_name}</span>
+                </div>
+                <p className="text-xs text-slate-muted mt-1.5 leading-relaxed">
+                  {user.role === 'ADMIN' && 'Complete System Governance • Knowledge Gates • Tenant & User Control • Policy Management'}
+                  {user.role === 'APPROVER' && 'Executive Sign-Off Desk • Knowledge Version Clearances • Recall Interventions'}
+                  {user.role === 'REVIEWER' && 'Active Audit Review • Citation Checking • Decision Precedents & Exception Recording'}
+                  {user.role === 'CREATOR' && 'Creative Ingestion • Upload PDF/DOCX/Images • 6-Guardian Rapid Feedback'}
+                  {user.role === 'VIEWER' && 'Stakeholder Auditor View • Read-Only Compliance Analytics & Audit Trails'}
+                </p>
+              </div>
+              <Link to="/app/dashboard" className="shrink-0 w-full sm:w-auto">
+                <Button variant="primary" size="md" className="w-full sm:w-auto" rightIcon={<LayoutDashboard className="w-4 h-4" />}>
+                  Enter {user.role} Portal
+                </Button>
+              </Link>
+            </div>
+          ) : (
+            <div className="flex flex-wrap items-center justify-center gap-4 pt-4">
+              <Link to="/how-it-works">
+                <Button variant="primary" size="lg" className="bg-neo-blue text-white shadow-neo hover:translate-x-0.5" rightIcon={<ArrowRight className="w-4 h-4" />}>
+                  Explore How It Works
+                </Button>
+              </Link>
+              <Link to="/login">
+                <Button variant="outline" size="lg" className="border-3 border-black shadow-neo bg-surface">
+                  Sign In to Platform
+                </Button>
+              </Link>
+            </div>
+          )}
 
           {/* Central Product Review Canvas Preview */}
           <div className="pt-10 max-w-5xl mx-auto">
@@ -120,7 +210,7 @@ export function Home() {
                 <div className="md:col-span-5 p-4 rounded-xl bg-obsidian-900/90 border border-slate-border space-y-3">
                   <Badge variant="mono" size="sm">[ INGESTED CREATIVE // PDF ]</Badge>
                   <p className="text-sm font-medium text-slate-text italic border-l-2 border-status-critical pl-3 py-1 font-sans">
-                    "Experience Aurora X2: up to 7 days of active battery life with our industry-exclusive 5-year warranty."
+                    &quot;Experience Aurora X2: up to 7 days of active battery life with our industry-exclusive 5-year warranty.&quot;
                   </p>
                   <div className="flex items-center justify-between text-[11px] text-slate-tertiary font-mono pt-2 border-t border-slate-border/40">
                     <span>EXTRACT: PYMUPDF</span>
@@ -140,7 +230,7 @@ export function Home() {
                   <div className="p-2.5 rounded-lg bg-obsidian-950/90 border border-cyber-border">
                     <span className="text-[10px] uppercase font-mono text-slate-tertiary block">// Suggested Approved Revision:</span>
                     <span className="text-xs text-status-success font-medium font-mono">
-                      "Experience Aurora X2: up to 5 days of active battery life with our 2-year warranty."
+                      &quot;Experience Aurora X2: up to 5 days of active battery life with our 2-year warranty.&quot;
                     </span>
                   </div>
                 </div>
@@ -148,6 +238,71 @@ export function Home() {
             </div>
           </div>
 
+        </div>
+      </section>
+
+      {/* Structured How It Works Section */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+        <SectionHeader
+          badge="Platform Architecture"
+          title="How It Works:"
+          highlight="The Complete 6-Stage Governance Loop"
+          description="NEXORA replaces opaque manual reviews with an end-to-end, evidence-traceable lifecycle from initial document quarantine through active advertisement recall."
+        />
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {workflowSteps.map((step, idx) => {
+            const cardColors = [
+              'bg-neo-yellow/10 border-neo-yellow',
+              'bg-neo-mint/10 border-neo-mint',
+              'bg-neo-purple/10 border-neo-purple',
+              'bg-neo-coral/10 border-neo-coral',
+              'bg-neo-pink/10 border-neo-pink',
+              'bg-neo-blue/10 border-neo-blue',
+            ];
+            const badgeColors = [
+              'bg-neo-yellow text-black',
+              'bg-neo-mint text-black',
+              'bg-neo-purple text-white',
+              'bg-neo-coral text-white',
+              'bg-neo-pink text-white',
+              'bg-neo-blue text-white',
+            ];
+
+            return (
+              <div 
+                key={step.num}
+                className={`p-6 rounded-xl border-3 border-black shadow-neo hover:translate-x-0.5 hover:translate-y-0.5 transition-all bg-surface ${cardColors[idx % cardColors.length]}`}
+              >
+                <div className="flex items-center justify-between pb-3 border-b-2 border-black/20">
+                  <span className="font-mono text-xs font-extrabold text-slate-tertiary">STAGE_{step.num}</span>
+                  <span className={`px-2 py-0.5 rounded text-[11px] font-mono font-bold border-2 border-black shadow-neo-sm ${badgeColors[idx % badgeColors.length]}`}>
+                    {step.actor}
+                  </span>
+                </div>
+                <div className="pt-3 space-y-2">
+                  <h3 className="font-bold text-base text-slate-text">{step.title}</h3>
+                  <p className="text-xs text-slate-muted leading-relaxed">
+                    {step.desc}
+                  </p>
+                </div>
+                <div className="pt-4 mt-4 border-t-2 border-black/10 flex items-center justify-between text-[11px] font-mono text-slate-tertiary">
+                  <span>STEP // {step.num}</span>
+                  <div className="p-1.5 rounded bg-surface border-2 border-black shadow-neo-sm">
+                    {step.icon}
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        <div className="text-center pt-2">
+          <Link to="/how-it-works">
+            <Button variant="outline" size="md" rightIcon={<ChevronRight className="w-4 h-4" />}>
+              View Detailed Technical Workflow Specification
+            </Button>
+          </Link>
         </div>
       </section>
 
@@ -161,24 +316,48 @@ export function Home() {
         />
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {problems.map((prob, idx) => (
-            <Card key={idx} variant="interactive" className="border-cyber-border/50 hover:border-cyber-cyan/60 hover:shadow-cyber-cyan">
-              <CardHeader 
-                title={prob.title}
-                telemetry={`RISK_VECTOR_0${idx + 1}`}
-                action={<Badge variant="cyber" size="sm">[{prob.badge}]</Badge>}
-              />
-              <CardContent>
-                <p className="text-xs text-slate-muted leading-relaxed">
-                  {prob.desc}
-                </p>
-              </CardContent>
-            </Card>
-          ))}
+          {problems.map((prob, idx) => {
+            const colors = [
+              'bg-neo-coral/10 border-neo-coral',
+              'bg-neo-yellow/15 border-neo-yellow',
+              'bg-neo-pink/15 border-neo-pink',
+              'bg-neo-purple/15 border-neo-purple',
+              'bg-neo-blue/10 border-neo-blue',
+              'bg-neo-mint/15 border-neo-mint',
+            ];
+            const badges = [
+              'bg-neo-coral text-white',
+              'bg-neo-yellow text-black',
+              'bg-neo-pink text-white',
+              'bg-neo-purple text-white',
+              'bg-neo-blue text-white',
+              'bg-neo-mint text-black',
+            ];
+
+            return (
+              <div 
+                key={idx} 
+                className={`p-6 rounded-xl border-3 border-black shadow-neo hover:translate-x-0.5 hover:translate-y-0.5 transition-all bg-surface ${colors[idx % colors.length]}`}
+              >
+                <div className="flex items-center justify-between pb-3 border-b-2 border-black/20">
+                  <span className="font-mono text-xs font-extrabold text-slate-tertiary">RISK_VECTOR_0{idx + 1}</span>
+                  <span className={`px-2 py-0.5 rounded text-[10px] font-mono font-bold border-2 border-black shadow-neo-sm ${badges[idx % badges.length]}`}>
+                    [{prob.badge}]
+                  </span>
+                </div>
+                <div className="pt-3 space-y-2">
+                  <h3 className="font-bold text-base text-slate-text">{prob.title}</h3>
+                  <p className="text-xs text-slate-muted leading-relaxed">
+                    {prob.desc}
+                  </p>
+                </div>
+              </div>
+            );
+          })}
         </div>
       </section>
 
-      {/* The NEXORA Solution & Central Principle */}
+      {/* The Central Principle */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="rounded bg-obsidian-850 border-2 border-slate-border p-8 sm:p-12 relative shadow-neo-lg">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center relative z-10">
@@ -265,72 +444,6 @@ export function Home() {
               Deep Dive into Guardian Prompts & Schemas
             </Button>
           </Link>
-        </div>
-      </section>
-
-      {/* Advertisement Recall Highlight Section */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="rounded-none border-2 border-status-warning p-8 sm:p-12 relative overflow-hidden bg-obsidian-850 shadow-neo-warning">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-            
-            <div className="lg:col-span-7 space-y-4">
-              <div className="flex items-center gap-2">
-                <Badge variant="warning" dot size="sm">Active Feature • Key Differentiator</Badge>
-                <span className="text-xs font-mono text-status-warning">Real-time Ad Monitoring</span>
-              </div>
-              <h2 className="text-2xl sm:text-4xl font-extrabold text-slate-text">
-                The Advertisement Recall Engine: <span className="text-status-warning">Continuous Protection</span>
-              </h2>
-              <p className="text-xs sm:text-sm text-slate-muted leading-relaxed">
-                What happens when an approved product spec changes next month? Published advertisements don't update themselves. The Recall Engine detects version changes in the Knowledge Hub, queries the Advertisement Registry for affected creatives, and raises prioritized recall alerts.
-              </p>
-
-              <div className="space-y-2 pt-2">
-                <div className="flex items-start gap-2.5 text-xs text-slate-muted">
-                  <CheckCircle2 className="w-4 h-4 text-status-warning shrink-0 mt-0.5" />
-                  <span><strong>Document Version Delta:</strong> Computes semantic and numerical diffs between versions.</span>
-                </div>
-                <div className="flex items-start gap-2.5 text-xs text-slate-muted">
-                  <CheckCircle2 className="w-4 h-4 text-status-warning shrink-0 mt-0.5" />
-                  <span><strong>Registry Impact Matrix:</strong> Identifies every creative quoting modified parameters.</span>
-                </div>
-                <div className="flex items-start gap-2.5 text-xs text-slate-muted">
-                  <CheckCircle2 className="w-4 h-4 text-status-warning shrink-0 mt-0.5" />
-                  <span><strong>Prioritized Action Reports:</strong> Quantifies business risk and suggests exact corrections.</span>
-                </div>
-              </div>
-
-              <div className="pt-4">
-                <Link to="/recall">
-                  <Button variant="primary" size="md" rightIcon={<ArrowRight className="w-4 h-4" />}>
-                    Explore the Advertisement Recall Workflow
-                  </Button>
-                </Link>
-              </div>
-            </div>
-
-            <div className="lg:col-span-5 p-5 rounded-2xl bg-obsidian-900/95 border border-status-warning/40 shadow-status-warning space-y-3">
-              <div className="flex items-center justify-between pb-2 border-b border-slate-border">
-                <span className="text-xs font-mono text-status-warning font-semibold">RECALL ALERT: #RC-2026-08</span>
-                <Badge variant="warning" size="sm">HIGH PRIORITY</Badge>
-              </div>
-              <div className="text-xs space-y-2">
-                <div>
-                  <span className="text-[10px] font-mono text-slate-tertiary">TRIGGERED BY:</span>
-                  <p className="text-slate-text font-medium">Spec Sheet v3.2 (Approved 2026-11-05)</p>
-                </div>
-                <div>
-                  <span className="text-[10px] font-mono text-slate-tertiary">AFFECTED REGISTERED ADS:</span>
-                  <p className="text-status-warning font-mono">3 Live Creatives Impacted</p>
-                </div>
-                <div className="p-2.5 rounded-lg bg-obsidian-800 border border-slate-border/50 text-[11px]">
-                  <span className="text-slate-tertiary">Reason for Re-review:</span>
-                  <p className="text-slate-muted mt-0.5">Warranty revised from 3 years to 2 years. Creative #AD-2041 claims 3 years.</p>
-                </div>
-              </div>
-            </div>
-
-          </div>
         </div>
       </section>
 

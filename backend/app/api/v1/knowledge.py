@@ -13,7 +13,7 @@ from app.models.knowledge import (
 )
 from app.models.auth import UserRole, UserProfileResponse
 from app.services.knowledge_service import KnowledgeService
-from app.api.deps import get_current_user, require_roles
+from app.api.deps import get_current_user, require_permission
 
 router = APIRouter(prefix="/knowledge", tags=["Brand Knowledge Hub & RAG"])
 
@@ -75,7 +75,7 @@ async def get_document_detail(
 async def approve_document(
     doc_id: str,
     req: ApproveDocumentRequest = ApproveDocumentRequest(),
-    current_user: UserProfileResponse = Depends(require_roles([UserRole.ADMIN]))
+    current_user: UserProfileResponse = Depends(require_permission("knowledge.approve"))
 ):
     """
     ADMIN GATE: Approve an ingested document version into Official Brand Knowledge.
@@ -93,7 +93,7 @@ async def approve_document(
 async def reject_document(
     doc_id: str,
     req: RejectDocumentRequest,
-    current_user: UserProfileResponse = Depends(require_roles([UserRole.ADMIN]))
+    current_user: UserProfileResponse = Depends(require_permission("knowledge.approve"))
 ):
     """ADMIN GATE: Reject an unverified or draft document."""
     return await KnowledgeService.reject_document(

@@ -53,6 +53,21 @@ async def logout(response: Response):
 async def get_me(current_user: UserProfileResponse = Depends(get_current_user)):
     return current_user
 
+@router.get("/demo-accounts")
+async def demo_accounts():
+    """One-click demo identities. Passwords are returned only when the flag is on."""
+    if not settings.SHOW_DEMO_ACCOUNTS:
+        return {"enabled": False, "accounts": []}
+    password = settings.DEMO_PASSWORD
+    accounts = [
+        {"role": "ADMIN", "email": "admin@nexora.com", "full_name": "Audrey Vance", "password": password},
+        {"role": "APPROVER", "email": "approver@nexora.com", "full_name": "Marcus Kane", "password": password},
+        {"role": "REVIEWER", "email": "reviewer@nexora.com", "full_name": "Elena Rostova", "password": password},
+        {"role": "CREATOR", "email": "creator@nexora.com", "full_name": "Liam Chen", "password": password},
+        {"role": "VIEWER", "email": "viewer@nexora.com", "full_name": "Sophia Zhang", "password": password},
+    ]
+    return {"enabled": True, "accounts": accounts}
+
 @router.post("/forgot-password")
 async def forgot_password(req: ForgotPasswordRequest):
     reset_token = await AuthService.create_password_reset_token(req.email)

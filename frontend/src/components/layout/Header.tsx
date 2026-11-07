@@ -29,9 +29,9 @@ interface HeaderProps {
 /** Public marketing nav links shown to everyone */
 const PUBLIC_NAV = [
   { label: 'Overview',    path: '/' },
-  { label: 'Features',    path: '/features' },
   { label: 'How It Works',path: '/how-it-works' },
-  { label: 'AI Agents',   path: '/agents',   badge: '6 Guardians' },
+  { label: 'Features',    path: '/features' },
+  { label: 'AI Guardians',path: '/agents',   badge: '6 Agents' },
   { label: 'Ad Recall',   path: '/recall',   badge: 'Active' },
   { label: 'Security',    path: '/security' },
   { label: 'About',       path: '/about' },
@@ -179,8 +179,8 @@ export function Header({ onOpenSearch }: HeaderProps) {
               );
             })}
 
-            {/* App Dropdown (authenticated only) */}
-            {isAuthenticated && (
+            {/* App Dropdown (role-aware navigation) */}
+            {isAuthenticated && user && (
               <div className="relative ml-1" ref={appMenuRef}>
                 <button
                   onClick={() => setAppMenuOpen(v => !v)}
@@ -192,35 +192,56 @@ export function Header({ onOpenSearch }: HeaderProps) {
                   aria-haspopup="true"
                   aria-expanded={appMenuOpen}
                 >
+                  <span className="font-bold text-glacial font-mono">[{user.role}]</span>
                   Workspace
                   <ChevronDown className={`w-3 h-3 transition-transform ${appMenuOpen ? 'rotate-180' : ''}`} />
                 </button>
 
                 {appMenuOpen && (
-                  <div className="absolute top-full left-0 mt-1.5 w-52 bg-obsidian-850 border-2 border-slate-border shadow-neo-lg rounded z-50">
-                    {APP_NAV.filter(item => !item.adminOnly || hasRole(['ADMIN'])).map((link) => {
-                      const Icon = link.icon;
-                      const isActive = location.pathname === link.path;
-                      return (
-                        <Link
-                          key={link.path}
-                          to={link.path}
-                          className={`flex items-center gap-2.5 px-3.5 py-2.5 text-xs font-medium transition-colors border-b border-slate-border last:border-0 ${
-                            isActive
-                              ? 'bg-glacial text-obsidian-950 font-bold'
-                              : 'text-slate-text hover:bg-obsidian-800'
-                          }`}
-                        >
-                          <Icon className="w-3.5 h-3.5 shrink-0" />
-                          <span>{link.label}</span>
-                          {link.badge && (
-                            <span className="ml-auto text-[10px] font-mono px-1 rounded bg-obsidian-700 text-glacial border border-slate-border">
-                              {link.badge}
-                            </span>
-                          )}
-                        </Link>
-                      );
-                    })}
+                  <div className="absolute top-full left-0 mt-1.5 w-56 bg-obsidian-850 border-2 border-slate-border shadow-neo-lg rounded z-50">
+                    <div className="px-3.5 py-2 border-b border-slate-border text-[10px] font-mono text-slate-tertiary">
+                      WORKSPACE // {user.role} MODE
+                    </div>
+                    {APP_NAV
+                      .filter(item => {
+                        if (user.role === 'CREATOR') {
+                          return ['/app/dashboard', '/app/audits', '/app/registry'].includes(item.path);
+                        }
+                        if (user.role === 'VIEWER') {
+                          return ['/app/dashboard', '/app/registry'].includes(item.path);
+                        }
+                        if (user.role === 'REVIEWER') {
+                          return ['/app/dashboard', '/app/audits', '/app/registry', '/app/memory'].includes(item.path);
+                        }
+                        if (user.role === 'APPROVER') {
+                          return ['/app/dashboard', '/app/audits', '/app/registry', '/app/knowledge', '/app/recall', '/app/memory'].includes(item.path);
+                        }
+                        // ADMIN sees all
+                        return !item.adminOnly || hasRole(['ADMIN']);
+                      })
+                      .map((link) => {
+                        const Icon = link.icon;
+                        const isActive = location.pathname === link.path;
+                        return (
+                          <Link
+                            key={link.path}
+                            to={link.path}
+                            className={`flex items-center gap-2.5 px-3.5 py-2.5 text-xs font-medium transition-colors border-b border-slate-border last:border-0 ${
+                              isActive
+                                ? 'bg-glacial text-obsidian-950 font-bold'
+                                : 'text-slate-text hover:bg-obsidian-800'
+                            }`}
+                          >
+                            <Icon className="w-3.5 h-3.5 shrink-0" />
+                            <span>{link.label}</span>
+                            {link.badge && (
+                              <span className="ml-auto text-[9px] font-mono px-1 py-0.5 rounded bg-obsidian-950 text-glacial border border-slate-border font-bold">
+                                {link.badge}
+                              </span>
+                            )}
+                          </Link>
+                        );
+                      })}
                   </div>
                 )}
               </div>
@@ -261,35 +282,62 @@ export function Header({ onOpenSearch }: HeaderProps) {
             <div className="hidden sm:flex items-center gap-2">
               {isAuthenticated && user ? (
                 <div className="flex items-center gap-2 pl-2 border-l-2 border-slate-border">
+                  {/* Role-Specific Portal Button */}
                   <Link
-                    to="/app/audits"
-                    className="flex items-center gap-1.5 px-2.5 py-1.5 rounded bg-status-success text-obsidian-950 font-bold border-2 border-black text-xs shadow-neo-sm hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-neo transition-all"
+                    to="/app/dashboard"
+                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded font-bold border-2 border-black text-xs shadow-neo-sm hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-neo transition-all whitespace-nowrap ${
+                      user.role === 'ADMIN'
+                        ? 'bg-neo-purple text-white'
+                        : user.role === 'APPROVER'
+                        ? 'bg-neo-mint text-black'
+                        : user.role === 'REVIEWER'
+                        ? 'bg-neo-yellow text-black'
+                        : user.role === 'CREATOR'
+                        ? 'bg-neo-pink text-white'
+                        : 'bg-glacial text-obsidian-950'
+                    }`}
                   >
-                    <FileCheck className="w-3.5 h-3.5" />
-                    <span className="hidden md:inline">Ad Audit</span>
+                    <LayoutDashboard className="w-3.5 h-3.5 shrink-0" />
+                    <span>{user.role} PORTAL</span>
                   </Link>
-                  <Link
-                    to="/app/knowledge"
-                    className="flex items-center gap-1.5 px-2.5 py-1.5 rounded bg-glacial text-obsidian-950 font-bold border-2 border-black text-xs shadow-neo-sm hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-neo transition-all"
-                  >
-                    <Database className="w-3.5 h-3.5" />
-                    <span className="hidden md:inline">Knowledge Hub</span>
-                  </Link>
+
+                  {/* Role-filtered direct action */}
+                  {['ADMIN', 'CREATOR', 'REVIEWER', 'APPROVER'].includes(user.role) && (
+                    <Link
+                      to="/app/audits"
+                      className="flex items-center gap-1.5 px-2.5 py-1.5 rounded bg-neo-mint text-black font-bold border-2 border-black text-xs shadow-neo-sm hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-neo transition-all whitespace-nowrap"
+                    >
+                      <FileCheck className="w-3.5 h-3.5 shrink-0" />
+                      <span className="hidden xl:inline">Ad Audit</span>
+                    </Link>
+                  )}
+
+                  {['ADMIN', 'APPROVER'].includes(user.role) && (
+                    <Link
+                      to="/app/knowledge"
+                      className="flex items-center gap-1.5 px-2.5 py-1.5 rounded bg-neo-yellow text-black font-bold border-2 border-black text-xs shadow-neo-sm hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-neo transition-all whitespace-nowrap"
+                    >
+                      <Database className="w-3.5 h-3.5 shrink-0" />
+                      <span className="hidden xl:inline">Knowledge Hub</span>
+                    </Link>
+                  )}
+
                   <Link
                     to="/app/settings/organization"
-                    className="flex items-center gap-2 group"
-                    title={user.full_name}
+                    className="flex items-center gap-2 group shrink-0"
+                    title={`${user.full_name} (${user.role})`}
                     aria-label="Organisation settings"
                   >
                     <div className="w-8 h-8 rounded bg-obsidian-800 border-2 border-slate-border flex items-center justify-center text-glacial text-xs font-bold shadow-neo-sm group-hover:border-glacial transition-colors">
                       {user.full_name.substring(0, 2).toUpperCase()}
                     </div>
                   </Link>
+
                   <button
                     onClick={() => logout()}
                     title="Sign Out"
                     aria-label="Sign Out"
-                    className="p-1.5 rounded bg-obsidian-800 border-2 border-slate-border text-slate-muted hover:text-status-critical hover:border-status-critical shadow-neo-sm transition-colors"
+                    className="p-1.5 rounded bg-obsidian-800 border-2 border-slate-border text-slate-muted hover:text-status-critical hover:border-status-critical shadow-neo-sm transition-colors shrink-0"
                   >
                     <LogOut className="w-4 h-4" />
                   </button>

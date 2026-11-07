@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, Query, HTTPException
 from typing import Dict, Any, List, Optional
 from app.models.auth import UserProfileResponse, UserRole
-from app.api.deps import get_current_user, require_roles
+from app.api.deps import require_permission
 from app.db.mongo import db_manager
 
 router = APIRouter(prefix="/audit", tags=["Security & Audit Trail"])
@@ -11,7 +11,7 @@ async def list_audit_logs(
     action: Optional[str] = Query(None),
     resource_type: Optional[str] = Query(None),
     limit: int = Query(50, ge=1, le=100),
-    current_user: UserProfileResponse = Depends(require_roles([UserRole.ADMIN]))
+    current_user: UserProfileResponse = Depends(require_permission("audit.view"))
 ) -> Dict[str, Any]:
     """
     Retrieve immutable audit logs for the organization.

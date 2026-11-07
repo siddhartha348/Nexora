@@ -1,0 +1,107 @@
+{
+  "roles": {
+    "ADMIN": {
+      "homeRoute": "/dashboard",
+      "navItems": [
+        { "label": "Dashboard", "path": "/dashboard", "icon": "LayoutDashboard" },
+        { "label": "Knowledge Hub", "path": "/knowledge", "icon": "Library" },
+        { "label": "Advertisement Registry", "path": "/registry", "icon": "Archive" },
+        { "label": "Recall Alerts", "path": "/recall", "icon": "Bell" },
+        { "label": "Review Memory", "path": "/memory", "icon": "Brain" },
+        { "label": "Users", "path": "/users", "icon": "Users" },
+        { "label": "Audit Log", "path": "/audit", "icon": "ScrollText" }
+      ],
+      "permissions": [
+        "dashboard.view",
+        "knowledge.view",
+        "knowledge.upload",
+        "knowledge.approve",
+        "knowledge.supersede",
+        "registry.view",
+        "registry.mutate",
+        "recall.view",
+        "recall.act",
+        "memory.read",
+        "memory.propose_exception",
+        "memory.approve_exception",
+        "users.manage",
+        "audit.view",
+        "ads.view_all",
+        "ads.submit",
+        "reviews.view",
+        "reviews.decide_finding",
+        "reviews.approve_ad",
+        "reviews.request_revision"
+      ]
+    },
+    "APPROVER": {
+      "homeRoute": "/approvals",
+      "navItems": [
+        { "label": "Approval Queue", "path": "/approvals", "icon": "CheckCheck" },
+        { "label": "Dashboard", "path": "/dashboard", "icon": "LayoutDashboard" },
+        { "label": "Registry", "path": "/registry", "icon": "Archive" },
+        { "label": "Recall Alerts", "path": "/recall", "icon": "Bell" },
+        { "label": "Review Memory", "path": "/memory", "icon": "Brain" }
+      ],
+      "permissions": [
+        "dashboard.view",
+        "registry.view",
+        "registry.mutate",
+        "recall.view",
+        "recall.act",
+        "memory.read",
+        "memory.propose_exception",
+        "ads.view_all",
+        "reviews.view",
+        "reviews.decide_finding",
+        "reviews.approve_ad",
+        "reviews.request_revision"
+      ]
+    },
+    "REVIEWER": {
+      "homeRoute": "/reviews",
+      "navItems": [
+        { "label": "My Review Queue", "path": "/reviews", "icon": "ListChecks" },
+        { "label": "Registry", "path": "/registry", "icon": "Archive" },
+        { "label": "Recall Alerts", "path": "/recall", "icon": "Bell" },
+        { "label": "Review Memory", "path": "/memory", "icon": "Brain" }
+      ],
+      "permissions": [
+        "registry.view",
+        "recall.view",
+        "memory.read",
+        "memory.propose_exception",
+        "ads.view_all",
+        "reviews.view",
+        "reviews.decide_finding"
+      ]
+    },
+    "CREATOR": {
+      "homeRoute": "/my-ads",
+      "navItems": [
+        { "label": "My Ads", "path": "/my-ads", "icon": "Files" },
+        { "label": "Upload Ad", "path": "/upload", "icon": "Upload" },
+        { "label": "Revisions Requested", "path": "/revisions", "icon": "Undo2" }
+      ],
+      "permissions": [
+        "ads.view_own",
+        "ads.submit",
+        "reviews.view_own"
+      ]
+    },
+    "VIEWER": {
+      "homeRoute": "/dashboard",
+      "navItems": [
+        { "label": "Dashboard", "path": "/dashboard", "icon": "LayoutDashboard" },
+        { "label": "Registry", "path": "/registry", "icon": "Archive" },
+        { "label": "Recall Alerts", "path": "/recall", "icon": "Bell" }
+      ],
+      "permissions": [
+        "dashboard.view",
+        "registry.view",
+        "recall.view",
+        "ads.view_all"
+      ]
+    }
+  }
+}

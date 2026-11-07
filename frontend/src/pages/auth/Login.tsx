@@ -20,7 +20,7 @@ export function Login() {
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  const from = location.state?.from?.pathname || '/app/settings/organization';
+  const from = location.state?.from?.pathname || '/app/dashboard';
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

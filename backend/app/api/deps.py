@@ -2,6 +2,8 @@ from fastapi import Depends, HTTPException, status, Request
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from typing import Optional, List
 import jwt
+from app.core.audit import log_audit_event
+from app.core.permissions import role_has_permission
 from app.core.security import decode_jwt_token
 from app.db.mongo import db_manager
 from app.models.auth import UserRole, UserProfileResponse
@@ -69,6 +71,41 @@ async def get_current_user(
         is_verified=user.get("is_verified", True),
         created_at=user.get("created_at", "")
     )
+
+def require_permission(permission: str):
+    """
+    Authorize from shared/permissions.json. Missing permission is 403 and is audited.
+    """
+
+    async def checker(
+        request: Request,
+        current_user: UserProfileResponse = Depends(get_current_user),
+    ) -> UserProfileResponse:
+        if role_has_permission(current_user.role.value, permission):
+            return current_user
+        try:
+            await log_audit_event(
+                action="ACCESS_DENIED",
+                organization_id=current_user.organization_id,
+                user_id=current_user.id,
+                resource_type="permission",
+                resource_id=permission,
+                details={
+                    "role": current_user.role.value,
+                    "path": request.url.path,
+                    "method": request.method,
+                },
+                ip_address=request.client.host if request.client else None,
+            )
+        except Exception:
+            pass
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail=f"Access forbidden: missing permission '{permission}'.",
+        )
+
+    return checker
+
 
 def require_roles(allowed_roles: List[UserRole]):
     """
