@@ -1,6 +1,8 @@
 from fastapi import FastAPI, Request, status
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, FileResponse
+from fastapi.staticfiles import StaticFiles
+import os
 from contextlib import asynccontextmanager
 from app.core.config import settings
 from app.db.mongo import db_manager
@@ -124,4 +126,25 @@ async def health_check():
         "database_mode": "mock_memory" if db_manager._is_mock else "mongodb_live",
         "auth_engine": "jwt_bcrypt_argon2"
     }
+
+# ── Serve Built Frontend SPA (Unified Render Deployment) ─────────────────
+frontend_dist = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "frontend", "dist"))
+if os.path.exists(frontend_dist):
+    # Mount assets folder for chunked JS/CSS/fonts
+    assets_dir = os.path.join(frontend_dist, "assets")
+    if os.path.exists(assets_dir):
+        app.mount("/assets", StaticFiles(directory=assets_dir), name="assets")
+
+    # Catch-all route to serve index.html for React client-side routing
+    @app.get("/{full_path:path}")
+    async def serve_spa(full_path: str):
+        # Don't hijack API routes
+        if full_path.startswith("api") or full_path.startswith("docs") or full_path.startswith("redoc") or full_path.startswith("openapi.json"):
+            return JSONResponse(status_code=404, content={"detail": "Not Found"})
+        
+        file_path = os.path.join(frontend_dist, full_path)
+        if os.path.isfile(file_path):
+            return FileResponse(file_path)
+        return FileResponse(os.path.join(frontend_dist, "index.html"))
+
 
